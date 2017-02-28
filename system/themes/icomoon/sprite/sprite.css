@@ -1,0 +1,911 @@
+.icons {
+	display: inline-block!important;
+	background-repeat: no-repeat!important;
+	background-image: url(sprite.svg)!important;
+	background-size: auto auto!important;
+}
+.icon-extension {
+	width: 48px;
+	height: 48px;
+	background-position: 0 0;
+}
+.icon-home {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -68px;
+}
+.icon-home3 {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -68px;
+}
+.icon-pencil {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -68px;
+}
+.icon-pencil2 {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -68px;
+}
+.icon-quill {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -68px;
+}
+.icon-eyedropper {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -68px;
+}
+.icon-droplet {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -68px;
+}
+.icon-image {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -68px;
+}
+.icon-images {
+	width: 36px;
+	height: 32px;
+	background-position: -416px -68px;
+}
+.icon-camera {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -68px;
+}
+.icon-headphones {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -68px;
+}
+.icon-music {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -68px;
+}
+.icon-play {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -68px;
+}
+.icon-film {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -68px;
+}
+.icon-video-camera {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -68px;
+}
+.icon-dice {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -68px;
+}
+.icon-bullhorn {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -68px;
+}
+.icon-connection {
+	width: 40px;
+	height: 32px;
+	background-position: -884px -68px;
+}
+.icon-mic {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -68px;
+}
+.icon-book {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -68px;
+}
+.icon-books {
+	width: 36px;
+	height: 32px;
+	background-position: 0 -120px;
+}
+.icon-library {
+	width: 34px;
+	height: 32px;
+	background-position: -52px -120px;
+}
+.icon-file-text {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -120px;
+}
+.icon-profile {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -120px;
+}
+.icon-file-empty {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -120px;
+}
+.icon-files-empty {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -120px;
+}
+.icon-file-text2 {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -120px;
+}
+.icon-file-picture {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -120px;
+}
+.icon-file-music {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -120px;
+}
+.icon-file-play {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -120px;
+}
+.icon-file-video {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -120px;
+}
+.icon-file-zip {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -120px;
+}
+.icon-copy {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -120px;
+}
+.icon-paste {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -120px;
+}
+.icon-stack {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -120px;
+}
+.icon-folder {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -120px;
+}
+.icon-folder-open {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -120px;
+}
+.icon-folder-plus {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -120px;
+}
+.icon-folder-minus {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -120px;
+}
+.icon-folder-download {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -120px;
+}
+.icon-folder-upload {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -172px;
+}
+.icon-price-tag {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -172px;
+}
+.icon-price-tags {
+	width: 40px;
+	height: 32px;
+	background-position: -104px -172px;
+}
+.icon-barcode {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -172px;
+}
+.icon-qrcode {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -172px;
+}
+.icon-cart {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -172px;
+}
+.icon-coin-euro {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -172px;
+}
+.icon-credit-card {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -172px;
+}
+.icon-calculator {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -172px;
+}
+.icon-lifebuoy {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -172px;
+}
+.icon-phone {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -172px;
+}
+.icon-address-book {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -172px;
+}
+.icon-envelop {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -172px;
+}
+.icon-pushpin {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -172px;
+}
+.icon-location {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -172px;
+}
+.icon-location2 {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -172px;
+}
+.icon-compass {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -172px;
+}
+.icon-compass2 {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -172px;
+}
+.icon-map {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -172px;
+}
+.icon-map2 {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -172px;
+}
+.icon-clock {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -224px;
+}
+.icon-clock2 {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -224px;
+}
+.icon-alarm {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -224px;
+}
+.icon-stopwatch {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -224px;
+}
+.icon-calendar {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -224px;
+}
+.icon-printer {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -224px;
+}
+.icon-display {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -224px;
+}
+.icon-laptop {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -224px;
+}
+.icon-mobile2 {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -224px;
+}
+.icon-box-add {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -224px;
+}
+.icon-box-remove {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -224px;
+}
+.icon-floppy-disk {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -224px;
+}
+.icon-database {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -224px;
+}
+.icon-undo {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -224px;
+}
+.icon-redo {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -224px;
+}
+.icon-undo2 {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -224px;
+}
+.icon-redo2 {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -224px;
+}
+.icon-forward {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -224px;
+}
+.icon-reply {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -224px;
+}
+.icon-bubble {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -224px;
+}
+.icon-bubbles {
+	width: 36px;
+	height: 32px;
+	background-position: 0 -276px;
+}
+.icon-bubbles2 {
+	width: 36px;
+	height: 32px;
+	background-position: -52px -276px;
+}
+.icon-bubble2 {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -276px;
+}
+.icon-bubbles3 {
+	width: 36px;
+	height: 32px;
+	background-position: -156px -276px;
+}
+.icon-bubbles4 {
+	width: 36px;
+	height: 32px;
+	background-position: -208px -276px;
+}
+.icon-user {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -276px;
+}
+.icon-users {
+	width: 36px;
+	height: 32px;
+	background-position: -312px -276px;
+}
+.icon-user-plus {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -276px;
+}
+.icon-user-minus {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -276px;
+}
+.icon-user-check {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -276px;
+}
+.icon-spinner11 {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -276px;
+}
+.icon-search {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -276px;
+}
+.icon-enlarge {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -276px;
+}
+.icon-key {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -276px;
+}
+.icon-lock {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -276px;
+}
+.icon-unlocked {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -276px;
+}
+.icon-wrench {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -276px;
+}
+.icon-equalizer {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -276px;
+}
+.icon-equalizer2 {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -276px;
+}
+.icon-cog {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -276px;
+}
+.icon-cogs {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -328px;
+}
+.icon-magic-wand {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -328px;
+}
+.icon-aid-kit {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -328px;
+}
+.icon-bug {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -328px;
+}
+.icon-pie-chart {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -328px;
+}
+.icon-stats-dots {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -328px;
+}
+.icon-stats-bars {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -328px;
+}
+.icon-stats-bars2 {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -328px;
+}
+.icon-leaf {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -328px;
+}
+.icon-rocket {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -328px;
+}
+.icon-meter {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -328px;
+}
+.icon-fire {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -328px;
+}
+.icon-bin {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -328px;
+}
+.icon-briefcase {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -328px;
+}
+.icon-target {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -328px;
+}
+.icon-shield {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -328px;
+}
+.icon-power {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -328px;
+}
+.icon-switch {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -328px;
+}
+.icon-power-cord {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -328px;
+}
+.icon-clipboard {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -328px;
+}
+.icon-tree {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -380px;
+}
+.icon-menu {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -380px;
+}
+.icon-cloud {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -380px;
+}
+.icon-sphere {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -380px;
+}
+.icon-earth {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -380px;
+}
+.icon-link {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -380px;
+}
+.icon-flag {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -380px;
+}
+.icon-attachment {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -380px;
+}
+.icon-eye {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -380px;
+}
+.icon-bookmark {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -380px;
+}
+.icon-bookmarks {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -380px;
+}
+.icon-star-empty {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -380px;
+}
+.icon-star-full {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -380px;
+}
+.icon-point-right {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -380px;
+}
+.icon-warning {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -380px;
+}
+.icon-plus {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -380px;
+}
+.icon-minus {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -380px;
+}
+.icon-info {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -380px;
+}
+.icon-cancel-circle {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -380px;
+}
+.icon-blocked {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -380px;
+}
+.icon-cross {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -432px;
+}
+.icon-checkmark {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -432px;
+}
+.icon-enter {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -432px;
+}
+.icon-exit {
+	width: 32px;
+	height: 32px;
+	background-position: -156px -432px;
+}
+.icon-loop2 {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -432px;
+}
+.icon-circle-up {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -432px;
+}
+.icon-circle-right {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -432px;
+}
+.icon-circle-down {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -432px;
+}
+.icon-circle-left {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -432px;
+}
+.icon-sort-alpha-asc {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -432px;
+}
+.icon-sort-alpha-desc {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -432px;
+}
+.icon-sort-numeric-asc {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -432px;
+}
+.icon-sort-numberic-desc {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -432px;
+}
+.icon-sort-amount-asc {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -432px;
+}
+.icon-sort-amount-desc {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -432px;
+}
+.icon-checkbox-checked {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -432px;
+}
+.icon-make-group {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -432px;
+}
+.icon-scissors {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -432px;
+}
+.icon-filter {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -432px;
+}
+.icon-table2 {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -432px;
+}
+.icon-paragraph-justify {
+	width: 32px;
+	height: 32px;
+	background-position: 0 -484px;
+}
+.icon-share {
+	width: 32px;
+	height: 32px;
+	background-position: -52px -484px;
+}
+.icon-embed {
+	width: 32px;
+	height: 32px;
+	background-position: -104px -484px;
+}
+.icon-embed2 {
+	width: 40px;
+	height: 32px;
+	background-position: -156px -484px;
+}
+.icon-share2 {
+	width: 32px;
+	height: 32px;
+	background-position: -208px -484px;
+}
+.icon-google-plus2 {
+	width: 32px;
+	height: 32px;
+	background-position: -260px -484px;
+}
+.icon-facebook2 {
+	width: 32px;
+	height: 32px;
+	background-position: -312px -484px;
+}
+.icon-twitter {
+	width: 32px;
+	height: 32px;
+	background-position: -364px -484px;
+}
+.icon-feed2 {
+	width: 32px;
+	height: 32px;
+	background-position: -416px -484px;
+}
+.icon-feed3 {
+	width: 32px;
+	height: 32px;
+	background-position: -468px -484px;
+}
+.icon-youtube3 {
+	width: 32px;
+	height: 32px;
+	background-position: -520px -484px;
+}
+.icon-dropbox {
+	width: 32px;
+	height: 32px;
+	background-position: -572px -484px;
+}
+.icon-onedrive {
+	width: 32px;
+	height: 32px;
+	background-position: -624px -484px;
+}
+.icon-android {
+	width: 32px;
+	height: 32px;
+	background-position: -676px -484px;
+}
+.icon-paypal {
+	width: 32px;
+	height: 32px;
+	background-position: -728px -484px;
+}
+.icon-file-pdf {
+	width: 32px;
+	height: 32px;
+	background-position: -780px -484px;
+}
+.icon-file-openoffice {
+	width: 32px;
+	height: 32px;
+	background-position: -832px -484px;
+}
+.icon-file-word {
+	width: 32px;
+	height: 32px;
+	background-position: -884px -484px;
+}
+.icon-file-excel {
+	width: 32px;
+	height: 32px;
+	background-position: -936px -484px;
+}
+.icon-safari {
+	width: 32px;
+	height: 32px;
+	background-position: -988px -484px;
+}

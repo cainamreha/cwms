@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* Installationsseite */
+body.install div#mainContent > .cc-h1 {
+	height:3.875rem;
+	padding:0 0.625rem;
+	line-height:3.875rem;
+}
+body.install div#mainContent > .cc-h3 {
+	min-height: 1.875rem;
+	margin-top:0;
+}
+body.install h2 .cc-icons:before {
+	color:#fff;
+	-webkit-text-shadow:0 1px 0 #e60;
+	-moz-text-shadow:0 1px 0 #e60;
+	text-shadow:0 1px 0 #e60;
+}
+body.install div#changeLang {
+	height:1.875rem;
+	position:absolute;
+	top:0px;
+	right:-40px;
+}
+body.install div#changeLang:hover {
+	-webkit-box-shadow:0 0 0px 10px rgba(64,91,142,.1);
+	-moz-box-shadow:0 0 0px 10px rgba(64,91,142,.1);
+	box-shadow:0 0 0px 10px rgba(64,91,142,.1);
+}
+body.install div#changeLang ul li {
+	height:1.875rem;
+	line-height:1.875rem;
+	margin:0;
+	padding:0 10px 0;
+	background-color:#dce8f1;
+	border: 1px solid #d6d8dd;
+	vertical-align:middle;
+}
+body.install div#changeLang:hover ul li {
+	border: 1px solid #fff;
+}
+body.install div#changeLang ul li img {
+	margin-top:-3px;
+}

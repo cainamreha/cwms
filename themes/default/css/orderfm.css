@@ -1,0 +1,271 @@
+@charset "utf-8";
+/*
+orderfm.css
+*/
+
+/* Bestellformular */
+div#orderForm {
+	margin: 36px 0;
+	padding-top:36px;
+	padding-bottom:36px;
+}
+@media (min-width: 768px) {
+	div#orderForm {
+		min-width:592px;
+	}
+}
+div#orderForm div.center {
+	padding-bottom:0;
+}
+/* Fließschema */
+div.orderFlow {
+	font-size:0.5625rem;
+	text-align:center;
+	margin-bottom:36px;
+	position:relative;
+}
+div.orderFlow ol.orderFlowList {
+	width:100%;
+	margin:0;
+}
+div.orderFlow li {
+	font-size:1rem;
+	margin:0;
+	margin-top:9px;
+	padding:9px;
+	display:block;
+	float:left;
+}
+div.orderFlow li.active {
+	font-weight:bold;
+}
+div.orderFlow li.separator {
+	width:auto;
+	height:auto;
+	margin-top:0;
+	clear:none;
+}
+div.orderFlow li.separator span {
+	margin:3px 0;
+}
+
+/* Formulartabelle */
+div#orderForm table.orderDetails {
+	margin-bottom:18px;
+}
+div#orderForm table.orderDetails .alternate {
+	margin-bottom: 10px;
+}
+div#orderForm th {
+	text-align:left;
+	padding:2px 8px;
+	height:14px;
+	-moz-border-radius:0px;
+	-webkit-border-radius:0px;
+	border-radius:0px;
+}
+div#orderForm td.price {
+	text-align:right;
+}
+div#orderForm td.subTotal,
+div#orderForm td.shipping {
+	text-align:right;
+}
+div#orderForm tr.sum td.sum {
+	font-weight:bold;
+	text-align:right;
+}
+div#orderForm td.orderList {
+	width:2.5rem;
+}
+div#orderForm td.amount {
+	max-width:2.5rem;
+	text-align:right;
+}
+div#orderForm td img {
+	margin:0 2px;
+}
+/* Eingabefelder */
+div#orderForm select.shopItems {
+	min-width:384px;
+}
+div#orderForm textarea {
+	min-height:36px;
+}
+div#orderForm .itemLabel {
+	font-size:0.8675rem;
+}
+div#orderForm .itemAmountLabel {
+	font-size:0.75rem;
+	font-weight:normal;
+	text-align:left;
+}
+div#orderForm input.itemAmount {
+	text-align:right;
+	width:2.8125rem;
+	display:inline-block;
+}
+.ui-spinner-input {
+	width:1.875rem;
+	margin:0 1.25rem 0 0!important;
+}
+div#orderForm button.safeChanges,
+div#orderForm button.safeChanges:hover,
+div#orderForm button.deleteItem,
+div#orderForm button.deleteItem:hover {
+	margin:0 0 0 0.625rem;
+}
+span.addOrderEntry {
+	float:left;
+}
+p.addOrderEntry,
+p.resetCart {
+	margin:18px 0 0;
+	float:left;
+}
+p.resetCart,
+p.resetCart img {
+	float:right;
+}
+span.resetCart {
+	float:right;
+}
+p.cartTotal {
+	margin-top:18px;
+}
+p.cartTotal span.cartTotal {
+	font-weight:bold;
+	float:right;
+}
+span.edit.cart {
+	float:right;
+	cursor:pointer;
+}
+div.orderHint li {
+	list-style-type:disc;
+	list-style-position:outside;
+	margin-left:12px;
+}
+p.orderHint.alt {
+	margin:18px 0 36px!important;
+}
+#orderForm .notice.fill {
+	display:block;
+}
+
+/* Versandunternehmen */
+label.delivery1:after,
+label.delivery2:after,
+label.delivery3:after {
+	display:block;
+}
+label.delivery1:after {
+	content:url(../img/dhl.png);
+}
+label.delivery2:after {
+	content:url(../img/ups.png);
+}
+label.delivery3:after {
+	content:url(../img/hermes.png);
+}
+/* Shopinfo */
+ul.shopInfo li {
+	padding:0 9px;
+	display:inline-block;
+	float:left;
+}
+ul.shopInfo li:first-child {
+	padding-left:0;
+}
+ul.shopInfo li a:hover {
+	text-decoration:underline;
+}
+/* add to Cart Element */
+div.dataList div.addToCart,
+div.dataRelated div.addToCart,
+div.dataLatest div.addToCart {
+	display:block;
+	margin:0;
+	float:right;
+	position:absolute;
+	top:7px;
+	right:18px;
+}
+input.addToCart {
+	float:right;
+}
+input.inputAmount {
+	float:right;
+}
+div.dataList div.addToCart label,
+div.dataRelated div.addToCart label,
+div.dataLatest div.addToCart label {
+	text-align:right;
+	line-height:22px;
+	width:72px;
+}
+div#left div.addToCart label,
+div#right div.addToCart label {
+	display:block;
+	clear:right;
+}
+div.dataList div.addToCart label,
+div.dataRelated div.addToCart label,
+div.dataLatest div.addToCart label,
+div.dataList div.addToCart input.addToCart,
+div.dataRelated div.addToCart input.addToCart,
+div.dataLatest div.addToCart input.addToCart {
+	float:right;
+}
+div.dataDetail div.addToCart {
+	width:234px;
+	margin-bottom:36px;
+	padding:17px;
+	float:left;
+	position:relative;
+}
+div.dataDetail .dataCategory div.addToCart {
+	width:162px;
+	padding:0;
+	background-color:transparent;
+	background:none;
+	filter:none;
+	border:none;
+	position:absolute;
+	right:18px;
+	top:9px;
+}
+div.dataDetail .dataCategory div.addToCart span.mwst,
+div.dataDetail .dataCategory div.addToCart span.shipping {
+	display:none;
+}
+div.dataDetail div.addToCart label {
+	text-align:left;
+	line-height:18px;
+	width:auto;
+	display:inline-block;
+	float:left;
+}
+div.dataDetail .dataCategory div.addToCart label {
+	width:92px;
+}
+div.dataDetail div.addToCart label span.price {
+	font-size:0.75rem;
+	font-weight:bold;
+	margin-bottom:18px;
+	display:inline-block;
+}
+span.mwst,
+span.shipping {
+	font-size:0.5625rem;
+	width:72px;
+}
+div.dataDetail div.addToCart label span.shipping a,
+div#orderForm p.cartTotal span.mwst a {
+	font-size:0.5625rem;
+}
+/* Einkaufswagen */
+div.cart {
+	text-align:center;
+	min-width:216px;
+}

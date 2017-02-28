@@ -1,0 +1,56 @@
+ul.thumbnails.image_picker_selector {
+	overflow: auto;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	padding: 20px 0 0;
+	margin: 20px 0 0;
+	border-top: 1px dashed #cfdbed;
+	clear:both;
+	display:none;
+}
+ul.thumbnails.image_picker_selector ul {
+	overflow: auto;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+}
+ul.thumbnails.image_picker_selector li.group_title {
+	float: none;
+}
+ul.thumbnails.image_picker_selector li {
+	text-align:center;
+	margin:0px;
+	padding:0.5625rem;
+	background:none;
+	border:none;
+	float:left;
+}
+ul.thumbnails.image_picker_selector li .thumbnail {
+	padding:0.5625rem;
+	background:#FAFCFF;
+	border: 1px solid #DCE8F1;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+ul.thumbnails.image_picker_selector li .thumbnail img {
+	-webkit-user-drag: none;
+}
+ul.thumbnails.image_picker_selector li .thumbnail p {
+	padding:0 5px;
+	background: #DCE8F1;
+}
+ul.thumbnails.image_picker_selector li:hover .thumbnail {
+	background: #FFFACC;
+	cursor:pointer;
+}
+ul.thumbnails.image_picker_selector li.selected .thumbnail {
+	background: #E1FFE1;
+	cursor:default;
+}

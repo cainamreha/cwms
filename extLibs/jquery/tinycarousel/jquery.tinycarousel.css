@@ -1,0 +1,9 @@
+.tinycarousel {  height: 1%; overflow:hidden; padding: 0; }
+.tinycarousel .viewport { width: 978px; height: 180px; margin:0 auto; overflow: hidden; position: relative; top:0; z-index:9990; }
+.tinycarousel .buttons { text-indent:-9999px; width:22px; height:40px; display: block; position: absolute; top:50%; left:50%; margin-top:-20px; margin-left:-513px; z-index:9980; background:url('./img/prev.png') no-repeat; }
+.tinycarousel .next { margin-left:490px; background:url('./img/next.png') no-repeat; }
+.tinycarousel .close { width:40px; height:22px; top:262px; margin-left:0; background:url('./img/close.png') no-repeat; }
+.tinycarousel .disable { visibility: hidden; }
+.tinycarousel .overview { text-align:center; list-style: none; width: 100%; height: 144px; position: relative; padding: 0; margin: 0; left: 0; top: 0; }
+.tinycarousel .overview li { float: left; margin: 0; padding: 0; width:160px; height: 144px; display:block; position:relative; }
+.tinycarousel .overview li img { width: 140px; margin: 0 auto; padding: 0; height: auto; }

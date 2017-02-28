@@ -1,0 +1,149 @@
+@charset "utf-8";
+/*
+forms.css
+*/
+
+/* Formulare */
+form.autoForm {
+}
+form.autoForm .automaticForm-field {
+	position:relative;
+}
+
+/* formFlow */
+div.formFlow {
+	font-size:9px;
+	text-align:center;
+	margin-bottom:36px;
+	position:relative;
+}
+div.formFlow ol.formFlowList {
+	max-width:100%;
+	margin:0 auto;
+}
+div.formFlow li {
+	font-size:16px;
+	margin:0;
+	margin-top:9px;
+	padding:9px;
+	display:block;
+	float:left;
+}
+div.formFlow li.active {
+	font-weight:bold;
+}
+div.formFlow li.separator {
+	width:auto;
+	height:auto;
+	margin-top:0;
+	clear:none;
+}
+div.formFlow li.separator span {
+	margin:3px 0;
+}
+
+ul.subList,
+ul.subList li {
+	margin:0;
+}
+ul.subList li,
+ul.subList li label {
+	display:inline-block;
+}
+ul.subList li label {
+	margin:0 20px 0 5px;
+}
+
+/* Formulardaten */
+div.formData {
+	width:auto;
+	max-width:100%;
+	margin-top:18px;
+	position:relative;
+}
+table.formData {
+	width:100%;
+	position:relative;
+	border-collapse:separate;
+}
+div.sortBox,
+div.sortBox div {
+	margin-right:20px;
+	float:left;
+}
+div.limitBox {
+	float:right;
+}
+div.limitBox select {
+	min-width:75px;
+}
+input.delAll {
+	width:20px;
+	height:20px;
+	position:absolute;
+	right:10px;
+}
+table.formData td.formData img {
+	max-width:80px;
+	max-height:80px;
+}
+img.editFormData {
+	width:20px;
+	height:20px;
+	vertical-align:middle;
+}
+
+/* Datepicker */
+.ui-datepicker-trigger {
+	position:absolute;
+	right:9px;
+	top:9px;
+	top:2.25rem;
+}
+
+/* Poll */
+div.pollData h3:before {
+	content:"";
+	width:20px;
+	height:20px;
+	margin-top:3px;
+	margin-left:-27px;
+	display:inline-block;
+	position:relative;
+	float:left;
+	background:url(../img/sprite.png) no-repeat;
+	background-position:-60px -116px;
+}
+div.pollData td.resultField {
+	text-align:right;
+}
+div.pollData td.chartField {
+	position:relative;
+	width:270px;
+}
+div.pollData .pollPercentage {
+	min-width:54px;
+	display:inline-block;
+}
+div.pollData .chartBar,
+div.pollData .pollMeter {
+	display:block;
+}
+div.pollData .chartBar {
+	position:relative;
+	width:100%;
+	background-color:#FAF6CE;
+}
+div.pollData .pollMeter {
+	background-color:#444444;
+}
+div.pollData img.maxPollIcon {
+	margin:-3px 9px 0 0;
+}
+div.pollData tbody tr:last-child td {
+	padding-bottom:18px;	
+}
+div.pollData tfoot td {
+	padding:17px 9px 36px;	
+	border-top:1px dotted #FAF6CE;
+}

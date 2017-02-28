@@ -1,0 +1,97 @@
+/* Simple fader gallery */
+div.slideshow {
+	width:100%;
+	position:relative;
+	overflow:hidden;
+}
+.section-fullscreen div.slidewhow {
+	height:100vh;	
+}
+.section-halfscreen div.slidewhow {
+	height:50vh;	
+}
+div.slideshow .cc-gallery-item {
+	text-align:center;
+	width:100%;
+	height:auto;
+	position:absolute;
+	top:0;
+	left:0;
+	float:left;
+	display:block;
+	z-index:0;
+	-webkit-transition:height linear .5s;
+	transition:height linear .5s;
+}
+div.slideshow .cc-gallery-item:first-child {
+	position:relative;
+	z-index:1;
+}
+div.slideshow img {
+	max-width:100%;
+	height:auto;
+	margin:0 auto;
+	position:relative;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition:transform linear 9s;
+	transition:transform linear 9s;
+	-webkit-transform:scale(1);
+	transform:scale(1);
+}
+.section-fullscreen div.slideshow img,
+.container-full-width div.slideshow img {
+	width:100%;
+}
+div.slideshow .active {
+	position:relative;
+}
+div.slideshow .active img {
+	-webkit-transform:scale(1.05);
+	transform:scale(1.05);
+}
+div.slideshow .cc-slider-caption {
+	position:absolute;
+	top:50%;
+	left:50%;
+	visibility:hidden;
+	opacity:0;
+	transform:translate(-50%,-50%);
+	-webkit-transform:translate(-50%,-50%);
+	-webkit-transition:all ease-in-out 1s;
+	transition:all ease-in-out 1s;
+}
+div.slideshow .active .cc-slider-caption {
+	visibility:visible;
+	opacity:1;
+}
+@media (max-width: 768px) {
+	div.slideshow .active .cc-slider-caption {
+		width:100%;
+	}
+}
+div.slideshow .caption-title,
+div.slideshow .caption-text,
+div.slideshow .caption-link {
+	transform:translateX(100%);
+	-webkit-transition:all ease-in-out 1s;
+	transition:all ease-in-out 1s;
+}
+div.slideshow .caption-title {
+	transform:translateX(-100%);
+}
+div.slideshow .caption-text {
+	transform:translateX(100%);
+}
+div.slideshow .caption-link {
+	transform:translateY(100%);
+}
+div.slideshow .active .caption-title {
+	transform:translateX(0%);
+}
+div.slideshow .active .caption-text {
+	transform:translateX(0%);
+}
+div.slideshow .active .caption-link {
+	transform:translateY(0%);
+}

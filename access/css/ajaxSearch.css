@@ -1,0 +1,136 @@
+@charset "utf-8";
+/* Site search */
+div#search {
+	margin-top:36px;
+}
+div#newSearch {
+	position:relative;
+}
+div#newSearch label {
+	margin-right:10px;
+}
+div#newSearch input.searchPhrase {
+	min-width:250px;
+}
+@media (min-width: 768px) {
+	div#header .input-group {
+		max-width:250px;
+		max-width:15rem;
+	}
+}
+.searchNote a { /* Style für neue Suche-Link */
+	width:auto;
+	float:right;
+	margin-top:0;
+} 
+.searchNote a:hover { /* Style für neue Suche-Link */
+	text-decoration: underline;
+} 
+.searchNote span.newSearch {
+	width:14px;
+	margin-left:9px;
+	background-position:0px -113px;
+} 
+input#submitNewSearch {
+	height:36px!important;
+	margin:0 0 0 18px!important;
+	float:left;
+}
+div#refineSearch {
+	margin:0px 0 0 0;
+	position:relative;
+}
+div#refinedSearch {
+	width:auto;
+	display:none;
+}
+div#refinedSearch label,
+div#refinedSearch input.searchTable {
+	display:block;
+	float:left;
+}
+div#refinedSearch label[for] {
+	margin-right:20px;
+}
+p.searchNote {
+	margin-bottom:36px!important;
+}
+div#searchResults.emptySearchRes {
+	width:100%;
+	padding:0;
+	position:absolute;
+	top:0;
+	z-index:9000;
+}
+ol.searchRes {
+	list-style-type:disc;
+	list-style-position:outside;
+	margin:0;
+	padding:0 0 9px!important;
+	border-top:1px dotted #DFCD41;
+}
+ol.searchRes li {
+	padding:8px 0;
+	border-bottom:1px dotted #DFCD41;
+	list-style-type:none;
+}
+ol.searchRes li span.searchResIcon {
+	width:18px;
+	height:18px;
+	margin:6px 9px 0 0;
+	float:left;
+}
+ol.searchRes li h2 {
+	margin:0 0 10px;
+	clear:none;
+}
+ol.searchRes li .searchTable {
+	font-size:12px;
+	font-size:0.75rem;
+	font-style:italic;
+	float:right;
+}
+ol.searchRes li span.webpage {
+	background-position:0 -60px;
+}
+ol.searchRes li span.articles {
+	background-position:-30px -60px;
+}
+ol.searchRes li span.news {
+	background-position:-90px -60px;
+}
+ol.searchRes li span.planner {
+	background-position:-120px -60px;
+}
+ol.searchRes + div.pageNav {
+	margin-top:40px;
+}
+ol.searchRes + div.pageNav p.pageNr {
+	display:none;
+}
+/* Ajax Search terms */
+ul#searchTerms {
+	min-width:168px;
+	padding:9px 0;
+	position:absolute;
+	top:100%;
+	z-index:9000;
+}
+div#mainContent p.searchNotice {
+	min-width:180px;
+	margin:0;
+}
+div#mainContent ul#searchTerms {
+	display:block;
+}
+ul#searchTerms li a {
+	text-align:left;
+	padding:0 9px;
+	display:block;
+}
+ul#searchTerms li,
+ul#searchTerms li a {
+	-moz-border-radius:0!important;
+	-webkit-border-radius:0!important;
+	border-radius:0!important;
+}

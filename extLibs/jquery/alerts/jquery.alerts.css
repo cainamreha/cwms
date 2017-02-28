@@ -1,0 +1,95 @@
+/* jAlert css */
+#popup_container {
+	max-width:360px;
+	padding:0.625rem;
+	background-color:#fafcff;
+	border:15px solid rgba(111,132,170,.75);
+	outline: 1px solid rgba(255,255,255,.5);
+	box-shadow:0 6px 9px #333366;
+	background-clip:padding-box;
+}
+.ui-dialog-titlebar {
+	color:#fff;
+	font-size:0.625rem;
+	font-weight: bold;
+	margin:-0.625rem -0.625rem 0.625rem;
+	padding:0.3125rem 0.625rem;
+	background:#6f84aa;
+	border:1px solid #57709C;
+}
+#popup_message {
+	color:#336;
+	min-width:280px;
+	height:auto;
+	max-height:450px;
+	padding-right:20px;
+	padding-left:60px;
+}
+@media (min-width: 768px) {
+	#popup_container {
+		max-width:35rem;
+	}
+	#popup_message {
+		min-width:360px;
+	}	
+}
+
+#popup_panel {
+	text-align: center;
+	margin:50px 0 0!important;
+	min-height:25px;
+	padding:9px 19px!important;
+	background: #e1ffe1!important;
+	border: 1px solid #d6d8dd!important;
+	display: block;
+}
+
+#popup_panel .button {
+	min-width:75px;
+}
+	
+#popup_content {
+	margin:0;
+	padding:30px 0 0;
+}
+#popup_content:before {
+	content:url(../img/newssmall.png);
+	margin:-7px 0 0 20px;
+	display:block;
+	position:absolute;
+}
+#popup_content.alert:before {
+	content: url(../img/news.png);
+}
+#popup_content.confirm:before {
+	content:url(../img/confirm.png);
+}
+#popup_content.prompt:before {
+	content: url(../img/help.png);
+}
+
+#popup_content.confirm .change {
+	float:left;
+}
+
+#popup_content.confirm .cancel {
+	float:right;
+}
+
+#popup_prompt {
+	margin: .5em 0em;
+}
+.prompt #popup_panel .button {
+	float:left;
+}
+.prompt #popup_panel .button + .button {
+	float:right;
+}
+
+#popup_overlay {
+	background:#6f84aa!important;
+	filter:alpha(opacity=15)!important;
+	-moz-opacity:0.15!important;
+	-khtml-opacity: 0.15!important;
+	opacity: 0.15!important;
+}

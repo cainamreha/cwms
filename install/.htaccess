@@ -1,0 +1,3 @@
+<FilesMatch "^install\.(php|sql)">
+deny from all
+</FilesMatch>

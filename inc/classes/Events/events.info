@@ -1,0 +1,58 @@
+##############
+### events ###
+##############
+
+###
+### "global" scope
+###
+global.add_head_code
+global.register_head_files
+
+###
+### "fe" scope
+###
+global.add_head_code_fe
+global.register_head_files_fe
+global.extend_styles_fe
+global.extend_element_fe
+
+###
+### "admin" scope
+###
+global.register_head_files
+global.get_rightbar_contents
+
+###
+### "user" scope
+###
+auth.extend_log_form
+auth.check_user_auth
+
+###
+### "form" scope
+###
+form.create_form_field
+form.check_form_field
+form.check_field_types
+form.build_data_array
+form.get_extra_data
+###
+pdf.make_pdf
+
+###
+### "data" scope
+###
+cat.eval_cat_post
+cat.make_cat_dbstring
+cat.reset_cat_attributes
+cat.get_cat_fields
+cat.get_goeditcat_fields
+###
+data.eval_data_post
+data.eval_newdata_post
+data.get_data_attributes
+data.get_data_listattribute
+data.get_data_fields
+data.get_newdata_fields
+data.get_dataheader_fields
+data.get_dataheader_listfields

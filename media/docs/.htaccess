@@ -1,0 +1,6 @@
+<IfModule mod_headers.c>
+<FilesMatch "\.(?i:pdf|?i:doc|?i:docx|?i:zip)$">
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</FilesMatch>
+</IfModule>

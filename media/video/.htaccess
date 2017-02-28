@@ -1,0 +1,11 @@
+AddType video/mp4 .mp4 .f4v
+AddType video/x-m4v .m4v
+AddType video/x-flv .flv
+AddType video/ogg .ogv
+AddType video/webm .webm
+AddType video/mpeg .mpeg .mpg .mpe
+AddType application/x-msmetafile/mpeg .wmf
+AddType video/x-msvideo .avi
+AddType video/quicktime .mov .qt
+AddType audio/x-pn-realaudio .ra .ram
+AddType application/x-shockwave-flash .swf .cab

@@ -1,0 +1,314 @@
+@charset "utf-8";
+/*! normalize.css adapted from */
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+html {
+	font-family: sans-serif;
+	font-size:100%;
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+    -ms-text-size-adjust:100%;
+    -webkit-text-size-adjust:100%;
+}
+* html #container {
+	height:100%;
+}
+body  {
+	width:100%;
+	height:100%;
+	min-height:100%;
+	margin:0;
+	padding:0;
+}
+* {
+	margin:0;
+	padding:0;
+}	
+a:link,
+a:visited,
+a:hover,
+a:active {
+	text-decoration:none;
+}
+img,
+a img {
+	vertical-align:middle;
+	border:none;
+}
+ol,
+ul {
+	list-style-type:none;
+}
+table {
+	width:100%;
+} 
+table,
+table * {
+	border-collapse:collapse;
+} 
+table .alternate {
+	background-color:#FAFAFA;
+}
+
+label[for] {
+	cursor:pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+	vertical-align:middle;
+	padding:0;
+}
+abbr,
+acronym {
+	cursor:help;
+}
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+
+/* header */
+div#header {
+	position:relative;
+}
+
+/* left (linke Sidebar) */
+div#left {
+	position:relative;
+}
+
+/* right (rechte Sidebar) */
+div#right {
+	position:relative;
+}
+
+/* mainContent */
+div#mainContent {
+	position:relative;
+} 
+
+/* footer */
+div#footer {
+	position:relative;
+}
+
+/* versteckte Felder */
+a#logPotentialBot,
+form .emptyfield {
+	visibility:hidden;
+	position:absolute;
+	left:-5000px;
+}
+
+/* Opacity */
+.opacity25 {
+	filter:alpha(opacity=25);
+	-moz-opacity:0.25;
+	-khtml-opacity:0.25;
+	opacity:0.25;
+}
+.opacity50 {
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5;
+	opacity:0.5;
+}
+.opacity75 {
+	filter:alpha(opacity=75);
+	-moz-opacity:0.75;
+	-khtml-opacity:0.75;
+	opacity:0.75;
+}
+.opacity90 {
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	-khtml-opacity:0.9;
+	opacity:0.9;
+}
+
+.hide {
+	display:none;
+}
+
+/* float-Styles */
+.left {
+	float:left;
+}
+.right {
+	float:right;
+}
+
+/* clear-Styles */
+.clear {
+	clear:both;
+}
+.clear-left {
+	clear:left;
+}
+.clear-right {
+	clear:right;
+}
+.clearfloat {
+	clear:both;
+    height:0;
+    font-size:1px;
+    line-height:0;
+}
+.clearfix {
+	display:inline-block; /* for IE/Mac */
+} 
+.clearfix:after {
+	content:".";
+	clear:both;
+	line-height:0;
+	height:0;
+	display:block;
+	visibility:hidden;
+}
+html[xmlns] .clearfix {
+	display:block;
+}
+* html .clearfix {
+	height:1%;
+}

@@ -1,0 +1,101 @@
+@charset "utf-8";
+/*
+layout_print.css
+*/
+
+/* body */
+body {
+	color: #000000;
+}
+
+/* Boxschatten */
+* {
+	-webkit-box-shadow:none!important;
+	-moz-box-shadow:none!important;
+	box-shadow:none!important;
+}
+
+/* Boxen */
+div#topHeader,
+div#topBox,
+div#headerBox,
+div#centerBox,
+div.titleTagBox {
+	display:none!important;
+}
+
+/* header */
+div#header {
+	display:none!important;
+}
+
+/* Site search */
+div#search {
+	display:none!important;
+} 
+
+/* account Menü bei Benutzereinwahl */
+#accountMenu {
+	display:none!important;
+} 
+
+/* fontSize */
+ul#fontSize li {
+	display:none!important;
+}
+
+/* Sprachauswahl */
+div#changeLang {
+	display:none!important;
+}
+
+/* Einkaufswagen */
+div.cart {
+	display:none!important;
+}
+
+/* Hauptmenue */
+ul#main_menu {
+	display:none!important;
+}
+
+/* linke Sidebar */
+div#left { 
+	display:none!important;
+}
+
+/* rechte Sidebar */
+div#right { 
+	display:none!important;
+}
+
+/* mainContent */
+/* mainContent */
+div#contentBox,
+div#mainContent {
+	width:auto!important;
+	border:none!important;
+	margin:0!important;
+	padding:0!important;
+	float:none!important;
+}
+
+/* up-Link */
+div#mainContent p.print,
+div#mainContent p.up,
+div#mainContent p.up a:after {
+	display:none!important;
+}
+
+/* AdminLinks */
+div.feEdit,
+div.phMode,
+div.selTheme,
+div.adminNotice {
+	display:none!important;
+}
+
+/* Footer */
+div#footer {
+	display:none!important;
+}

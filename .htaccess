@@ -1,0 +1,130 @@
+AddDefaultCharset utf-8
+AddType text/css .css
+AddType image/x-icon .ico
+
+# Protect root files
+<FilesMatch "(.htaccess|readme.md|license.txt)">
+Order Allow,Deny
+Deny from all
+Satisfy all
+</FilesMatch>
+
+RewriteEngine On
+Options +FollowSymlinks
+RewriteBase /
+
+# File compression
+<IfModule mod_deflate.c>
+<FilesMatch "\\.(php|ini|js|css|html?|xml|tpl|svg|ttf)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>
+
+# Umleitung ohne www
+#RewriteCond %{HTTP_HOST} ^domain\.de [NC]
+#RewriteRule ^(.*) http://www.domain.de/$1 [R=301,L]
+
+# Unwillkommene User Agents blocken
+RewriteCond %{HTTP_USER_AGENT} Java.* [OR]
+RewriteCond %{HTTP_USER_AGENT} TrackBack/1.02
+RewriteRule ^/(.*)$ /$1 [F,L]
+
+# Suchmaschinen-Dateien ausschliessen
+RewriteRule ^googleb0595663a0b3d011\.html$ googleb0595663a0b3d011.html [L]
+RewriteRule ^y_key_cc5fa98eded15706\.html$ y_key_cc5fa98eded15706.html [L]
+
+# Umleitung falls Website nicht im Livebetrieb
+RewriteRule ^_index\.html$ access/_index.php?page=_index [QSA,L]
+RewriteRule ^_login(\.html)?$ access/_login.php?page=_login [QSA,L]
+RewriteRule ^access/_login(\.html)?$ access/_login.php?page=_login [QSA,L]
+
+# Seite zum Filtern des Trackings durch Google-Analytics ausschliessen
+RewriteRule ^_filter-tracking\.html$ access/filter-tracking.php [L]
+
+# Erster Aufruf der Domain
+RewriteRule ^$ index.php?page=_index [QSA,L]
+
+# Erster Aufruf der Domain per index.html
+RewriteRule ^index\.html$ index.php?page=_index [QSA,L]
+
+# Aufruf der Installationsseite
+RewriteRule ^install(/)?$ install.html [QSA,L]
+RewriteRule ^install\.html$ index.php?page=_install [QSA,L]
+
+# Aufruf des checkLogin-Seite
+RewriteRule ^_checkLogin\.html$ access/checkLogin.php [QSA,L]
+
+# Aufruf des checkLoginStatus-Seite
+RewriteRule ^_checkLoginStatus\.html$ access/checkLoginStatus.php [QSA,L]
+
+# Style-Dateien
+RewriteRule ^styles\.css$ access/combineHeadFiles.php [QSA,L]
+
+# Script-Dateien
+RewriteRule ^scripts\.js$ access/combineHeadFiles.php [QSA,L]
+
+# Aufruf von Dokument- bzw. Mediendateien
+RewriteRule ^(([0-9a-zA-Z_/%-]*)/)?_(doc|file)-(.*)$ access/getDownload.php?file=$4 [QSA,L]
+
+# Aufruf von Dateien im Userordner (benutzerspezifische Dateien, geschützt)
+RewriteRule ^_user/(.*)$ access/getUserdata.php?userfile=$1 [QSA,L]
+
+# Aufruf von DB-Backup-Dateien im Ordner backup
+RewriteRule ^_backup/(.*)$ access/getDownload.php?bkpfile=$1 [QSA,L]
+
+# Aufruf von Newsfeeds
+RewriteRule ^_feed\.html$ access/getFeed.php [QSA,L]
+
+# Aufruf des logBot-Links
+RewriteCond %{QUERY_STRING} ^log=1 [NC]
+RewriteRule ^_logbot\.html$ access/logBot.php [L]
+
+# Aufruf von Crontab
+RewriteRule ^_?cron\.php$ access/doCron.php [L]
+
+
+# Aufruf von Modulseiten
+#
+# einzelner Datensatz
+#
+# Articles (mit/ohne Cat)
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})a([0-9]{1,})(\.html)?$ index.php?page=$1&mod=articles&cn=$2&dn=$3&cid=$4&id=$5 [QSA,L]
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})a([0-9]{1,})(\.html)?$ index.php?page=$1&mod=articles&dn=$2&cid=$3&id=$4 [QSA,L]
+#
+# News
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})n([0-9]{1,})(\.html)?$ index.php?page=$1&mod=news&cn=$2&dn=$3&cid=$4&id=$5 [QSA,L]
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})n([0-9]{1,})(\.html)?$ index.php?page=$1&mod=news&dn=$2&cid=$3&id=$4 [QSA,L]
+#
+# Planner
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})p([0-9]{1,})(\.html)?$ index.php?page=$1&mod=planner&cn=$2&dn=$3&cid=$4&id=$5 [QSA,L]
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})p([0-9]{1,})(\.html)?$ index.php?page=$1&mod=planner&dn=$2&cid=$3&id=$4 [QSA,L]
+#
+# Redirect permanent (alte Daten-Url)
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([anp]{1})([0-9]{1,})/([0-9a-zA-Z_/%-]*)?/?[i]([0-9]{1,})/([0-9a-zA-Z_/%-]*)(\.html)?$ $1/$4$6-$3$2$5$7 [R=301,L]
+#
+#
+# Kategorien
+#
+# Articles
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})a(\.html)?$ index.php?page=$1&mod=articles&cn=$2&cid=$3 [QSA,L]
+#
+# News
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})n(\.html)?$ index.php?page=$1&mod=news&cn=$2&cid=$3 [QSA,L]
+#
+# Planner
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([0-9a-zA-Z_%-]*)-([0-9]{1,})p(\.html)?$ index.php?page=$1&mod=planner&cn=$2&cid=$3 [QSA,L]
+#
+# Redirect permanent (alte Datenkategorie-Url)
+RewriteRule ^([0-9a-zA-Z_/%-]*)/([anp]{1})([0-9]{1,})/([0-9a-zA-Z_/%-]*)(\.html)?$ $1/$4-$3$2$5 [R=301,L]
+
+
+# Andere Seitenaufrufe
+RewriteRule ^([0-9a-zA-Z_/%-]*)(\.html)?$ index.php?page=$1 [QSA,L]
+
+
+# Eigene Fehlerseiten
+ErrorDocument 401 /error.html?sc=401
+ErrorDocument 403 /error.html?sc=403
+ErrorDocument 404 /error.html?sc=404
+ErrorDocument 408 /error.html?sc=408
+ErrorDocument 500 /error.html?sc=500

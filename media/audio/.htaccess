@@ -1,0 +1,12 @@
+AddType audio/mpeg .mp3
+AddType audio/mp4 .m4a
+AddType application/ogg .ogg
+AddType audio/ogg .oga
+AddType audio/x-pn-realaudio .ra .ram
+
+<IfModule mod_headers.c>
+<FilesMatch "\.(?i:mp3)$">
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</FilesMatch>
+</IfModule>

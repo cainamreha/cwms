@@ -1,0 +1,32 @@
+<?php
+$this->placeHolders	= array(':)',
+							';)',
+							':D',
+							':P',
+							':(',
+							';p',
+							('(00)'),
+							('x:!'),
+							(':x'),
+							'\m/',
+							'!D',
+							'd..b',
+							'o0o',
+							('=(')
+							);
+$this->emoFiles		= array(
+							array('smile.gif',15,15),
+							array('prick.gif',15,15),
+							array('grins.gif',15,15),
+							array('tongue.gif',15,15),
+							array('frown.gif',15,15),
+							array('wink.gif',25,15),
+							array('cool.gif',15,15),
+							array('devil.gif',15,20),
+							array('evil.gif',15,15),
+							array('pommes.gif',26,28),
+							array('lala.gif',23,20),
+							array('lala.png',26,26),
+							array('pumpkin.gif',23,19),
+							array('freu.gif',25,27)
+							);

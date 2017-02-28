@@ -1,0 +1,25 @@
+.mce-grid-iconpicker .icons:hover {
+	cursor:pointer;
+	background-color:#CDDEEB;
+}
+.mce-grid-iconpicker td span {
+	font:1.25em 'icomoon'!important;
+	text-align:center!important;
+	padding:5px!important;
+	display:inline-block!important;
+}
+.mce-edit-focus .cc-iconcontainer {
+	cursor:default;
+}
+.cc-iconcontainer[data-mce-selected] {
+	outline:1px dotted #000;
+}
+.icon-selection-fill {
+	font-size:0px!important;
+	width:0!important;
+	height:0!important;
+	line-height:0!important;
+}
+.icon-selection-fill ~ [role="icon"] {
+	display:inline-block!important;
+}

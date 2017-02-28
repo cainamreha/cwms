@@ -1,0 +1,10 @@
+.cp-color-picker {
+	border: 1px solid #999;
+	padding: 8px;
+	box-shadow: 5px 5px 16px rgba(0,0,0,0.4);
+	background: #336;
+	overflow: visible;
+	border-radius: 3px;
+	margin: 5px 0 0;
+	z-index:9990;
+}
