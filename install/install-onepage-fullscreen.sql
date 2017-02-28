@@ -541,9 +541,9 @@ CREATE TABLE IF NOT EXISTS `cc_forms` (
   `title_de` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `foreign_key` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `notice_success_de` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `notice_error_de` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `notice_field_de` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `notice_success_de` text COLLATE utf8_unicode_ci NULL,
+  `notice_error_de` text COLLATE utf8_unicode_ci NULL,
+  `notice_field_de` text COLLATE utf8_unicode_ci NULL,
   `captcha` tinyint(1) NOT NULL,
   `https` tinyint(1) NOT NULL,
   `poll` tinyint(1) NOT NULL,
@@ -551,7 +551,7 @@ CREATE TABLE IF NOT EXISTS `cc_forms` (
   `end_date` datetime DEFAULT NULL,
   `add_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `add_fields` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `add_labels_de` varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
+  `add_labels_de` text COLLATE utf8_unicode_ci NULL,
   `add_position` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
