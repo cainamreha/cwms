@@ -8,7 +8,7 @@
 #--- CONCISE WMS ---#
 #-------------------#
 	
-define('CWMS_VERSION',"2.8.2");						// Concise WMS-Version
+define('CWMS_VERSION',"2.8.3");						// Concise WMS-Version
 define('CWMS_ACCESS',true);							// Überprüfung auf Direktaufruf von Skripten
 
 
@@ -63,7 +63,7 @@ $adminLangs = array	("de" => "Deutsch",
 #---------------------------#
 
 define('ADMIN_THEME',"icomoon");					// Theme für Adminbereich
-define('ADMIN_SKIN',"");							// Theme Skin für Adminbereich
+define('ADMIN_SKIN',"default");						// Theme Skin für Adminbereich
 define('ADMIN_HTTPS_PROTOCOL',false);				// Https-Protokol für Systemseiten
 define('DEBUG',true);								// DEBUG-MODUS (wenn true, wird die Debug-Konsole angezeigt)
 define('CC_CRYPT_KEY',"cc-newmcrypt-key");			// Schlüssel für die Verschlüsselung mit Klasse "myCrypt"
@@ -75,6 +75,7 @@ define('CC_UPDATE_CHECK',true);						// Update check aktivieren (true)
 #--- SEITENEINSTELLUNGEN ---#
 #---------------------------#
 
+define('HTTPS_PROTOCOL',!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!="off");	// Protokoll der Verbindung (HTTP oder HTTPS, falls true)
 define('WEBSITE_LIVE',true);						// Website im production mode, falls true
 define('PAGE_EXT',".html");							// Webpage-Extension
 define('CC_USE_FULL_PAGEURL',false);				// Volle oder reduzierte Page Urls (path depth)
@@ -112,10 +113,8 @@ define('SYSTEM_DOC_ROOT',PROJECT_DOC_ROOT . '/system'); // Systempfad
 // Projektname
 $project = str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace("\\", "/",$docPath));
 
-// Protokoll der Verbindung (HTTP oder HTTPS)
-(!isset($_SERVER['HTTPS']) OR $_SERVER['HTTPS']=='off') ? $protocol = 'http://' : $protocol = 'https://';
-//Projekt-URL (für die Verwendung im Web)
-define('PROJECT_HTTP_ROOT',$protocol.$_SERVER['HTTP_HOST'].$project);
+// Projekt-URL (für die Verwendung im Web)
+define('PROJECT_HTTP_ROOT',(HTTPS_PROTOCOL ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$project);
 
 // Admin- und System-Pfade
 if(ADMIN_HTTPS_PROTOCOL)
@@ -279,6 +278,7 @@ define('MAX_IMG_SIZE',2440);						// max. Bildbreite/-höhe
 define('THUMB_SIZE',270);							// Höhe von Thumbnails
 define('SMALL_IMG_SIZE',768);						// Breite von small images
 define('MEDIUM_IMG_SIZE',1280);						// Breite von medium images
+define('LARGE_IMG_SIZE',1400);						// Breite von large images
 
 define('DEF_PLAYER_WIDTH',240);						// Audio-Playerbreite
 
