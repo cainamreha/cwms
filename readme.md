@@ -1,6 +1,4 @@
-#-------------------
-#--- CONCISE WMS ---
-#-------------------
+#CONCISE WMS
 
 
 ##Installation
