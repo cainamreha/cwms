@@ -1,6 +1,10 @@
 #CONCISE WMS
 
 
+##Overview
+
+Simple and concise website content management system
+
 ##Installation
 
 Zunächst alle Verzeichnisse und Dateien in das Rootverzeichnis auf den Webserver Kopieren bzw. die Zip Datei dort durch Aufrufen von "unzip.php" entpacken.
