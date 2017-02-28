@@ -16,7 +16,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	private $tableNewsl			= "newsletter";
 	private $newslID			= "";
 	private $newslArchive		= array();
-	private $newslGroup			= "";
+	private $newslGroup			= array("<all>");
 	private $newslGroupStr		= "";
 	private $onlySubscribers	= 1;
 	private $extraUsers			= array();
@@ -95,8 +95,8 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:adminnewsl}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminnewsl}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 											
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -108,11 +108,18 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		$this->hint				= $this->getSessionNotifications("hint");
 
 
-		if((isset($GLOBALS['_POST']['list_newsl']) || isset($GLOBALS['_POST']['add_new'])) && isset($this->g_Session['newsl_id']))
+		if((isset($GLOBALS['_POST']['list_newsl'])
+			|| isset($GLOBALS['_GET']['list_newsl'])
+			|| isset($GLOBALS['_POST']['add_new'])
+			|| isset($GLOBALS['_GET']['add_new']))
+		&& isset($this->g_Session['newsl_id'])
+		)
 			$this->unsetSessionKey('newsl_id');
 
 		
-		if(!empty($GLOBALS['_POST']['add_new'])) {
+		if(!empty($GLOBALS['_GET']['add_new'])
+		|| !empty($GLOBALS['_POST']['add_new'])
+		) {
 			$this->addNewsl		= true;
 			$this->listNewsl	= false;
 		}
@@ -179,7 +186,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		
 		// Newsletter-Bereich
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL;
 		
 		
 		if(!empty($this->notice))
@@ -225,8 +232,8 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 
 		}
 		
-		$this->adminContent .=	'</h3>' . "\r\n" .
-								'<div class="adminBox">' . "\r\n";
+		$this->adminContent .=	'</h3>' . PHP_EOL .
+								'<div class="adminBox">' . PHP_EOL;
 		
 		
 		// Falls ein einzelner Newsletter zum Bearbeiten in der Session gespeichert ist
@@ -248,7 +255,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		}
 		
-		$this->adminContent .= 	'</div>' . "\r\n";
+		$this->adminContent .= 	'</div>' . PHP_EOL;
 
 
 		// Ggf Formular neuen Newsletter anlegen
@@ -261,18 +268,18 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			$this->adminContent .=	$this->getBacktoListButton();
 
 			
-			$this->adminContent .=	'</h3>' . "\r\n" .
-									'<div class="adminBox">' . "\r\n";
+			$this->adminContent .=	'</h3>' . PHP_EOL .
+									'<div class="adminBox">' . PHP_EOL;
 									
 			// Newsletter-Formular
 			$this->adminContent .= 	$this->getNewsletterForm();
 			
-			$this->adminContent .= 	'</div>' . "\r\n";
+			$this->adminContent .= 	'</div>' . PHP_EOL;
 		
 		}
 		
 		
-		$this->adminContent .= 	'</div>' . "\r\n";
+		$this->adminContent .= 	'</div>' . PHP_EOL;
 
 
 
@@ -306,7 +313,8 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function verifyNewsletterPost($a_Post)
 	{
 	
-		$this->newslGroup		= $a_Post['newsl_group'];
+		$this->newslGroup		= isset($a_Post['newsl_group']) ? $a_Post['newsl_group'] : array();
+		$this->newslGroup		= in_array('<all>', $this->newslGroup) ? array('<all>') : $this->newslGroup;
 		$this->newslGroupStr	= in_array('<all>', $this->newslGroup) ? '<all>' : implode(",", $this->newslGroup);
 		$this->newslSubject		= $a_Post['newsl_subject'];
 		$this->newslText		= $a_Post['newsl_text'];
@@ -315,6 +323,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		$this->authorID			= $this->g_Session['userid'];
 		$this->wrongInput		= array();
 		
+			
 		// Festlegen ob der Newsletter nur an Newsletterempfänger gehen soll
 		if(isset($a_Post['onlysubscribers'])) {
 			$this->onlySubscribers = 1;
@@ -329,13 +338,20 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		// Falls kein Html, Tags entfernen
 		if($this->newslFormat == "plain")
-			$this->newslText = strip_tags(str_replace(array("<br />","</p><p>"), "\r\n", $this->newslText));
+			$this->newslText = strip_tags(str_replace(array("<br />","</p><p>"), PHP_EOL, $this->newslText));
 		else
 			$this->newslText = str_replace(array("// <![CDATA[", "// ]]>", "<style type=\"text/css\"><!--", "--></style>"), array("", "", "<style type=\"text/css\">", "</style>"), $this->newslText);
 		
 
 		// Extra-E-Mails
 		$this->checkExtraEmails();
+		
+		
+		// Group überprüfen
+		if(empty($this->newslGroup)
+		&& empty($this->extraEmails)
+		)
+			$this->wrongInput['newslgroup'] = "{s_error:check}";
 		
 		
 		
@@ -650,10 +666,18 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		|| isset($GLOBALS['_POST']['send_newsl'])
 		) {
 			
-			$this->newslGroup		= $GLOBALS['_POST']['newsl_group'];
+			$this->newslGroup		= isset($GLOBALS['_POST']['newsl_group']) ? $GLOBALS['_POST']['newsl_group'] : array();
+			$this->newslGroup		= in_array('<all>', $this->newslGroup) ? array('<all>') : $this->newslGroup;
 			$this->newslGroupStr	= in_array('<all>', $this->newslGroup) ? '<all>' : implode(",", $this->newslGroup);
 			$this->newslSubject		= $GLOBALS['_POST']['newsl_subject'];
 			$this->newslText		= $GLOBALS['_POST']['newsl_text'];
+			
+			
+			// Group überprüfen
+			if(empty($this->newslGroup)
+			&& empty($this->extraEmails)
+			)
+				$this->wrongInput['newslgroup'] = "{s_error:check}";
 			
 			
 			// Festlegen ob der Newsletter nur an Newsletterempfänger gehen soll
@@ -670,7 +694,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 			// Falls kein Html, Tags entfernen
 			if($this->newslFormat == "plain")
-				$this->newslText = strip_tags(str_replace(array("<br />","</p><p>"), "\r\n", $this->newslText));
+				$this->newslText = strip_tags(str_replace(array("<br />","</p><p>"), PHP_EOL, $this->newslText));
 			else
 				$this->newslText = str_replace(array("// <![CDATA[", "// ]]>", "<style type=\"text/css\"><!--", "--></style>"), array("", "", "<style type=\"text/css\">", "</style>"), $this->newslText);
 				
@@ -841,6 +865,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 				
 					// Klasse phpMailer einbinden
 					require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+					require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 					
 					// Instanz von PHPMailer bilden
 					$mail = new \PHPMailer();
@@ -881,13 +906,13 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 							$inlineImgBaseName = substr($inlineImgName, 0, strrpos($inlineImgName, "."));
 							$this->newslText = preg_replace("/(.* src=\")(" . str_replace("/", "\/", PROJECT_HTTP_ROOT) . ")([A-Za-z0-9\.\:\/_-]*)(\" alt=\")([A-Za-z0-9\. _-]*)(\" .*)/ism", "\\1" . "cid:" . $inlineImgBaseName . "\\4" . $inlineImgName . "\\6", $this->newslText, 1);
 							
-							$mail->AddEmbeddedImage(str_replace(PROJECT_HTTP_ROOT, PROJECT_DOC_ROOT, $inlineImg), $inlineImgBaseName, $inlineImgName);
-							$mail->AddAttachment(str_replace(PROJECT_HTTP_ROOT, PROJECT_DOC_ROOT, $inlineImg), $inlineImgBaseName);
+							$mail->addEmbeddedImage(str_replace(PROJECT_HTTP_ROOT, PROJECT_DOC_ROOT, $inlineImg), $inlineImgBaseName, $inlineImgName);
+							$mail->addAttachment(str_replace(PROJECT_HTTP_ROOT, PROJECT_DOC_ROOT, $inlineImg), $inlineImgBaseName);
 						}
 						
 						//Eine Datei vom Server als Attachment anhängen
 						if($this->fileConValue != "")
-							$mail->AddAttachment(PROJECT_DOC_ROOT . "/".$fileAttachFolder."/" . $fileAttach[0], ($fileAttach[1] != "" ? $fileAttach[1] : $fileAttach[0]));
+							$mail->addAttachment(PROJECT_DOC_ROOT . "/".$fileAttachFolder."/" . $fileAttach[0], ($fileAttach[1] != "" ? $fileAttach[1] : $fileAttach[0]));
 						  
 					}
 					
@@ -902,19 +927,19 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 					}
 					
 					// E-Mailadressen der zu adressierenden Benutzergruppe holen
-					$userEmail = $o_user->getUserEmail($this->newslGroup, $this->onlySubscribers, true, $this->resendMail);
+					$userEmails = $o_user->getUserEmails($this->newslGroup, $this->onlySubscribers, true, $this->resendMail);
 					
 					
 					// Ggf. extra E-Mailadressen hinzufügen
 					if(count($this->extraEmailsArray) > 0) {
 					
 						// Falls keine registrierten Benutzer im Email-Array
-						if($userEmail === false)
-							$userEmail = array();
+						if($userEmails === false)
+							$userEmails = array();
 						
 						// Benutzerdaten generieren
 						foreach($this->extraEmailsArray as $eM) {
-							$userEmail[]	= array("username" => $eM,
+							$userEmails[]	= array("username" => $eM,
 													"email" => $eM,
 													"auth_code" => (isset($this->extraUsers[$eM]) ? $this->extraUsers[$eM] : '')
 													);
@@ -923,7 +948,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 					
 					
 					// Wenn Empfänger vorhanden
-					if($userEmail !== false) {
+					if($userEmails !== false) {
 						
 						$errorMail		= 0;
 						$mailStatus		= false;
@@ -937,7 +962,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 							$individualMail = true;
 						
 						// Empfänger-Array auslesen
-						foreach($userEmail as $recipient) {
+						foreach($userEmails as $recipient) {
 							
 							// Falls eine individuelle Ansprache der Empfänger erfolgen soll
 							if($individualMail) {
@@ -966,21 +991,21 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 								// E-Mail-Parameter für SMTP
 								$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, $recipient['email'], $mailSubject, $mailBody, $mailIsHTML, "", "smtp");
 								// E-Mail senden per phpMailer (SMTP)
-								$mailStatus = $mail->Send();
+								$mailStatus = $mail->send();
 								
 								// Falls Versand per SMTP erfolglos, per Sendmail probieren
 								if($mailStatus !== true) {
 									// E-Mail-Parameter für php Sendmail
 									$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, $recipient['email'], $mailSubject, $mailBody, $mailIsHTML, "", "sendmail");
 									// E-Mail senden per phpMailer (Sendmail)
-									$mailStatus = $mail->Send();
+									$mailStatus = $mail->send();
 								}
 								// Falls Versand per Sendmail erfolglos, per mail() probieren
 								if($mailStatus !== true) {
 									// E-Mail-Parameter für php mail()
 									$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, $recipient['email'], $mailSubject, $mailBody, $mailIsHTML);
 									// E-Mail senden per phpMailer (mail())
-									$mailStatus = $mail->Send();
+									$mailStatus = $mail->send();
 								}
 								// Falls der Versand mit keiner der Versandarten erfolgreich war, E-Mail in Array notSentMail speichern und Fehler zählen
 								if($mailStatus !== true) {
@@ -1003,42 +1028,42 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 							// E-Mail-Parameter für SMTP
 							$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, NEWSLETTER_EMAIL, $mailSubject, $this->newslText, $mailIsHTML, "", "smtp");
 							// E-Mail senden per phpMailer (SMTP)
-							$mailStatus = $mail->Send();
+							$mailStatus = $mail->send();
 							// Falls Versand per SMTP erfolglos, per Sendmail probieren
 							if($mailStatus !== true) {
 								// E-Mail-Parameter für php Sendmail
 								$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, NEWSLETTER_EMAIL, $mailSubject, $this->newslText, $mailIsHTML, "", "sendmail");
 								// E-Mail senden per phpMailer (Sendmail)
-								$mailStatus = $mail->Send();
+								$mailStatus = $mail->send();
 							}
 							// Falls Versand per Sendmail erfolglos, per mail() probieren
 							if($mailStatus !== true) {
 								// E-Mail-Parameter für php mail()
 								$mail->setMailParameters(NEWSLETTER_EMAIL, $mailFromName, NEWSLETTER_EMAIL, $mailSubject, $this->newslText, $mailIsHTML);
 								// E-Mail senden per phpMailer (mail())
-								$mailStatus = $mail->Send();
+								$mailStatus = $mail->send();
 							}
 							if($mailStatus !== true)
 								$errorMail++;
 						}
 
 						// Wenn keine E-Mail versandt wurde
-						if($errorMail == count($userEmail) || (!$individualMail && $errorMail == 1)) {
-							$this->hint		= "{s_notice:notsent} (0/" . count($userEmail) . ")";
+						if($errorMail == count($userEmails) || (!$individualMail && $errorMail == 1)) {
+							$this->hint		= "{s_notice:notsent} (0/" . count($userEmails) . ")";
 							$this->failSend = true;
 						}
 						// Wenn die E-Mails teilweise versandt wurden
 						elseif($errorMail > 0) {
 							$this->isSent 	= true;
 							$this->notice	= "{s_notice:sent}";					
-							$this->hint		= "{s_notice:partlysent} (" . (count($userEmail) - $errorMail) . "/" . count($userEmail) . ")";					
-							$this->hint    .= '<div class="unsentMail"><h3 class="cc-h3 toggle">{s_notice:failmails}</h3><ul><li>' . implode("<br />", $this->notSentMail) . '</li></ul></div>' . "\r\n";
+							$this->hint		= "{s_notice:partlysent} (" . (count($userEmails) - $errorMail) . "/" . count($userEmails) . ")";					
+							$this->hint    .= '<div class="unsentMail"><h3 class="cc-h3 toggle">{s_notice:failmails}</h3><ul><li>' . implode("<br />", $this->notSentMail) . '</li></ul></div>' . PHP_EOL;
 							$this->failSend = true;
 						}
 						// Wenn alle E-Mails versandt wurden
 						elseif($errorMail == 0) {
 							$this->isSent 	= true;
-							$this->notice	= "{s_notice:sent} (" . count($userEmail) . "/" . count($userEmail) . ")";					
+							$this->notice	= "{s_notice:sent} (" . count($userEmails) . "/" . count($userEmails) . ")";					
 						}
 						
 					}
@@ -1213,65 +1238,72 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getNewsletterForm()
 	{
 	
-		$output =	'<div class="adminBox">' . "\r\n" .
-					'<form action="' . $this->formAction . '" method="post" name="adminfm3" enctype="multipart/form-data" accept-charset="UTF-8">' . "\r\n" .
-					'<ul class="newsletter framedItems">' . "\r\n" .
-					'<li>' . "\r\n" .
-					'<div class="leftBox"><label>{s_label:plannergroup}</label>' . "\r\n" .
-					'<select name="newsl_group[]" multiple="multiple" id="newsl_group" class="block-select" size="' . count($this->userGroups) . '">' . "\r\n" .
-					'<option value="<all>"' . (empty($this->newslGroup) || (!empty($this->newslGroup) && in_array("<all>", $this->newslGroup)) ? ' selected="selected"' : '') . '>{s_option:allgroup}</option>' . "\r\n";
+		$output =	'<div class="adminBox">' . PHP_EOL .
+					'<form action="' . $this->formAction . '" method="post" name="adminfm3" enctype="multipart/form-data" accept-charset="UTF-8">' . PHP_EOL .
+					'<ul class="newsletter framedItems">' . PHP_EOL .
+					'<li>' . PHP_EOL .
+					'<div class="leftBox"><label>{s_label:plannergroup}</label>' . PHP_EOL;
+		
+		if(isset($this->wrongInput['newslgroup']))
+			$output .='<p class="notice">' . $this->wrongInput['newslgroup'] . '</p>' . PHP_EOL;
+		
+		$output .=	'<select name="newsl_group[]" multiple="multiple" id="newsl_group" class="block-select" size="' . count($this->userGroups) . '">' . PHP_EOL .
+					'<option value="<all>"' . (!empty($this->newslGroup) && in_array("<all>", $this->newslGroup) ? ' selected="selected"' : '') . '>{s_option:allgroup}</option>' . PHP_EOL;
 							
 		foreach($this->userGroups as $group) {
 			if($group != "public")
-				$output .='<option value="' . $group . '"' . (!empty($this->newslGroup) && in_array($group, $this->newslGroup) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n"; // Benutzergruppe
+				$output .='<option value="' . $group . '"' . (!empty($this->newslGroup) && in_array($group, $this->newslGroup) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL; // Benutzergruppe
 		}
 		
-		$output .=	'</select></div>' . "\r\n" .
-					'<div class="rightBox">' . "\r\n" . 
-					'<label for="newsl_extraemails">{s_label:newslextramails} (' . count($this->extraEmailsArray) . ')</label>' . "\r\n";
+		$output .=	'</select></div>' . PHP_EOL .
+					'<div class="rightBox">' . PHP_EOL . 
+					'<label for="newsl_extraemails">{s_label:newslextramails} (' . count($this->extraEmailsArray) . ')</label>' . PHP_EOL;
 
 
 		if(isset($this->wrongInput['newsl_extraemails']))
-			$output .='<p class="notice">' . $this->wrongInput['newsl_extraemails'] . '</p>' . "\r\n";
+			$output .='<p class="notice">' . $this->wrongInput['newsl_extraemails'] . '</p>' . PHP_EOL;
+		
+		elseif(isset($this->wrongInput['newslgroup']))
+			$output .='<p class="notice">' . $this->wrongInput['newslgroup'] . '</p>' . PHP_EOL;
 							
-		$output .=	'<textarea name="newsl_extraemails" id="newsl_extraemails" class="customList" rows="9">' . (isset($this->extraEmails) ? htmlspecialchars($this->extraEmails) : '') . '</textarea>' . "\r\n" . 
-					'</div>' . "\r\n" . 
-					'<br class="clearfloat" /><br />' . "\r\n" .
-					'<div class="leftBox">' . "\r\n" .
-					'<div class="onlySubscribers leftBox">' . "\r\n" .
-					'<label class="markBox clearleft"><input type="checkbox" name="onlysubscribers" id="onlysubscribers"' . ($this->onlySubscribers ? ' checked="checked"' : '') . ' /></label>' . "\r\n" . 
-					'<label for="onlysubscribers">{s_label:onlysubscribers}</label>' . "\r\n" .
-					'</div>' . "\r\n" .
-					'<div class="htmlFormatBox rightBox">' . "\r\n" .
-					'<label class="markBox"><input type="checkbox" name="newsl_format" id="newsl_format"' . ($this->newslFormat == "html" ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-					'<label for="newsl_format">{s_label:htmlformat}</label>' . "\r\n" . 
-					'</div>' . "\r\n" .
-					'</div>' . "\r\n" .
-					'<div class="rightBox">' . "\r\n" .
-					'<label class="markBox"><input type="checkbox" name="newsl_saveextraemails" id="newsl_saveextraemails"' . ($this->saveExtraEmails ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-					'<label for="newsl_saveextraemails">{s_label:saveextramails}</label>' . "\r\n" . 
-					'</div>' . "\r\n" .
-					'<br class="clearfloat" /><br />' . "\r\n" .
-					'</li>' . "\r\n";
+		$output .=	'<textarea name="newsl_extraemails" id="newsl_extraemails" class="customList" rows="9">' . (isset($this->extraEmails) ? htmlspecialchars($this->extraEmails) : '') . '</textarea>' . PHP_EOL . 
+					'</div>' . PHP_EOL . 
+					'<br class="clearfloat" /><br />' . PHP_EOL .
+					'<div class="leftBox">' . PHP_EOL .
+					'<div class="onlySubscribers leftBox">' . PHP_EOL .
+					'<label class="markBox clearleft"><input type="checkbox" name="onlysubscribers" id="onlysubscribers"' . ($this->onlySubscribers ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL . 
+					'<label for="onlysubscribers">{s_label:onlysubscribers}</label>' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'<div class="htmlFormatBox rightBox">' . PHP_EOL .
+					'<label class="markBox"><input type="checkbox" name="newsl_format" id="newsl_format"' . ($this->newslFormat == "html" ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+					'<label for="newsl_format">{s_label:htmlformat}</label>' . PHP_EOL . 
+					'</div>' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'<div class="rightBox">' . PHP_EOL .
+					'<label class="markBox"><input type="checkbox" name="newsl_saveextraemails" id="newsl_saveextraemails"' . ($this->saveExtraEmails ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+					'<label for="newsl_saveextraemails">{s_label:saveextramails}</label>' . PHP_EOL . 
+					'</div>' . PHP_EOL .
+					'<br class="clearfloat" /><br />' . PHP_EOL .
+					'</li>' . PHP_EOL;
 
 		// Subject
-		$output .=	'<li>' . "\r\n" .
-					'<label for="newsl_subject">{s_label:subject}</label>' . "\r\n";
-							
+		$output .=	'<li>' . PHP_EOL .
+					'<label for="newsl_subject">{s_label:subject}</label>' . PHP_EOL;
+		
 		if(isset($this->wrongInput['subject']))
-			$output .='<p class="notice">' . $this->wrongInput['subject'] . '</p>' . "\r\n";
+			$output .='<p class="notice">' . $this->wrongInput['subject'] . '</p>' . PHP_EOL;
 							
-		$output .=	'<input type="text" name="newsl_subject" id="newsl_subject" value="' . htmlspecialchars($this->newslSubject) . '" maxlength="300" />' . "\r\n" . 
-					'</li>' . "\r\n";
+		$output .=	'<input type="text" name="newsl_subject" id="newsl_subject" value="' . htmlspecialchars($this->newslSubject) . '" maxlength="300" />' . PHP_EOL . 
+					'</li>' . PHP_EOL;
 
 		// Text
-		$output .=	'<li>' . "\r\n" .
-					'<label for="newsl_text">{s_label:newsltext}</label>' . "\r\n";
-							
+		$output .=	'<li>' . PHP_EOL .
+					'<label for="newsl_text">{s_label:newsltext}</label>' . PHP_EOL;
+		
 		if(isset($this->wrongInput['text']))
-			$output .=	'<p class="notice">' . $this->wrongInput['text'] . '</p>' . "\r\n";
+			$output .=	'<p class="notice">' . $this->wrongInput['text'] . '</p>' . PHP_EOL;
 							
-		$output .=	'<span class="namePlaceholder ' . EDITOR_SKIN . 'Skin">' . "\r\n";
+		$output .=	'<span class="namePlaceholder ' . EDITOR_SKIN . 'Skin">' . PHP_EOL;
 		
 		// Button preview
 		$btnDefs	= array(	"type"		=> "button",
@@ -1284,12 +1316,12 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output .=	'</span>' . "\r\n";
+		$output .=	'</span>' . PHP_EOL;
 		
 		$newslText	= str_replace("{%root%}", PROJECT_HTTP_ROOT, $this->newslText);// newslText
 
-		$output .=	'<textarea name="newsl_text" id="newsl_text"' . ($this->newslFormat == "html" ? '' : ' class="cc-editor-add disableEditor"') . ' rows="5" data-attachkeywords="' . implode(",", $this->attachmentKeyWords) . '">' . htmlspecialchars($this->newslText) . '</textarea>' . "\r\n" .
-					'</li>' . "\r\n";
+		$output .=	'<textarea name="newsl_text" id="newsl_text"' . ($this->newslFormat == "html" ? '' : ' class="cc-editor-add disableEditor"') . ' rows="5" data-attachkeywords="' . implode(",", $this->attachmentKeyWords) . '">' . htmlspecialchars($this->newslText) . '</textarea>' . PHP_EOL .
+					'</li>' . PHP_EOL;
 		
 		
 		// Pfad zur Bilddatei
@@ -1306,29 +1338,30 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		}
 		
 		// Anhang
-		$output .=	'<ul class="dataObjectList subList framedItems">' . "\r\n" .
-					'<li class="dataObject listItem"><span class="type objectToggle toggleAttachment">{s_label:attachm}</span>' . "\r\n" .
-					'<div class="objects"' . ($this->fileCon[0] == "" && $this->objectCon[0] == "" && isset($this->wrongInput['img']) ? ' style="display:none;"' : '') . '>' . "\r\n";
+		$output .=	'<ul class="dataObjectList subList framedItems">' . PHP_EOL .
+					'<li class="dataObject listItem">' . PHP_EOL .
+					'<span class="type objectToggle toggleAttachment' . ($this->fileCon[0] != "" ? ' ' . $this->fileCon[0] . ' busy' : '') . '"><span class="toggle"></span>{s_label:attachm}' . ($this->fileCon[0] != "" ? '<span class="{t_icons:ccicons} {t_icons:icon}' . $this->fileCon[0] . ' conicon-' . $this->fileCon[0] . '"></span>' : '') . '</span>' . "\r\n" .
+					'<div class="objects"' . ($this->fileCon[0] == "" && $this->objectCon[0] == "" && !isset($this->wrongInput['img']) ? ' style="display:none;"' : '') . '>' . PHP_EOL;
 
 
 		// Fehlermeldung
 		if(isset($this->wrongInput['img']))
-			$output .=	'<p class="notice">' . $errorImg . '</p>' . "\r\n";
+			$output .=	'<p class="notice">' . $errorImg . '</p>' . PHP_EOL;
 		
 		
 		// Bildanhang
-		$output .=	'<div class="attach imgObject"' . ($this->fileCon[0] != '' ? ' style="display:none;"' : '') . '>' . "\r\n" .	
-					'<label class="markBox">' . "\r\n" .
-					'<input type="checkbox" name="add_img" id="add_img" class="toggleObjectType"' . ($this->objectCon[0] != '' ? ' checked="checked"' : '') . ' />' . "\r\n" .
-					'</label>' . "\r\n" .
-					'<label for="add_img" class="dataObjectLabel inline-label">{s_label:image}</label>' . "\r\n" .
-					'<div class="dataObjectBox" style="' . ($this->objectCon[0] == '' ? ' display:none;' : '') . '">' . "\r\n" .
-					'<div class="fileSelBox">' . "\r\n" .
-					'<div class="existingFileBox leftBox">' . "\r\n" . // Dateiupload-Box
-					'<label class="elementsFileName">' . (empty($this->objectCon[0]) ? "{s_label:choosefile}" : htmlspecialchars($this->objectCon[0])) . '</label>' . "\r\n" .									
-					'<div class="previewBox img">' . "\r\n" .
-					'<img src="' . $imgPath . 'thumbs/' . (!empty($this->objectCon[0]) ? htmlspecialchars($this->objectCon[0]) : '../../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" alt="' . (isset($this->objectCon[1]) ? htmlspecialchars($this->objectCon[1]) : '') . '" title="' . (isset($this->objectCon[1]) && $this->objectCon[0] != "" ? htmlspecialchars($this->objectCon[1]) : 'no image') . '" class="preview" data-img-src="' . (isset($this->objectCon[0]) && $this->objectCon[0] != "" ? htmlspecialchars($imgPath . $this->objectCon[0]) : SYSTEM_IMAGE_DIR . '/noimage.png') . '" />' . "\r\n" . 
-					'</div>' . "\r\n";
+		$output .=	'<div class="attach imgObject"' . ($this->fileCon[0] != '' ? ' style="display:none;"' : '') . '>' . PHP_EOL .	
+					'<label class="markBox">' . PHP_EOL .
+					'<input type="checkbox" name="add_img" id="add_img" class="toggleObjectType"' . ($this->objectCon[0] != '' ? ' checked="checked"' : '') . ' />' . PHP_EOL .
+					'</label>' . PHP_EOL .
+					'<label for="add_img" class="dataObjectLabel inline-label">{s_label:image}</label>' . PHP_EOL .
+					'<div class="dataObjectBox" style="' . ($this->objectCon[0] == '' ? ' display:none;' : '') . '">' . PHP_EOL .
+					'<div class="fileSelBox">' . PHP_EOL .
+					'<div class="existingFileBox leftBox">' . PHP_EOL . // Dateiupload-Box
+					'<label class="elementsFileName">' . (empty($this->objectCon[0]) ? "{s_label:choosefile}" : htmlspecialchars($this->objectCon[0])) . '</label>' . PHP_EOL .									
+					'<div class="previewBox img">' . PHP_EOL .
+					'<img src="' . $imgPath . 'thumbs/' . (!empty($this->objectCon[0]) ? htmlspecialchars($this->objectCon[0]) : '../../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" alt="' . (isset($this->objectCon[1]) ? htmlspecialchars($this->objectCon[1]) : '') . '" title="' . (isset($this->objectCon[1]) && $this->objectCon[0] != "" ? htmlspecialchars($this->objectCon[1]) : 'no image') . '" class="preview" data-img-src="' . (isset($this->objectCon[0]) && $this->objectCon[0] != "" ? htmlspecialchars($imgPath . $this->objectCon[0]) : SYSTEM_IMAGE_DIR . '/noimage.png') . '" />' . PHP_EOL . 
+					'</div>' . PHP_EOL;
 
 		$mediaListButtonDef		= array(	"class" 	=> "images",
 											"type"		=> "images",
@@ -1340,34 +1373,34 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		$output .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$output .=	'<input type="text" name="existImg" class="existingFile" value="" />' . "\r\n" .
-					'</div>' . "\r\n" .
-					'<div class="fileUploadBox rightBox">' . "\r\n" . // Dateiupload-Box
-					'<label class="uploadBoxLabel">{s_formfields:file}</label>' . "\r\n" .
+		$output .=	'<input type="text" name="existImg" class="existingFile" value="" />' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'<div class="fileUploadBox rightBox">' . PHP_EOL . // Dateiupload-Box
+					'<label class="uploadBoxLabel">{s_formfields:file}</label>' . PHP_EOL .
 					$this->getUploadMask('newsl_img', $this->overwrite, 'img', $this->scaleImg, $this->imgWidth, $this->imgHeight) .
 					$this->getFilesUploadMask($this->filesFolder, $this->useFilesFolder, 'newsl_img') .
-					'</div>' . "\r\n" .
-					'<br class="clearfloat" />' . "\r\n" .
-					'<label>alt-Text</label>' . "\r\n" .
-					'<input type="text" name="alttext" value="' . (isset($this->objectCon[1]) ? htmlspecialchars($this->objectCon[1]) : '') . '" maxlength="512" class="altText" />' . "\r\n" .
-					'</div>' . "\r\n" .	
-					'</div>' . "\r\n" .	
-					'</div>' . "\r\n";
+					'</div>' . PHP_EOL .
+					'<br class="clearfloat" />' . PHP_EOL .
+					'<label>alt-Text</label>' . PHP_EOL .
+					'<input type="text" name="alttext" value="' . (isset($this->objectCon[1]) ? htmlspecialchars($this->objectCon[1]) : '') . '" maxlength="512" class="altText" />' . PHP_EOL .
+					'</div>' . PHP_EOL .	
+					'</div>' . PHP_EOL .	
+					'</div>' . PHP_EOL;
 							
 		// Dokumentenanhang
-		$output .=	'<div class="attach docObject"' . ($this->objectCon[0] != '' ? ' style="display:none;"' : '') . '>' . "\r\n" .	
-					'<label class="markBox">' . "\r\n" .
-					'<input type="checkbox" name="add_file" id="add_file" class="toggleObjectType"' . ($this->fileCon[0] != '' ? ' checked="checked"' : '') . ' />' . "\r\n" .
-					'</label>' . "\r\n" .
-					'<label for="add_file" class="dataObjectLabel inline-label">{s_label:doc}</label>' . "\r\n" .
-					'<div class="dataObjectBox" style="' . ($this->fileCon[0] == '' ? ' display:none;' : '') . '">' . "\r\n" .
-					'<div class="fileSelBox">' . "\r\n" .
-					'<div class="existingFileBox leftBox">' . "\r\n" . // Dateiupload-Box
-					'<label class="elementsFileName">' . (empty($this->fileCon[0]) ? "{s_label:choosefile}" : htmlspecialchars($this->fileCon[0])) . '</label>' . "\r\n" .									
-					'<div class="previewBox doc">' . "\r\n" .
-					'<span style="display:block"><img src="' . SYSTEM_IMAGE_DIR . '/' . $this->docIcon . '" alt="' . $this->docIcon . '" />' . "\r\n" .
-					'<a href="' . $docPath . ($this->fileCon[0] != '' ? $this->fileCon[0] : '') . '" target="_blank">' . ($this->fileCon[0] != '' ? $this->fileCon[0] : '') . '</a></span>' . "\r\n" . 
-					'</div>' . "\r\n";
+		$output .=	'<div class="attach docObject"' . ($this->objectCon[0] != '' ? ' style="display:none;"' : '') . '>' . PHP_EOL .	
+					'<label class="markBox">' . PHP_EOL .
+					'<input type="checkbox" name="add_file" id="add_file" class="toggleObjectType"' . ($this->fileCon[0] != '' ? ' checked="checked"' : '') . ' />' . PHP_EOL .
+					'</label>' . PHP_EOL .
+					'<label for="add_file" class="dataObjectLabel inline-label">{s_label:doc}</label>' . PHP_EOL .
+					'<div class="dataObjectBox" style="' . ($this->fileCon[0] == '' ? ' display:none;' : '') . '">' . PHP_EOL .
+					'<div class="fileSelBox">' . PHP_EOL .
+					'<div class="existingFileBox leftBox">' . PHP_EOL . // Dateiupload-Box
+					'<label class="elementsFileName">' . (empty($this->fileCon[0]) ? "{s_label:choosefile}" : htmlspecialchars($this->fileCon[0])) . '</label>' . PHP_EOL .									
+					'<div class="previewBox doc">' . PHP_EOL .
+					'<span style="display:block"><img src="' . SYSTEM_IMAGE_DIR . '/' . $this->docIcon . '" alt="' . $this->docIcon . '" />' . PHP_EOL .
+					'<a href="' . $docPath . ($this->fileCon[0] != '' ? $this->fileCon[0] : '') . '" target="_blank">' . ($this->fileCon[0] != '' ? $this->fileCon[0] : '') . '</a></span>' . PHP_EOL . 
+					'</div>' . PHP_EOL;
 					
 		$mediaListButtonDef		= array(	"class" => "docs",
 											"type"	=> "doc",
@@ -1379,29 +1412,29 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		$output .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$output .=	'<input type="text" name="existFile" class="existingFile" value="" />' . "\r\n" .
-					'</div>' . "\r\n" .	
-					'<div class="fileUploadBox rightBox">' . "\r\n" . // Dateiupload-Box
-					'<label class="uploadBoxLabel">{s_formfields:file}</label>' . "\r\n" .
+		$output .=	'<input type="text" name="existFile" class="existingFile" value="" />' . PHP_EOL .
+					'</div>' . PHP_EOL .	
+					'<div class="fileUploadBox rightBox">' . PHP_EOL . // Dateiupload-Box
+					'<label class="uploadBoxLabel">{s_formfields:file}</label>' . PHP_EOL .
 					$this->getUploadMask('newsl_file', $this->overwrite, 'file') .
-					'<br class="clearfloat" />' . "\r\n" .
+					'<br class="clearfloat" />' . PHP_EOL .
 					$this->getFilesUploadMask($this->filesFolder, $this->useFilesFolder, 'newsl_file') .
-					'</div>' . "\r\n" .
-					'<br class="clearfloat" />' . "\r\n" .
-					'<label>{s_label:doctitle}</label>' . "\r\n" .
-					'<input type="text" name="filename_alt" value="' . htmlspecialchars($this->fileCon[1]) . '" maxlength="512" class="altText" />' . "\r\n" .
-					'</div>' . "\r\n" .	
-					'</div>' . "\r\n" .	
-					'</div>' . "\r\n" .	
-					'</div>' . "\r\n" .	
-					'</li>' . "\r\n" .
-					'</ul>' . "\r\n";
+					'</div>' . PHP_EOL .
+					'<br class="clearfloat" />' . PHP_EOL .
+					'<label>{s_label:doctitle}</label>' . PHP_EOL .
+					'<input type="text" name="filename_alt" value="' . htmlspecialchars($this->fileCon[1]) . '" maxlength="512" class="altText" />' . PHP_EOL .
+					'</div>' . PHP_EOL .	
+					'</div>' . PHP_EOL .	
+					'</div>' . PHP_EOL .	
+					'</div>' . PHP_EOL .	
+					'</li>' . PHP_EOL .
+					'</ul>' . PHP_EOL;
 		
 		
 		
 		// Previewbutton
-		$output .=	'<ul>' . "\r\n" .
-					'<li class="buttonPanel buttonPanel-last' . ($this->newslFormat == "html" ? ' hide' : '') . '">' . "\r\n";
+		$output .=	'<ul>' . PHP_EOL .
+					'<li class="buttonPanel buttonPanel-last' . ($this->newslFormat == "html" ? ' hide' : '') . '">' . PHP_EOL;
 
 		// Button preview
 		$btnDefs	= array(	"type"		=> "button",
@@ -1414,11 +1447,11 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output .=	'<br class="clearfloat" />' . "\r\n" .
-					'</li>' . "\r\n";
+		$output .=	'<br class="clearfloat" />' . PHP_EOL .
+					'</li>' . PHP_EOL;
 	
 		// Submitbuttons
-		$output .=	'<li class="submit change">' . "\r\n";
+		$output .=	'<li class="submit change">' . PHP_EOL;
 		
 		// Submitbutton neu
 		if(!$this->editNewsl) {
@@ -1433,7 +1466,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 			$output	.=	parent::getButton($btnDefs);
 			
-			$output .=	'<input type="hidden" name="submit_newsl" value="{s_button:addnewsl}" />' . "\r\n";
+			$output .=	'<input type="hidden" name="submit_newsl" value="{s_button:addnewsl}" />' . PHP_EOL;
 		}
 		
 		// Submitbutton edit
@@ -1464,7 +1497,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 				$output	.=	parent::getButton($btnDefs);
 			}
 			else
-				$output .=	'<input type="hidden" name="edit_newsl" value="{s_button:takechange}" />' . "\r\n";
+				$output .=	'<input type="hidden" name="edit_newsl" value="{s_button:takechange}" />' . PHP_EOL;
 		}
 		
 
@@ -1472,22 +1505,22 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		if($this->failSend && count($this->notSentMail) > 0) {
 			
 			foreach($this->notSentMail as $retryReceip) {
-				$output .=	'<input type="hidden" name="resendMails[]" value="' . $retryReceip . '" />' . "\r\n";
+				$output .=	'<input type="hidden" name="resendMails[]" value="' . $retryReceip . '" />' . PHP_EOL;
 			}
 			
 		}
 		
-		$output .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-					'<br class="clearfloat" />' . "\r\n" .
-					'</li>' . "\r\n" .
-					'</ul>' . "\r\n" .
-					'</ul>' . "\r\n" .
-					'</form>' . "\r\n" .
-					'</div>' . "\r\n";
+		$output .=	parent::getTokenInput() .
+					'<br class="clearfloat" />' . PHP_EOL .
+					'</li>' . PHP_EOL .
+					'</ul>' . PHP_EOL .
+					'</ul>' . PHP_EOL .
+					'</form>' . PHP_EOL .
+					'</div>' . PHP_EOL;
 			
 		$output .=	'<ul>' . "\n" .
-					'<li class="submit back">' . "\r\n" . 
-					'<form action="' . $this->formAction . '" method="post">' . "\r\n"; // Formular mit Buttons zum Zurückgehen
+					'<li class="submit back">' . PHP_EOL . 
+					'<form action="' . $this->formAction . '" method="post">' . PHP_EOL; // Formular mit Buttons zum Zurückgehen
 		
 		// Button backtolist
 		$btnDefs	= array(	"type"		=> "submit",
@@ -1499,14 +1532,14 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		$output	.=	parent::getButton($btnDefs);
 			
-		$output	.=	'<input name="list_newsl" type="hidden" value="date" />' . "\r\n" .
-					'</form>' . "\r\n";
+		$output	.=	'<input name="list_newsl" type="hidden" value="date" />' . PHP_EOL .
+					'</form>' . PHP_EOL;
 			
 		$output .=	$this->getAddNewslButton("right");
 		
-		$output .=	'<br class="clearfloat" />' . "\r\n";
-		$output .=	'</li>' . "\r\n";
-		$output .=	'</ul>' . "\r\n";
+		$output .=	'<br class="clearfloat" />' . PHP_EOL;
+		$output .=	'</li>' . PHP_EOL;
+		$output .=	'</ul>' . PHP_EOL;
 		
 		return $output;
 		
@@ -1606,7 +1639,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 		
 			// Newsletterliste
-			$output		 .= 	'<div id="newsletterList" class="dataList framedItems' . (isset($GLOBALS['_COOKIE']['dataList']) && $GLOBALS['_COOKIE']['dataList'] == 2 ? ' collapsed' : '') . '">' . "\r\n";
+			$output		 .= 	'<div id="newsletterList" class="dataList framedItems' . (isset($GLOBALS['_COOKIE']['dataList']) && $GLOBALS['_COOKIE']['dataList'] == 2 ? ' collapsed' : '') . '">' . PHP_EOL;
 				
 			// Pagination Nav
 			$this->dataNav = Modules::getPageNav($this->limit, $this->totalRows, $this->startRow, $this->pageNum, $this->queryString, "", false, parent::getLimitForm($this->limitOptions, $this->limit));
@@ -1632,29 +1665,29 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 						$attachment[2] = "";
 					}
 								
-					$markBox	= '<label class="markBox">' . "\r\n" .
-								  '<input type="checkbox" class="addVal" name="entryNr[]" value="' . $newslEntry['id'] . '" />' . "\r\n" .
-								  '</label>' . "\r\n";				
+					$markBox	= '<label class="markBox">' . PHP_EOL .
+								  '<input type="checkbox" class="addVal" name="entryNr[]" value="' . $newslEntry['id'] . '" />' . PHP_EOL .
+								  '</label>' . PHP_EOL;				
 
 					// List entry
-					$output		 .=	'<div class="listEntry' . ($i%2 ? ' alternate' : '') . '" data-menu="context" data-target="contextmenu-' . $i . '">' . "\r\n";
+					$output		 .=	'<div class="listEntry' . ($i%2 ? ' alternate' : '') . '" data-menu="context" data-target="contextmenu-' . $i . '">' . PHP_EOL;
 					
 					// Date
 					$lastDate	= $newslEntry['sent'] == 1 ? $newslEntry['sent_date'] : $newslEntry['mod_date'];
 					
 					// Header
-					$output		 .=	'<div class="listEntryHeader">' . "\r\n" .
+					$output		 .=	'<div class="listEntryHeader">' . PHP_EOL .
 									$markBox;
 					
 					// Date
 					$modDate	= parent::getDateString(strtotime($lastDate), $this->adminLang, false);					
-					$output		 .=	'<span class="newslDate tableCell"><span title="{s_text:lastmodified} ' . $modDate . '">' . $modDate . '</span> {s_text:attime} <span>' . parent::getTimeString(strtotime($lastDate), $this->adminLang) . '</span> {s_text:time}' . ($newslEntry['sent'] == 1 ? '<span class="newsl-sent">' . parent::getIcon("check", "inline-icon") . '{s_text:sent}</span>' : '') . '</span>' . "\r\n";
+					$output		 .=	'<span class="newslDate tableCell"><span title="{s_text:lastmodified} ' . $modDate . '">' . $modDate . '</span> {s_text:attime} <span>' . parent::getTimeString(strtotime($lastDate), $this->adminLang) . '</span> {s_text:time}' . ($newslEntry['sent'] == 1 ? '<span class="newsl-sent">' . parent::getIcon("check", "inline-icon") . '{s_text:sent}</span>' : '') . '</span>' . PHP_EOL;
 									
 					// Author
-					$output		 .=	'<span class="newslAuthor tableCell">{s_option:author} &raquo; <span title="{s_option:author}">' . $this->getEditableAuthor($newslEntry['author_name'], $newslEntry['userid'], $newslEntry['id']) . '</span></span>'."\r\n";
+					$output		 .=	'<span class="newslAuthor tableCell">{s_option:author} &raquo; <span title="{s_option:author}">' . $this->getEditableAuthor($newslEntry['author_name'], $newslEntry['userid'], $newslEntry['id']) . '</span></span>'.PHP_EOL;
 					
 					// Edit Buttons
-					$output		 .=	'<span class="editButtons-panel" data-id="contextmenu-' . $i . '">' . "\r\n";
+					$output		 .=	'<span class="editButtons-panel" data-id="contextmenu-' . $i . '">' . PHP_EOL;
 
 					// Button edit
 					$btnDefs	= array(	"type"		=> "button",
@@ -1686,8 +1719,8 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 						
 					$output .=	parent::getButton($btnDefs);
 					
-					$output .=		'</span>' . "\r\n" .
-									'</div>' . "\r\n"; // close listEntryHeader
+					$output .=		'</span>' . PHP_EOL .
+									'</div>' . PHP_EOL; // close listEntryHeader
 									
 					
 					// Attachment
@@ -1700,9 +1733,9 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 						$iconAttach	=	parent::getIcon("attachment", "inline-icon", 'title="{s_label:attachm}"') . ' | ';
 						
 						// Attachment
-						$newslAttach	=	'<div class="attachment">' . "\r\n" .
-											($attachment[2] != "" ? '<p class="type">{s_label:attachm}</p>' : '') . "\r\n" .
-											'<div class="listObject">' . "\r\n";
+						$newslAttach	=	'<div class="attachment">' . PHP_EOL .
+											($attachment[2] != "" ? '<p class="type">{s_label:attachm}</p>' : '') . PHP_EOL .
+											'<div class="listObject">' . PHP_EOL;
 			
 						// Pfad zur Bilddatei
 						// Falls files-Ordner, den Pfad ermitteln
@@ -1719,35 +1752,35 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 				
 						// Falls Bildanhang
 						if($attachment[2] == "img")
-							$newslAttach .=	'<div class="previewBox img">' . "\r\n" .
-											'<img src="' . $imgPath . 'thumbs/' . (isset($attachment[0]) && $attachment[0] != "" ? htmlspecialchars($attachment[0]) : '../../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" alt="' . (isset($attachment[1]) && $attachment[1] != "" ? htmlspecialchars($attachment[1]) : '') . '" title="' . (isset($attachment[1]) && $attachment[1] != "" ? htmlspecialchars($attachment[1]) : 'no image') . '" class="preview" data-img-src="' . $imgPath . (isset($attachment[0]) && $attachment[0] != "" ? htmlspecialchars($attachment[0]) : '../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" />' . "\r\n" .
-											'</div>' . "\r\n";
+							$newslAttach .=	'<div class="previewBox img">' . PHP_EOL .
+											'<img src="' . $imgPath . 'thumbs/' . (isset($attachment[0]) && $attachment[0] != "" ? htmlspecialchars($attachment[0]) : '../../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" alt="' . (isset($attachment[1]) && $attachment[1] != "" ? htmlspecialchars($attachment[1]) : '') . '" title="' . (isset($attachment[1]) && $attachment[1] != "" ? htmlspecialchars($attachment[1]) : 'no image') . '" class="preview" data-img-src="' . $imgPath . (isset($attachment[0]) && $attachment[0] != "" ? htmlspecialchars($attachment[0]) : '../../system/themes/' . ADMIN_THEME . '/img/noimage.png') . '" />' . PHP_EOL .
+											'</div>' . PHP_EOL;
 						
 						// Falls Dokumentenanhang
 						elseif($attachment[2] == "file")
 							$newslAttach .=	'<div><br /><br />{s_text:doc}<br />' .
 											htmlspecialchars($attachment[0]) .
-											'<br />(' . htmlspecialchars($attachment[1]) . ')</div>' . "\r\n";
+											'<br />(' . htmlspecialchars($attachment[1]) . ')</div>' . PHP_EOL;
 					
-						$newslAttach	 .=	'</div></div>' . "\r\n";
+						$newslAttach	 .=	'</div></div>' . PHP_EOL;
 					
 					}
 				
 					// Newsl Header / Subject
 					$output		 .=	'<h4 class="cc-h4 newslSubject dataListHeader toggle">{s_form:subject}: <strong>' . $newslEntry['subject'] . '</strong>';
 					$output		 .=	'<span class="right">' . $iconAttach . '#' . $newslEntry['id'] . '</span>' . "\n";
-					$output		 .=	'</h4>' . "\r\n";
+					$output		 .=	'</h4>' . PHP_EOL;
 					
 					
 					// listEntryContent
-					$output		 .=	'<div class="listEntryContent">' . "\r\n";
+					$output		 .=	'<div class="listEntryContent">' . PHP_EOL;
 
 					$output		 .=	$newslAttach;
 					
-					$output		 .= '<p class="newslText">' . $newslEntry['text'] . '</p>' . "\r\n" .
-									'<br class="clearfloat"></div>' . "\r\n"; // close listEntryContent
+					$output		 .= '<p class="newslText">' . $newslEntry['text'] . '</p>' . PHP_EOL .
+									'<br class="clearfloat"></div>' . PHP_EOL; // close listEntryContent
 					
-					$output		 .=	'</div>' . "\r\n"; // close listEntry
+					$output		 .=	'</div>' . PHP_EOL; // close listEntry
 					
 					 $i++;
 									
@@ -1756,7 +1789,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			} // Ende foreach
 	
 	
-			$output		 .= 	'</div>' . "\r\n";
+			$output		 .= 	'</div>' . PHP_EOL;
 
 
 			// Datanav
@@ -1769,14 +1802,14 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		}
 		
 		else {
-			$output		 .=	'<p class="notice error">{s_text:nonewsl}</p>' . "\r\n";
+			$output		 .=	'<p class="notice error">{s_text:nonewsl}</p>' . PHP_EOL;
 		}
 
 		// Add newsl button
-		$output		 .=		'<span class="newNewslButton-panel buttonPanel">' . "\r\n" .
+		$output		 .=		'<span class="newNewslButton-panel buttonPanel">' . PHP_EOL .
 							$this->getAddNewslButton("right") .
-							'<br class="clearfloat" />' . "\r\n" .
-							'</span>' . "\r\n";
+							'<br class="clearfloat" />' . PHP_EOL .
+							'</span>' . PHP_EOL;
 		
 	
 		return $output;
@@ -1964,10 +1997,10 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	protected function getNewslControlBar()
 	{
 	
-		$output		 =	'<div class="controlBar">' . "\r\n" .
-						'<form name="sort" action="' . $this->formAction . '" method="post">' . "\r\n" . 
-						'<div class="sortOption small left"><label>{s_label:sort}</label>' . "\r\n" .
-						'<select name="list_newsl" class="listCat" data-action="autosubmit">' . "\r\n";
+		$output		 =	'<div class="controlBar">' . PHP_EOL .
+						'<form name="sort" action="' . $this->formAction . '" method="post">' . PHP_EOL . 
+						'<div class="sortOption small left"><label>{s_label:sort}</label>' . PHP_EOL .
+						'<select name="list_newsl" class="listCat" data-action="autosubmit">' . PHP_EOL;
 					
 		$sortOptions = array("datedsc" => "{s_option:datedsc}",
 							 "dateasc" => "{s_option:dateasc}",
@@ -1982,43 +2015,43 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			if($key == $this->sortList)
 				$output		 .=' selected="selected"';
 				
-			$output		 .= '>' . $value . '</option>' . "\r\n";
+			$output		 .= '>' . $value . '</option>' . PHP_EOL;
 		
 		}
 							
-		$output		 .= 	'</select></div>' . "\r\n";
+		$output		 .= 	'</select></div>' . PHP_EOL;
 		
-		$output		 .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . "\r\n";
+		$output		 .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . PHP_EOL;
 		
 		$output		 .=		$this->getLimitSelect($this->limitOptions, $this->limit);
 							
-		$output		 .=		'</div>' . "\r\n";
+		$output		 .=		'</div>' . PHP_EOL;
 		
 		// Filter Optionen
 		$output		 .=	'<div class="filterOptions cc-table-cell">' . PHP_EOL .
-						'<div class="filterOption left"><label for="all">{s_label:all}</label>' . "\r\n" .
-						'<label class="radioBox markBox">' . "\r\n" .
-						'<input type="radio" name="filter_sent" id="all" value="all"' . ($this->pubFilter == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-						'</label>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'<div class="filterOption left"><label for="sent">{s_label:sent}</label>' . "\r\n" .
-						'<label class="radioBox markBox">' . "\r\n" .
-						'<input type="radio" name="filter_sent" id="sent" value="sent"' . ($this->pubFilter == "sent" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-						'</label>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'<div class="filterOption left"><label for="unsent">{s_label:unsent}</label>' . "\r\n" .
-						'<label class="radioBox markBox">' . "\r\n" .
-						'<input type="radio" name="filter_sent" id="unsent" value="unsent"' . ($this->pubFilter == "unsent" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-						'</label>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'</div>' . "\r\n";
+						'<div class="filterOption left"><label for="all">{s_label:all}</label>' . PHP_EOL .
+						'<label class="radioBox markBox">' . PHP_EOL .
+						'<input type="radio" name="filter_sent" id="all" value="all"' . ($this->pubFilter == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+						'</label>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'<div class="filterOption left"><label for="sent">{s_label:sent}</label>' . PHP_EOL .
+						'<label class="radioBox markBox">' . PHP_EOL .
+						'<input type="radio" name="filter_sent" id="sent" value="sent"' . ($this->pubFilter == "sent" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+						'</label>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'<div class="filterOption left"><label for="unsent">{s_label:unsent}</label>' . PHP_EOL .
+						'<label class="radioBox markBox">' . PHP_EOL .
+						'<input type="radio" name="filter_sent" id="unsent" value="unsent"' . ($this->pubFilter == "unsent" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+						'</label>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 					
-		$output		 .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-						'</form>' . "\r\n";
+		$output		 .=	parent::getTokenInput() .
+						'</form>' . PHP_EOL;
 
 	
 		// list view toggle
-		$output		 .= 	'<span class="editButtons-panel">' . "\r\n";
+		$output		 .= 	'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button list
 		$btnDefs	= array(	"type"		=> "button",
@@ -2030,9 +2063,9 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 	
-		$output		 .=	'</span>' . "\r\n";
+		$output		 .=	'</span>' . PHP_EOL;
 			
-		$output		 .=	'</div>' . "\r\n"; // close controlBar
+		$output		 .=	'</div>' . PHP_EOL; // close controlBar
 
 		
 		
@@ -2041,18 +2074,18 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 			$filter		= '<strong>{s_label:' . ($this->pubFilter == "sent" ? '' : 'un') . 'sent}' . '</strong>';			
 			
-			$output .=	'<span class="showHiddenListEntries actionBox cc-hint">' . "\r\n";
+			$output .=	'<span class="showHiddenListEntries actionBox cc-hint">' . PHP_EOL;
 			
 			// Filter icon
-			$output .=	'<span class="listIcon">' . "\r\n" .
+			$output .=	'<span class="listIcon">' . PHP_EOL .
 						parent::getIcon("filter", "inline-icon") .
 						'</span>' . "\n";
 
 			$output .=	'{s_label:filter}: ' . $filter;
 			
-			$output .=	'<form action="'.$this->formAction.'" method="post">' . "\r\n";
+			$output .=	'<form action="'.$this->formAction.'" method="post">' . PHP_EOL;
 			
-			$output .=	'<span class="editButtons-panel">' . "\r\n";
+			$output .=	'<span class="editButtons-panel">' . PHP_EOL;
 
 			// Button remove filter
 			$btnDefs	= array(	"type"		=> "submit",
@@ -2063,10 +2096,10 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 				
 			$output .=	parent::getButton($btnDefs);
 						
-			$output .=	'<input type="hidden" value="all" name="filter_sent">' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</form>' . "\r\n" .
-						'</span>' . "\r\n";
+			$output .=	'<input type="hidden" value="all" name="filter_sent">' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</form>' . PHP_EOL .
+						'</span>' . PHP_EOL;
 		}
 
 		return $output;
@@ -2083,12 +2116,12 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	{
 
 		// Checkbox zur Mehrfachauswahl zum Löschen und Publizieren
-		$output =		'<div class="actionBox">' . "\r\n" .
-						'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=newsl&entryid=array&action=" method="post" data-history="false">' . "\r\n" .
-						'<label class="markAll markBox" data-mark="#newsletterList">' . "\r\n" .
-						'<input type="checkbox" id="markAllLB-form" data-select="all" /></label>' . "\r\n" .
-						'<label for="markAllLB-form" class="markAllLB"> {s_label:mark}</label>' . "\r\n" .
-						'<span class="editButtons-panel">' . "\r\n";
+		$output =		'<div class="actionBox">' . PHP_EOL .
+						'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=newsl&entryid=array&action=" method="post" data-history="false">' . PHP_EOL .
+						'<label class="markAll markBox" data-mark="#newsletterList">' . PHP_EOL .
+						'<input type="checkbox" id="markAllLB-form" data-select="all" /></label>' . PHP_EOL .
+						'<label for="markAllLB-form" class="markAllLB"> {s_label:mark}</label>' . PHP_EOL .
+						'<span class="editButtons-panel">' . PHP_EOL;
 
 		// Button delete
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2101,9 +2134,9 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output .=		'</span>' . "\r\n" .
-						'</form>' . "\r\n" .
-						'</div>' . "\r\n";
+		$output .=		'</span>' . PHP_EOL .
+						'</form>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	
@@ -2132,36 +2165,36 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getScriptTag()
 	{
 	
-		return	'<script>' . "\r\n" .
-				'head.ready(function(){' . "\r\n" .
-				'head.load({tagEditorcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.tag-editor.min.css"});' . "\r\n" .
-				'head.load({tagEditorcaret: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.caret.min.js"});' . "\r\n" .
-				'head.load({tagEditor: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.tag-editor.min.js"});' . "\r\n" .
-					'$("document").ready(function(){' . "\r\n" .
-				'head.ready("tagEditor", function(){' . "\r\n" .
-						'$("#newsl_extraemails").tagEditor({' . "\r\n" .
-							'maxLength: 2048,' . "\r\n" .
-							'delimiter: ", ;\n",' . "\r\n" .
-							'onChange: function(field, editor, tags){' . "\r\n" .
+		return	'<script>' . PHP_EOL .
+				'head.ready(function(){' . PHP_EOL .
+				'head.load({tagEditorcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.tag-editor.min.css"});' . PHP_EOL .
+				'head.load({tagEditorcaret: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.caret.min.js"});' . PHP_EOL .
+				'head.load({tagEditor: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/tagEditor/jquery.tag-editor.min.js"});' . PHP_EOL .
+					'$("document").ready(function(){' . PHP_EOL .
+				'head.ready("tagEditor", function(){' . PHP_EOL .
+						'$("#newsl_extraemails").tagEditor({' . PHP_EOL .
+							'maxLength: 2048,' . PHP_EOL .
+							'delimiter: ", ;\n",' . PHP_EOL .
+							'onChange: function(field, editor, tags){' . PHP_EOL .
 								'var mailItems = editor.find(".tag-editor-tag");
 								mailItems.each(function(i,e){
 								if(isValidEmailAddress($(e).text())){
 									$(e).removeClass("invalid");
 								}else{$(e).addClass("invalid");}
 								});
-								var extraLab = $(\'label[for="newsl_extraemails"]\');' . "\r\n" .
-								'extraLab.html(extraLab.html().replace(/\([0-9]+\)/, "(" + tags.length + ")"));' . "\r\n" .
-								'editor.next(".deleteAllTags-panel").remove();' . "\r\n" .
-								'if(tags.length > 0 && !editor.next(".deleteAllTags-panel").length){ editor.after(\'<span class="deleteAllTags-panel buttonPanel"><button class="deleteAllTags cc-button button button-small button-icon-only btn right" type="button" role="button" title="{s_javascript:removeall}"><span class="cc-admin-icons icons cc-icon-cancel-circle">&nbsp;</span></button><br class="clearfloat" /></span>\'); }' . "\r\n" .
-								'editor.next(".deleteAllTags-panel").children(".deleteAllTags").click(function(){' . "\r\n" .
-									'for (i = 0; i < tags.length; i++) { field.tagEditor("removeTag", tags[i]); }' . "\r\n" .
-								'});' . "\r\n" .
-							'}' . "\r\n" .
-						'});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+								var extraLab = $(\'label[for="newsl_extraemails"]\');' . PHP_EOL .
+								'extraLab.html(extraLab.html().replace(/\([0-9]+\)/, "(" + tags.length + ")"));' . PHP_EOL .
+								'editor.next(".deleteAllTags-panel").remove();' . PHP_EOL .
+								'if(tags.length > 0 && !editor.next(".deleteAllTags-panel").length){ editor.after(\'<span class="deleteAllTags-panel buttonPanel"><button class="deleteAllTags cc-button button button-small button-icon-only btn right" type="button" role="button" title="{s_javascript:removeall}"><span class="cc-admin-icons icons cc-icon-cancel-circle">&nbsp;</span></button><br class="clearfloat" /></span>\'); }' . PHP_EOL .
+								'editor.next(".deleteAllTags-panel").children(".deleteAllTags").click(function(){' . PHP_EOL .
+									'for (i = 0; i < tags.length; i++) { field.tagEditor("removeTag", tags[i]); }' . PHP_EOL .
+								'});' . PHP_EOL .
+							'}' . PHP_EOL .
+						'});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	
@@ -2170,21 +2203,21 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getEditableScriptTag($tag)
 	{
 	
-		return	'<script>' . "\r\n" .
-				'head.ready(function(){' . "\r\n" .
-				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . "\r\n" .
-				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . "\r\n" .
-				'head.ready("xeditable", function(){' . "\r\n" .
-					'$("document").ready(function(){' . "\r\n" .
-						'$(' . $tag . ').editable({' . "\r\n" .
-							'source: "' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=getauthors&mod=' . parent::$type . '",' . "\r\n" .
-							'sourceCache: true,' . "\r\n" .
-							'showbuttons: false' . "\r\n" .
-						'});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+		return	'<script>' . PHP_EOL .
+				'head.ready(function(){' . PHP_EOL .
+				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . PHP_EOL .
+				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . PHP_EOL .
+				'head.ready("xeditable", function(){' . PHP_EOL .
+					'$("document").ready(function(){' . PHP_EOL .
+						'$(' . $tag . ').editable({' . PHP_EOL .
+							'source: "' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=getauthors&mod=' . parent::$type . '",' . PHP_EOL .
+							'sourceCache: true,' . PHP_EOL .
+							'showbuttons: false' . PHP_EOL .
+						'});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	
@@ -2193,12 +2226,12 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getSelectScriptTag()
 	{
 
-		$output	=	'<script>' . "\r\n" .
-					'head.ready("jquery", function(){' . "\r\n" .
-					'head.load({pqselectcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/pqSelect/pqselect.min.css"});' . "\r\n" .
-					'head.load({pqselect: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/pqSelect/pqselect.min.js"});' . "\r\n" .
-					'});' . "\r\n" .
-					'</script>' . "\r\n";
+		$output	=	'<script>' . PHP_EOL .
+					'head.ready("jquery", function(){' . PHP_EOL .
+					'head.load({pqselectcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/pqSelect/pqselect.min.css"});' . PHP_EOL .
+					'head.load({pqselect: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/pqSelect/pqselect.min.js"});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'</script>' . PHP_EOL;
 		
 		$output	.=	'<script>
 					head.ready("pqselect", function(){
@@ -2224,7 +2257,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	
 		$output	.=	'});
 					});
-					</script>' . "\r\n";
+					</script>' . PHP_EOL;
 		
 		return $output;
 	
@@ -2235,9 +2268,9 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getBacktoListButton()
 	{
 		
-		$output =	'<form action="' . $this->formAction . '" method="post">' . "\r\n"; // Formular mit Buttons zum Zurückgehen
+		$output =	'<form action="' . $this->formAction . '" method="post">' . PHP_EOL; // Formular mit Buttons zum Zurückgehen
 
-		$output	.=	'<span class="editButtons-panel">' . "\r\n";
+		$output	.=	'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button backtolist
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2252,9 +2285,9 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		$output .=	parent::getButton($btnDefs);
 		
 		
-		$output .=	'<input type="hidden" value="date" name="list_newsl">' . "\r\n" .
-					'</span>' . "\r\n" .
-					'</form>' . "\r\n";
+		$output .=	'<input type="hidden" value="date" name="list_newsl">' . PHP_EOL .
+					'</span>' . PHP_EOL .
+					'</form>' . PHP_EOL;
 	
 		return $output;
 	
@@ -2265,7 +2298,7 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 	public function getAddNewslButton($align = "left")
 	{
 		
-		$output	=	'<form action="' . $this->formAction . '" method="post">' . "\r\n";
+		$output	=	'<form action="' . $this->formAction . '" method="post">' . PHP_EOL;
 		
 		// Button new
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2277,8 +2310,8 @@ class Admin_CampaignsNewsl extends Admin_Campaigns implements AdminTask
 		
 		$output	.=	parent::getButton($btnDefs);
 		
-		$output	.=	'<input name="add_new" type="hidden" value="1" />' . "\r\n" .
-					'</form>' . "\r\n";
+		$output	.=	'<input name="add_new" type="hidden" value="1" />' . PHP_EOL .
+					'</form>' . PHP_EOL;
 
 		return $output;
 	

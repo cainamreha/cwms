@@ -247,7 +247,9 @@ class ImgElement extends ElementFactory implements Elements
 			else
 				$intLink[0] = str_replace(array("{sitelink}/","{root}/"), "", $intLink[0]);
 			
-			if(strrpos($intLink[0], PAGE_EXT) !== strlen($intLink[0]) - strlen(PAGE_EXT))
+			if(strrpos($intLink[0], '_doc-') === false
+			&& strrpos($intLink[0], PAGE_EXT) !== strlen($intLink[0]) - strlen(PAGE_EXT)
+			)
 				$intLink[0] .= PAGE_EXT;
 			
 			$link = '<a href="' . PROJECT_HTTP_ROOT . "/" . $intLink[0] . (isset($intLink[1]) ? '#'.$intLink[1] : '') . '"';

@@ -104,29 +104,29 @@ class CatCoreEventsListener extends Admin_ModulesData
 	public function onGetGoeditcatFields(Event $event)
 	{
 
-		$output	=	'<input type="hidden" name="edit_cat" value="' . $event->catData['cat_id'] . '" />' . "\r\n" .
-					'<input type="hidden" name="go_edit_cat" value="' . $event->catData['cat_id'] . '" />' . "\r\n" .
-					'<input type="hidden" name="dataCatName" value="' . $event->catData['category_'.$event->editLang] . '" />' . "\r\n" .
-					'<input type="hidden" name="dataParentCat" value="' . $event->catData['parent_cat'] . '" />' . "\r\n" .
-					'<input type="hidden" name="oldParentCat" value="' . $event->catData['parent_cat'] . '" />' . "\r\n" .
-					'<input type="hidden" name="sort_id" value="' . $event->catData['sort_id'] . '" />' . "\r\n" .
-					'<input type="hidden" name="catTeaser" value="' . $event->catData['cat_teaser_'.$event->editLang] . '" />' . "\r\n";
+		$output	=	'<input type="hidden" name="edit_cat" value="' . htmlspecialchars($event->catData['cat_id']) . '" />' . "\r\n" .
+					'<input type="hidden" name="go_edit_cat" value="' . htmlspecialchars($event->catData['cat_id']) . '" />' . "\r\n" .
+					'<input type="hidden" name="dataCatName" value="' . htmlspecialchars($event->catData['category_'.$event->editLang]) . '" />' . "\r\n" .
+					'<input type="hidden" name="dataParentCat" value="' . htmlspecialchars($event->catData['parent_cat']) . '" />' . "\r\n" .
+					'<input type="hidden" name="oldParentCat" value="' . htmlspecialchars($event->catData['parent_cat']) . '" />' . "\r\n" .
+					'<input type="hidden" name="sort_id" value="' . htmlspecialchars($event->catData['sort_id']) . '" />' . "\r\n" .
+					'<input type="hidden" name="catTeaser" value="' . htmlspecialchars($event->catData['cat_teaser_'.$event->editLang]) . '" />' . "\r\n";
 				
 		$groupArray = explode(",", $event->catData['group']);
 		
 		foreach($groupArray as $targetGroup) {
-			$output .= '<input type="hidden" name="newsGroupRead[]" value="' . $targetGroup . '" />' . "\r\n";
+			$output .= '<input type="hidden" name="newsGroupRead[]" value="' . htmlspecialchars($targetGroup) . '" />' . "\r\n";
 		}
 				
 		$groupArray = explode(",", $event->catData['group_edit']);
 		
 		foreach($groupArray as $targetGroup) {
-			$output .= '<input type="hidden" name="newsGroupWrite[]" value="' . $targetGroup . '" />' . "\r\n";
+			$output .= '<input type="hidden" name="newsGroupWrite[]" value="' . htmlspecialchars($targetGroup) . '" />' . "\r\n";
 		}
 		
-		$output .=	'<input type="hidden" name="newsComments" value="' . $event->catData['comments'] . '" />' . "\r\n" .
-					'<input type="hidden" name="newsRating" value="' . $event->catData['rating'] . '" />' . "\r\n" .
-					'<input type="hidden" name="dataTargetPageID" value="' . $event->catData['target_page'] . '" />' . "\r\n" .
+		$output .=	'<input type="hidden" name="newsComments" value="' . htmlspecialchars($event->catData['comments']) . '" />' . "\r\n" .
+					'<input type="hidden" name="newsRating" value="' . htmlspecialchars($event->catData['rating']) . '" />' . "\r\n" .
+					'<input type="hidden" name="dataTargetPageID" value="' . htmlspecialchars($event->catData['target_page']) . '" />' . "\r\n" .
 					'<input type="hidden" name="catImg" value="' . htmlspecialchars($event->catData['image']) . '" />' . "\r\n" .
 					'<input type="hidden" name="img_existFile" value="" />' . "\r\n" .
 					'<input type="hidden" name="img_alttext" value="" />' . "\r\n" .

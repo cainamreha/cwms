@@ -215,16 +215,6 @@ class Contents extends Modules
 		}
 		
 		
-		// Bei nicht Systemseiten, auf Cache-Inhalte prüfen
-		if($this->pageId > 0) {
-		
-			#####################################################################################
-			######## Falls nicht Systemseiten, Seite wenn möglich aus HTML-Cache laden ##########
-			#####################################################################################
-			$this->checkCacheContent(); //  ggf. Cache-Inhalt laden (Script wird abgebrochen)
-		}
-		
-		
 		// Token auswerten
 		$this->validateToken();
 		
@@ -232,6 +222,16 @@ class Contents extends Modules
 		// Neuen Token zur Session hinzufügen
 		if(!isset($GLOBALS['_POST']['notoken']) && parent::$sessionTokenSet == false) {						
 			$this->setToken();
+		}
+		
+		
+		// Bei nicht Systemseiten, auf Cache-Inhalte prüfen
+		if($this->pageId > 0) {
+		
+			#####################################################################################
+			######## Falls nicht Systemseiten, Seite wenn möglich aus HTML-Cache laden ##########
+			#####################################################################################
+			$this->checkCacheContent(); //  ggf. Cache-Inhalt laden (Script wird abgebrochen)
 		}
 		
 		
@@ -949,11 +949,13 @@ class Contents extends Modules
 	{
 	
 		// Falls Seite aus Cache geladen werden kann (nur bei öffentlichen Seiten, wenn kein Post oder Get-Parameter außer pageID)				
-		if(	CACHE && 
-			$this->group == "public" && 
-			isset($GLOBALS['_GET']['page']) && count($GLOBALS['_GET']) == 1 && 
-			(!is_array($GLOBALS['_POST']) || count($GLOBALS['_POST']) == 0)
-		  ) {
+		if(CACHE
+		&& $this->group == "public"
+		&& isset($GLOBALS['_GET']['page'])
+		&& count($GLOBALS['_GET']) == 1
+		&& empty($GLOBALS['_GET']['ajax'])
+		&& (!is_array($GLOBALS['_POST']) || count($GLOBALS['_POST']) == 0)
+		) {
 
 			$htmlFile = HTML_CACHE_DIR . $this->lang . '/' . $this->pageId . '.html';
 			
@@ -962,8 +964,14 @@ class Contents extends Modules
 			
 				$cacheContent = file_get_contents($htmlFile);
 				$cacheContent = str_replace("{#browser}", Log::$browser, $cacheContent);
+				$cacheContent = str_replace("{#token}", parent::$token, $cacheContent);
 				
 				echo $cacheContent;
+
+				// Ensure session is saved before sending response, see https://github.com/symfony/symfony/pull/12341
+				#if ((PHP_VERSION_ID >= 50400 && PHP_SESSION_ACTIVE === session_status()) || (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id())) {
+					session_write_close();
+				#}
 				
 				exit;
 				die();
@@ -1188,7 +1196,6 @@ class Contents extends Modules
 		$feMode				= parent::$feMode;
 		$hasDbContent		= false;
 		$sessionCopy		= false;
-		$conIconPath		= 'system/themes/' . ADMIN_THEME . '/img';
 
 		$tc	= 0;
 
@@ -1233,7 +1240,6 @@ class Contents extends Modules
 				$conType		= "";
 				$subType		= "";
 				$conDef			= array();
-				$conIconPath	= SYSTEM_HTTP_ROOT . '/themes/' . ADMIN_THEME . '/img';
 				$isPlugin		= isset($this->isContentPlugin[$conTab]["con".$i]);
 				
 				
@@ -1250,10 +1256,6 @@ class Contents extends Modules
 				// Inhaltselement-Definitionen ermitteln
 				if(isset($this->contentDefinitions[$conTab]["con".$i]))
 					$conDef	= $this->contentDefinitions[$conTab]["con".$i];
-					
-				// Falls Plugin
-				if($isPlugin)
-					$conIconPath	= PLUGIN_URL . '/' . $this->contentTypes[$conTab]["con".$i] . '/img';
 			
 			
 				if($conType == "text") {
@@ -1270,7 +1272,6 @@ class Contents extends Modules
 
 				
 				$loop_tpl->assign("e_path", PROJECT_HTTP_ROOT);
-				$loop_tpl->assign("e_coniconpath", $conIconPath);
 				$loop_tpl->assign("e_connr", $i);
 				$loop_tpl->assign("e_edittask", "tpl&type=edit");
 				$loop_tpl->assign("e_contype", $conType);
@@ -1381,7 +1382,7 @@ class Contents extends Modules
 					$taskStr	= "tpl&type=edit";
 					$diffCon	= !in_array($this->currentTemplate, $this->diffConIDs) || count($this->diffConTables[$conTab]) == 0;
 					
-					$this->assignEmptyFEElement($loop_tpl, $this->currentTemplate, $this->currentTemplate, $conTab, $conArea, "contents_", $conMax, $taskStr, $sessionCopy, $diffCon, $conIconPath);
+					$this->assignEmptyFEElement($loop_tpl, $this->currentTemplate, $this->currentTemplate, $conTab, $conArea, "contents_", $conMax, $taskStr, $sessionCopy, $diffCon);
 					
 				}
 				
@@ -1437,7 +1438,6 @@ class Contents extends Modules
 			$conType		= "";
 			$subType		= "";
 			$conDef			= array();
-			$conIconPath	= SYSTEM_HTTP_ROOT . '/themes/' . ADMIN_THEME . '/img';
 			$isPlugin		= isset($this->isContentPlugin[$baseTableContents]["con".$i]);
 			
 
@@ -1463,17 +1463,12 @@ class Contents extends Modules
 			if(isset($this->contentDefinitions[$baseTableContents]["con".$i]))
 				$conDef	= $this->contentDefinitions[$baseTableContents]["con".$i];
 			
-			// Falls Plugin
-			if($isPlugin)
-				$conIconPath	= PLUGIN_URL . '/' . $this->contentTypes[$baseTableContents]["con".$i] . '/img';
-			
 			// EditDetails Tpl
 			$editDetails	= $this->getEditDetails($conType, $isPlugin);
 			$loop_tpl->assign("e_editdetails", $editDetails);
 		
 		
 			$loop_tpl->assign("e_path", PROJECT_HTTP_ROOT);
-			$loop_tpl->assign("e_coniconpath", $conIconPath);
 			$loop_tpl->assign("e_connr", $i);
 			$loop_tpl->assign("e_edittask", "edit");
 			$loop_tpl->assign("e_contype", $conType);
@@ -1581,7 +1576,7 @@ class Contents extends Modules
 				$taskStr	= "edit";
 				$diffCon	= !in_array($this->pageId, $this->diffConIDs) || count($this->diffConTables[$baseTableContents]) == 0;
 				
-				$this->assignEmptyFEElement($loop_tpl, $this->pageId, $this->currentPage, $baseTableContents, "main", "contents_", $conMax, $taskStr, $sessionCopy, $diffCon, $conIconPath);
+				$this->assignEmptyFEElement($loop_tpl, $this->pageId, $this->currentPage, $baseTableContents, "main", "contents_", $conMax, $taskStr, $sessionCopy, $diffCon);
 				
 			}
 						
@@ -1620,10 +1615,8 @@ class Contents extends Modules
 	{
 
 		// Accountmenu
-		if(!$this->adminPage) {
-			$accountMenu = $this->getAccountMenu(); // Benutzerkontomenü generieren
-			self::$o_mainTemplate->poolAssign["account"]	= $accountMenu;
-		}
+		if(!$this->adminPage)
+			self::$o_mainTemplate->poolAssign["account"]	= $this->getAccountMenu(false, HTTPS_PROTOCOL || $this->backendLog);
 
 		// Menues
 		self::$o_mainTemplate->poolAssign["main_menu"]		= $this->mainMenu;
@@ -1664,11 +1657,10 @@ class Contents extends Modules
 	 * @access	public
      * @return  string
 	 */
-	public function assignEmptyFEElement($loop_tpl, $id, $page, $conTab, $conArea, $tabPrefix, $conMax, $taskStr, $sessionCopy, $diffCon, $conIconPath)
+	public function assignEmptyFEElement($loop_tpl, $id, $page, $conTab, $conArea, $tabPrefix, $conMax, $taskStr, $sessionCopy, $diffCon)
 	{
 
 		$loop_tpl->assign("e_path", PROJECT_HTTP_ROOT);
-		$loop_tpl->assign("e_coniconpath", $conIconPath);
 		$loop_tpl->assign("e_edittask", $taskStr);
 		$loop_tpl->assign("e_connr", 0);
 		$loop_tpl->assign("e_id", $id);

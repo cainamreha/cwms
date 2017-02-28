@@ -72,8 +72,9 @@ class PDFMaker extends \TCPDF
 		
 		if(!empty($logo)) {
 			$logoSize	= $size = getimagesize($logo);
-			$imgWidth	= $logoSize[0] * 2.54 / 72 * 10;
-			$xPos		= 209 - $imgWidth;
+			#$imgWidth	= $logoSize[0] * 2.54 / 72 * 10; // inches
+			$imgWidth	= $logoSize[0] * 1 / 72 * 10;
+			$xPos		= 200 - $imgWidth;
 			$yPos		= 5;
 			$this->Image(PROJECT_DOC_ROOT . '/' . CC_IMAGE_FOLDER . '/logo-pdf.' . $logoExt, $xPos, $yPos, $imgWidth, 0, strtoupper($logoExt), '', '', '', true, 72);
 		}
@@ -99,7 +100,7 @@ class PDFMaker extends \TCPDF
 		$this->SetDrawColor(220, 220, 220);
 		$this->SetLineWidth(1);
 		//Title
-		$this->Cell(50, 6, $this->headline, 'TB', 1, 'C');
+		$this->Cell(100, 6, $this->headline, 'TB', 1, 'C', 0, '', 1);
 		//Line break
 		$this->Ln(10);
 

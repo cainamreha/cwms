@@ -671,10 +671,10 @@ ul#sortableGallery.gallViewImage .ui-sortable-helper {
 	display:none;
 	z-index: 10010;
 }
-.cc-gallery-item-details  .galleryItemCaptionBox {
+.cc-gallery-item-details .galleryItemCaptionBox {
     width:100%;
 }
-.cc-gallery-item-details  .galleryItemCaptionBox-content {
+.cc-gallery-item-details .galleryItemCaptionBox-content {
 	max-height:360px;
 	overflow:auto;
 }
@@ -683,7 +683,7 @@ ul#sortableGallery.gallViewImage .ui-sortable-helper {
 		min-width:720px;
 		max-width:0;
 	}
-	.cc-gallery-item-details  .galleryItemCaptionBox-content {
+	.cc-gallery-item-details .galleryItemCaptionBox-content {
 		max-height:450px;
 	}
 }
@@ -691,7 +691,7 @@ ul#sortableGallery.gallViewImage .ui-sortable-helper {
 	.cc-gallery-item-details  {
 		min-width:720px;
 	}
-	.cc-gallery-item-details  .galleryItemCaptionBox-content {
+	.cc-gallery-item-details .galleryItemCaptionBox-content {
 		max-height:720px;
 	}
 }
@@ -705,25 +705,25 @@ ul#sortableGallery.gallViewImage .ui-sortable-helper {
 	padding:10px;
 	float:right;
 }
-.cc-gallery-item-details  .galleryItem-image {
+.cc-gallery-item-details .galleryItem-image {
 	margin:0;
 }
-.cc-gallery-item-details  .galleryItemCaptionBox-title,
+.cc-gallery-item-details .galleryItemCaptionBox-title,
 .cc-gallery-item-details .galleryItemCaptionBox-text {
 	margin-bottom:10px;
 	padding:10px;
 	background:#e6edfc;
 	position:relative;
 }
-.cc-gallery-item-details  .galleryItemCaptionBox-title input,
+.cc-gallery-item-details .galleryItemCaptionBox-title input[type="text"],
 .cc-gallery-item-details .galleryItemCaptionBox-title label {
 	width:75%;
 }
-.cc-gallery-item-details  .boxHeader {
+.cc-gallery-item-details .boxHeader {
 	margin:-15px -15px 20px;
 	cursor:move;
 }
-.cc-gallery-item-details  .boxHeader .cc-h2 {
+.cc-gallery-item-details .boxHeader .cc-h2 {
 	margin:0px;
 }
 div.listBox ul#sortableGallery button.editgall {

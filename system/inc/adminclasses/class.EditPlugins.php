@@ -224,7 +224,7 @@ class EditPlugins extends Admin
 		
 		require_once PROJECT_DOC_ROOT."/inc/classes/Update/class.LiveUpdate.php"; // Klasse LiveUpdate einbinden
 		
-		$o_update		= new LiveUpdate($this->DB, $this->installedPlugins);
+		$o_update		= new LiveUpdate($this->DB, $this->o_lng, $this->installedPlugins);
 		$o_update->initLiveUpdater(false, true, true);
 		
 		// Update output

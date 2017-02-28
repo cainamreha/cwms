@@ -41,13 +41,13 @@ class Admin_File extends Admin implements AdminTask
 	{
 
 		// Header
-		$this->adminHeader		=	'{s_text:adminfile}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminfile}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 							
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
 
-		$this->adminContent		.=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent		.=	'<div class="adminArea">' . PHP_EOL;
 		
 
 		// Ggf. zu große POST-Requests abfangen
@@ -173,11 +173,11 @@ class Admin_File extends Admin implements AdminTask
 				$uploadRes	= $o_uploader->uploadFiles($GLOBALS['_FILES']['upload'], explode(",", $GLOBALS['_POST']['selFiles']));
 				
 				if(count($uploadRes["error"]) > 0)
-					$this->notice .=	'<p class="error">{s_error:file}</p>' . "\r\n" .
-										'<ul id="errorMes">' . implode("", $uploadRes["error"]) . '</ul>' . "\r\n";
+					$this->notice .=	'<p class="error">{s_error:file}</p>' . PHP_EOL .
+										'<ul id="errorMes">' . implode("", $uploadRes["error"]) . '</ul>' . PHP_EOL;
 				
 				elseif($uploadRes["success"])
-					$this->notice .=	'<p class="notice success">{s_notice:fileok}</p>' . "\r\n";
+					$this->notice .=	'<p class="notice success">{s_notice:fileok}</p>' . PHP_EOL;
 
 			}
 			
@@ -190,13 +190,13 @@ class Admin_File extends Admin implements AdminTask
 			$this->adminContent .= $this->notice;
 
 		
-		$this->adminContent .=	'<h2 class="switchToggle cc-section-heading cc-h2">{s_text:uploadfile}</h2>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<ul class="framedItems fileUpload' . ($this->uploadMethod == "uploadify" ? ' fileUpload-uploadify' : '') . '">' . "\r\n" .
-								'<li class="uploadDetails">' . "\r\n";
+		$this->adminContent .=	'<h2 class="switchToggle cc-section-heading cc-h2">{s_text:uploadfile}</h2>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<ul class="framedItems fileUpload' . ($this->uploadMethod == "uploadify" ? ' fileUpload-uploadify' : '') . '">' . PHP_EOL .
+								'<li class="uploadDetails">' . PHP_EOL;
 							
-		$this->adminContent .=	'<form action="' . $this->formAction . '" method="post" name="uploadfm" id="uploadfm" class="' . $this->uploadMethod . '-uploader" enctype="multipart/form-data"' . ($this->uploadMethod == "default" ? ' data-ajax="false"' : '') . '>' . "\r\n" .
-								'<input id="maxUploadSize" name="maxUploadSize" type="hidden" value="' . Files::getAllowedFileSize() .'" />' . "\r\n";
+		$this->adminContent .=	'<form action="' . $this->formAction . '" method="post" name="uploadfm" id="uploadfm" class="' . $this->uploadMethod . '-uploader" enctype="multipart/form-data"' . ($this->uploadMethod == "default" ? ' data-ajax="false"' : '') . '>' . PHP_EOL .
+								'<input id="maxUploadSize" name="maxUploadSize" type="hidden" value="' . Files::getAllowedFileSize() .'" />' . PHP_EOL;
 
 
 		
@@ -205,8 +205,8 @@ class Admin_File extends Admin implements AdminTask
 		
 		
 		// Filemanager
-		$fileManager	=	'<ul class="editList folderList">' . "\r\n" .
-							'<li class="manageFiles buttonPanel">' . "\r\n" .
+		$fileManager	=	'<ul class="editList folderList">' . PHP_EOL .
+							'<li class="manageFiles buttonPanel">' . PHP_EOL .
 							parent::getIcon('info', 'tooltipHint right', 'title="{s_hint:filemanager}"');
 							
 		// Filemanager MediaList-Button
@@ -219,39 +219,39 @@ class Admin_File extends Admin implements AdminTask
 		
 		$fileManager .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$fileManager .=		'</li>' . "\r\n" .
-							'</ul>' . "\r\n";
+		$fileManager .=		'</li>' . PHP_EOL .
+							'</ul>' . PHP_EOL;
 
 
-		$this->adminContent .=	'</form>' . "\r\n" .
-								'</li>' . "\r\n";
+		$this->adminContent .=	'</form>' . PHP_EOL .
+								'</li>' . PHP_EOL;
 		
-		$this->adminContent .=	'<ul id="uploadFilesList" class="framedItems"><li>{s_javascript:nofilessel}</li></ul>' . "\r\n" . 
+		$this->adminContent .=	'<ul id="uploadFilesList" class="framedItems"><li>{s_javascript:nofilessel}</li></ul>' . PHP_EOL . 
 								$fileManager;
 								
 		// Uploadinfo
-		$this->adminContent .=	'<ul class="framedItems">' . "\r\n" .
-								'<li>' . "\r\n" .
-								'<strong>{s_text:uploadfile}</strong>' . "\r\n";
+		$this->adminContent .=	'<ul class="framedItems">' . PHP_EOL .
+								'<li>' . PHP_EOL .
+								'<strong>{s_text:uploadfile}</strong>' . PHP_EOL;
 		
 		// File upload method
 		$this->adminContent .=	$o_uploader->getFormChangeDefaultUploadMethod($this->formAction);
 		
 		
-		$this->adminContent .=	'<label>' . sprintf(ContentsEngine::replaceStaText('{s_label:filesize}'), MIN_IMG_SIZE, MAX_IMG_SIZE) . '</label>' . $this->allowedFileSizeStr . "\r\n" .
-								'<label>{s_text:upload}</label>' . implode(", ", $this->allowedFiles) . '<br />' . "\r\n";
+		$this->adminContent .=	'<label>' . sprintf(ContentsEngine::replaceStaText('{s_label:filesize}'), MIN_IMG_SIZE, MAX_IMG_SIZE) . '</label>' . $this->allowedFileSizeStr . PHP_EOL .
+								'<label>{s_text:upload}</label>' . implode(", ", $this->allowedFiles) . '<br />' . PHP_EOL;
 								
-		$this->adminContent .=	'</li>' . "\r\n" .
-								'</ul>' . "\r\n";
+		$this->adminContent .=	'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL;
 								
-		$this->adminContent .=	'</ul>' . "\r\n";
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</ul>' . PHP_EOL;
+		$this->adminContent .=	'</div>' . PHP_EOL;
 		
-		$this->adminContent .= 	'<h2 class="switchToggle cc-section-heading cc-h2 hideNext">{s_text:managefiles}</h2>' . "\r\n" . 
-								'<ul>' . "\r\n" .
+		$this->adminContent .= 	'<h2 class="switchToggle cc-section-heading cc-h2 hideNext">{s_text:managefiles}</h2>' . PHP_EOL . 
+								'<ul>' . PHP_EOL .
 								$fileManager .
-								'<ul class="editList folderList">' . "\r\n" .
-								'<li class="listItem" data-menu="context" data-target="contextmenu-fl-0">' . "\r\n";
+								'<ul class="editList folderList">' . PHP_EOL .
+								'<li class="listItem" data-menu="context" data-target="contextmenu-fl-0">' . PHP_EOL;
 		
 		// Files MediaList-Button
 		$mediaListButtonDef		= array(	"class"	 	=> "files",
@@ -264,7 +264,7 @@ class Admin_File extends Admin implements AdminTask
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
 								
-		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-0">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-0">' . PHP_EOL;
 		
 		
 		// Button delete
@@ -277,9 +277,9 @@ class Admin_File extends Admin implements AdminTask
 			
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</li>' . "\r\n";
-		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-1">' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</li>' . PHP_EOL;
+		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-1">' . PHP_EOL;
 		
 		// Images MediaList-Button
 		$mediaListButtonDef		= array(	"class"	 	=> "images",
@@ -291,7 +291,7 @@ class Admin_File extends Admin implements AdminTask
 		
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-1">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-1">' . PHP_EOL;
 		
 		// Button generate thumbs
 		$btnDefs	= array(	"type"		=> "button",
@@ -314,9 +314,9 @@ class Admin_File extends Admin implements AdminTask
 			
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</li>' . "\r\n";
-		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-2">' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</li>' . PHP_EOL;
+		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-2">' . PHP_EOL;
 		
 		// Docs MediaList-Button
 		$mediaListButtonDef		= array(	"class"	 	=> "docs",
@@ -329,7 +329,7 @@ class Admin_File extends Admin implements AdminTask
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
 								
-		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-2">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-2">' . PHP_EOL;
 		
 		// Button delete
 		$btnDefs	= array(	"type"		=> "button",
@@ -341,9 +341,9 @@ class Admin_File extends Admin implements AdminTask
 			
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</li>' . "\r\n";
-		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-3">' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</li>' . PHP_EOL;
+		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-3">' . PHP_EOL;
 		
 
 		// Video MediaList-Button
@@ -357,7 +357,7 @@ class Admin_File extends Admin implements AdminTask
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
 								
-		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-3">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-3">' . PHP_EOL;
 		
 		// Button delete
 		$btnDefs	= array(	"type"		=> "button",
@@ -369,9 +369,9 @@ class Admin_File extends Admin implements AdminTask
 			
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</li>' . "\r\n";
-		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-4">' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</li>' . PHP_EOL;
+		$this->adminContent .=	'<li class="listItem" data-menu="context" data-target="contextmenu-fl-4">' . PHP_EOL;
 
 		
 		// Audio MediaList-Button
@@ -385,7 +385,7 @@ class Admin_File extends Admin implements AdminTask
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
 								
-		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-4">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel" data-id="contextmenu-fl-4">' . PHP_EOL;
 		
 		// Button delete
 		$btnDefs	= array(	"type"		=> "button",
@@ -398,18 +398,18 @@ class Admin_File extends Admin implements AdminTask
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</li></ul>' . "\r\n" . 
-								'</ul>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</li></ul>' . PHP_EOL . 
+								'</ul>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 
 		
 		// Contextmenü-Script
 		$this->adminContent .=	$this->getContextMenuScript();
 
 		
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" . 
-								'<ul><li class="submit back">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL . 
+								'<ul><li class="submit back">' . PHP_EOL;
 
 		// Button gallery
 		$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=modules&type=gallery&name=',
@@ -424,9 +424,9 @@ class Admin_File extends Admin implements AdminTask
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 		
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li></ul>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li></ul>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 		
 		
 		// #adminContent close

@@ -185,6 +185,7 @@
                 var newImgSrc = imgSrc.substring(0, point) + suffixName + '.' + imgType;
 				
 				var testImgSrc = function(newImgSrc){
+					try {
 					$.ajax({
 						url: newImgSrc,
 						async: false,
@@ -193,11 +194,16 @@
 							newImg	= $('<img>').attr('src', newImgSrc).css('position', 'absolute');
 							return newImg;
 						},
-						error: function(){
+						error: function(xhr, ajaxOptions, err){
 							newImg	= $('<img>').attr('src', imgSrc).css('position', 'absolute');						
+							console.log(newImgSrc + ' ' + err);
 							return newImg;
 						}
 					});
+					}
+					catch(err) {
+						console.log(err);
+					}
 					return newImg;
 				};
 				

@@ -27,13 +27,13 @@ class Admin_Update extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:adminupdate}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminupdate}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
 		
-		$this->adminContent 	.=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent 	.=	'<div class="adminArea">' . PHP_EOL;
 		
 
 		$formAction		= ADMIN_HTTP_ROOT . '?task=update';
@@ -42,15 +42,15 @@ class Admin_Update extends Admin implements AdminTask
 		$showBackButton = false;
 		
 
-		$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:coreupdates}</h2>' . "\r\n" .
-								'<div class="updateList">' . "\r\n";
+		$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:coreupdates}</h2>' . PHP_EOL .
+								'<div class="updateList">' . PHP_EOL;
 		
 		// Update
 		if(CC_UPDATE_CHECK) {
 		
 			require_once PROJECT_DOC_ROOT."/inc/classes/Update/class.LiveUpdate.php"; // Klasse LiveUpdate einbinden
 			
-			$o_update		= new LiveUpdate($this->DB, $this->installedPlugins);
+			$o_update		= new LiveUpdate($this->DB, $this->o_lng, $this->installedPlugins);
 			$o_update->initLiveUpdater(true, false);
 			
 			// Update output
@@ -59,9 +59,9 @@ class Admin_Update extends Admin implements AdminTask
 			// Plugin updates
 			if(count($this->installedPlugins) > 0) {
 			
-				$this->adminContent .=	'</div>' . "\r\n";
-				$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:pluginupdates}</h2>' . "\r\n" .
-										'<div class="updateList">' . "\r\n";
+				$this->adminContent .=	'</div>' . PHP_EOL;
+				$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:pluginupdates}</h2>' . PHP_EOL .
+										'<div class="updateList">' . PHP_EOL;
 				
 				$this->adminContent .=	$o_update->getUpdate(false, true);
 			}
@@ -73,16 +73,16 @@ class Admin_Update extends Admin implements AdminTask
 		
 		}
 		
-		$this->adminContent .=	'</div>' . "\r\n";
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 
 
 		// Zurückbuttons
-		$this->adminContent .=	'<p>&nbsp;</p>' . "\r\n" . 
-								'<div class="adminArea">' . "\r\n" . 
-								'<ul>' . "\r\n" .
-								'<li class="submit back">' . "\r\n";
+		$this->adminContent .=	'<p>&nbsp;</p>' . PHP_EOL . 
+								'<div class="adminArea">' . PHP_EOL . 
+								'<ul>' . PHP_EOL .
+								'<li class="submit back">' . PHP_EOL;
 
 		if($showBackButton) {
 			
@@ -99,10 +99,10 @@ class Admin_Update extends Admin implements AdminTask
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 				
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" . 
-								'</ul>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL .
+								'</div>' . PHP_EOL;
 	
 		// #adminContent close
 		$this->adminContent	.= $this->closeAdminContent();

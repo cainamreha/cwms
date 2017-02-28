@@ -32,43 +32,43 @@ class Admin_Search extends Admin implements AdminTask
 		
 
 		// Enthält Headerbox
-		$this->adminHeader	=	'{s_text:adminsearch}' . "\r\n" . 
-								'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader	=	'{s_text:adminsearch}' . PHP_EOL . 
+								$this->closeTag("#headerBox");
 							
 		// #adminContent
 		$this->adminContent =	$this->openAdminContent();
 
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" .
-								'<h2 class="cc-section-heading cc-h2">{s_label:search}</h2>' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL .
+								'<h2 class="cc-section-heading cc-h2">{s_label:search}</h2>' . PHP_EOL;
 								
 		
 		// Bei mehreren Sprachen Sprachauswahl einbinden
 		$this->getLangSelection();
 		
 		
-		$this->adminContent .=	'<h3 class="cc-h3">{s_header:search}</h3>' . "\r\n" .
-								'<div class="dataList search adminBox">' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3">{s_header:search}</h3>' . PHP_EOL .
+								'<div class="dataList search adminBox">' . PHP_EOL;
 				
 		$search = new Search($this->DB, $this->o_lng, "LIKE");
 		$this->adminContent .=	str_replace("<>", "", $search->getSearch("big", true));
 
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 							
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" .
-								'<p>&nbsp;</p>' . "\r\n" .
-								'<ul>' . "\r\n" .
-								'<li class="submit back">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL .
+								'<p>&nbsp;</p>' . PHP_EOL .
+								'<ul>' . PHP_EOL .
+								'<li class="submit back">' . PHP_EOL;
 		
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 				
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" . 
-								'</ul>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL . 
+								'</ul>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 	
 		// #adminContent close
 		$this->adminContent	.= $this->closeAdminContent();

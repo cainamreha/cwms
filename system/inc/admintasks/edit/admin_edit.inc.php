@@ -133,7 +133,7 @@ class Admin_Edit extends Admin implements AdminTask
 
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:admin' . self::$task . '}' . PHP_EOL .
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -215,7 +215,7 @@ class Admin_Edit extends Admin implements AdminTask
 
 			$this->adminHeader		= 	'{s_text:adminedit}' .
 										'{s_text:adminedit1}' .
-										'</div><!-- Ende headerBox -->' . PHP_EOL;
+										$this->closeTag("#headerBox");
 										
 
 			// Notifications
@@ -362,7 +362,7 @@ class Admin_Edit extends Admin implements AdminTask
 			$output	.=	parent::getButton($btnDefs);
 			
 			$output	.=	'<input name="addnew" type="hidden"value="{s_button:adminnew}" />' . PHP_EOL .
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+						parent::getTokenInput() . 
 						'</form></li></ul>' . PHP_EOL;
 		}
 
@@ -518,7 +518,9 @@ class Admin_Edit extends Admin implements AdminTask
 			#############################
 			##### Inhalte speichern #####
 			#############################
-			if($this->dbUpdateStr != "")
+			if($this->dbUpdateStr != ""
+			&& isset($GLOBALS['_POST']['submit_page_contents'])
+			)
 				$updateSQL	= $this->updateContents($this->dbUpdateStr);
 
 			
@@ -552,7 +554,7 @@ class Admin_Edit extends Admin implements AdminTask
 		// Html
 		$this->adminHeader		=	'{s_text:admin' . self::$task . '}' . PHP_EOL .
 									'{s_text:adminedit2}' . PHP_EOL . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 		
 		$this->adminContent .=		'<div class="adminArea">' . PHP_EOL;
 		
@@ -891,14 +893,14 @@ class Admin_Edit extends Admin implements AdminTask
 		$this->usedFieldNames = $this->usedFieldNames + 1; // Anzahl Inhalte mitzählen
 		
 		// Falls ein Element kopiert oder ausgeschnitten wurde
-		$copyConArr		= array("","","","");
+		$copyConArr		= array();
 		$cutClass		= "";
 		$addPasteBtn	= true;
 		$addCancelBtn	= false;
 		$stylesPost		= array();
 		
 		if(isset($this->g_Session['copycon']))
-			$this->pasteCon = explode(",", $this->g_Session['copycon']);
+			$this->pasteCon = $this->g_Session['copycon'][0];
 		
 		#var_dump($this->pasteCon);
 		if(count($this->pasteCon) > 0) {
@@ -906,13 +908,13 @@ class Admin_Edit extends Admin implements AdminTask
 			$copyConArr	= $this->pasteCon;
 			
 			// Falls ausgeschnittenes Element, Listentag markieren
-			if( $copyConArr[0] == parent::$tableContents && 
-				$copyConArr[1] == $i && 
-				$copyConArr[2] == $this->editId
+			if( $copyConArr["conTab"] == parent::$tableContents && 
+				$copyConArr["con"] == $i && 
+				$copyConArr["eid"] == $this->editId
 			) {
 				$addCancelBtn		= true;
 				
-				if($copyConArr[3] == "true") {
+				if($copyConArr["cut"] == "true") {
 					$cutClass		= "cutListEntry ";
 					$addPasteBtn	= false;
 				}
@@ -1034,7 +1036,17 @@ class Admin_Edit extends Admin implements AdminTask
 			// Content Type
 			$output .=	'<span class="conType' . (!$this->elementExists ? ' unknownConType" title="{s_error:unknowncon}: ' . $this->conElements[$i]['type'] : '" title="{s_option:' . $this->conElements[$i]['type'] . '}') . '">' . PHP_EOL;
 			
-			$output .=	parent::getIcon($this->conElements[$i]['type'], ($this->isPlugin ? ' contype-plugins ' : '') . 'conicon-' . $this->conElements[$i]['type'], 'style="background-image:url(' . ($this->isPlugin ? PROJECT_HTTP_ROOT . '/plugins/' . $this->conElements[$i]['type'] .'/img/' : SYSTEM_IMAGE_DIR) . '/' . ($this->elementExists ? 'conicon_' . $this->conElements[$i]['type'] . '.png' : 'atten.png') . ');"');
+			// Content icon
+			if($this->elementExists) {
+				$conIcon	= $this->conElements[$i]['type'];
+				$conIconExt	= ($this->isPlugin ? 'contype-plugins ' : '') . 'conicon-' . $this->conElements[$i]['type'];
+			}
+			else {
+				$conIcon	= "cancel";
+				$conIconExt	= "";
+			}
+				
+			$output .=	parent::getIcon($conIcon, $conIconExt);
 			
 			$output .=	'</span>';
 			
@@ -1380,7 +1392,7 @@ class Admin_Edit extends Admin implements AdminTask
 	{
 	
 		// Falls eine Zielseite angegeben wurde, diese für die Kategorie übernehmen
-		if(isset($this->dbUpdateArticlesCat)) {
+		if(!empty($this->dbUpdateArticlesCat)) {
 				 
 			// db-Tabelle sperren
 			$lock = $this->DB->query("LOCK TABLES `" . DB_TABLE_PREFIX . "articles_categories`");
@@ -1392,7 +1404,7 @@ class Admin_Edit extends Admin implements AdminTask
 		}
 		
 		// Falls eine Zielseite angegeben wurde, diese für die Kategorie übernehmen
-		if(isset($this->dbUpdateNewsCat)) {
+		if(!empty($this->dbUpdateNewsCat)) {
 				 
 			// db-Tabelle sperren
 			$lock = $this->DB->query("LOCK TABLES `" . DB_TABLE_PREFIX . "news_categories`");
@@ -1405,7 +1417,7 @@ class Admin_Edit extends Admin implements AdminTask
 		}
 
 		// Falls eine Zielseite angegeben wurde, diese für die Kategorie übernehmen
-		if(isset($this->dbUpdatePlannerCat)) {
+		if(!empty($this->dbUpdatePlannerCat)) {
 				 
 			// db-Tabelle sperren
 			$lock = $this->DB->query("LOCK TABLES `" . DB_TABLE_PREFIX . "planner_categories`");
@@ -1847,8 +1859,8 @@ class Admin_Edit extends Admin implements AdminTask
 		
 		$this->adminContent	.=	parent::getButton($btnDefs);
 		
-		$this->adminContent	.=	'<input name="submit" type="hidden" value="{s_button:savechanges}" />' . PHP_EOL;
-		$this->adminContent	.=	'<input name="submit_page_details" type="hidden" value="1" />' . PHP_EOL .
+		$this->adminContent	.=	'<input name="submit" type="hidden" value="{s_button:savechanges}" />' . PHP_EOL .
+								'<input name="submit_page_details" type="hidden" value="1" />' . PHP_EOL .
 								'</li>' . PHP_EOL .
 								'</ul>' . PHP_EOL .
 								'</div>' . PHP_EOL;
@@ -2054,7 +2066,7 @@ class Admin_Edit extends Admin implements AdminTask
 		}
 		$this->adminContent .=	'<input type="hidden" id="edit_id" name="edit_id" value="' . $this->editId . '" />' . PHP_EOL . 
 								(!empty($this->redirect) ? '<input type="hidden" id="redirect" name="redirect" value="' . $this->redirect . '" />' . PHP_EOL : '');
-								#'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+								#parent::getTokenInput() . 
 		
 		if($this->isTemplateArea)
 			$this->adminContent .=	'<input type="hidden" name="edit_area" value="' . parent::$tableContents . '" />' . PHP_EOL .
@@ -2617,6 +2629,7 @@ class Admin_Edit extends Admin implements AdminTask
 		$output	.=	parent::getButton($btnDefs);
 		
 		$output	.=	'<input class="saveElementDetails" name="submit" type="hidden" value="{s_button:savechanges}" />' . PHP_EOL .
+					'<input name="submit_page_contents" type="hidden" value="1" />' . PHP_EOL .
 					$closeTag;
 		
 		return $output;
@@ -2737,7 +2750,7 @@ class Admin_Edit extends Admin implements AdminTask
 			$vID			= $version['id'];
 			$actionUrl		= SYSTEM_HTTP_ROOT . '/access/editElements.php?page=admin&action=restore&id=' . $this->editId . '&area=' . parent::$tableContents . '&version=' . $vID;
 			$vDate			= Modules::getLocalDateString($version['v_timestamp'], $this->editLang, true);
-			$vDateF			= Modules::getFormattedDateString(time($version['v_timestamp']), $this->editLang, true);
+			$vDateF			= Modules::getFormattedDateString(strtotime($version['v_timestamp']), $this->editLang, true);
 			$vElemCnt 		= 0;
 			$aIcon	 		= '<span class="iconBox">' . parent::getIcon($this->isTemplateArea ? 'area-' . $this->editTplArea : 'page') . '</span>';
 			$aStr			= $this->isTemplateArea ? $this->editId : $this->parentsAliasStr . $this->pageDef['title'] . ' (#' . $this->editId . ')';
@@ -3221,7 +3234,7 @@ class Admin_Edit extends Admin implements AdminTask
 						$this->adminContent .=	'<input type="hidden" name="pageIDs[]" value="' . $delId . '" />' . PHP_EOL;
 					}
 											
-					$this->adminContent .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+					$this->adminContent .=	parent::getTokenInput() . 
 											'</form>' . PHP_EOL . 
 											'</li>' . PHP_EOL . 
 											'</ul>' . PHP_EOL;

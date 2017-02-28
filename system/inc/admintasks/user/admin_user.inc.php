@@ -65,19 +65,17 @@ class Admin_User extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminuser}' . PHP_EOL .
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
 
+		$this->adminContent 	.=	'<div class="adminArea">' . PHP_EOL;						
+
 		
 		$showBackButton = true;
 		
-		$this->adminHeader		=	'{s_text:adminuser}' . "\r\n" .
-									'</div><!-- Ende headerBox -->' . "\r\n";
-							
-		$this->adminContent 	.=	'<div class="adminArea">' . "\r\n";						
-
 
 		// Ggf. zu große POST-Requests abfangen
 		if($checkPostSize	= $this->checkPostRequestTooLarge())
@@ -373,18 +371,18 @@ class Admin_User extends Admin implements AdminTask
 			} // Ende if submit new user
 			
 
-			$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:newuser}</h2>' . "\r\n";
+			$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:newuser}</h2>' . PHP_EOL;
 			
-			$this->adminContent .=	'<div class="adminBox">' . "\r\n";
+			$this->adminContent .=	'<div class="adminBox">' . PHP_EOL;
 
 			if(isset($error))
 				$this->adminContent .= '<p class="notice error">' . $error . '</p>';
 
-			$this->adminContent .=	'<form action="'.$this->formAction.'" name="adminfm" method="post">' . "\r\n" .
-									'<ul class="framedItems">' . "\r\n";
+			$this->adminContent .=	'<form action="'.$this->formAction.'" name="adminfm" method="post">' . PHP_EOL .
+									'<ul class="framedItems">' . PHP_EOL;
 			
 			// User name
-			$this->adminContent .=	'<li><label>{s_label:userN}</label>' . "\r\n";
+			$this->adminContent .=	'<li><label>{s_label:userN}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userN']) && isset($errorN))
 				$this->adminContent .= '<p class="notice">' . $errorN . '</p>';
@@ -393,40 +391,40 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserN) ? $value = htmlspecialchars($newUserN) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" /></li>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" /></li>' . PHP_EOL;
 			
 			// Password
-			$this->adminContent .=	'<li><label>{s_label:userP1}</label>' . "\r\n";
+			$this->adminContent .=	'<li><label>{s_label:userP1}</label>' . PHP_EOL;
 								
 			if(isset($GLOBALS['_POST']['new_userP1']) && isset($errorP1))
 				$this->adminContent .= '<p class="notice">' . $errorP1 . '</p>';
 			
-			$this->adminContent .=	'<span id="pw1-messages" class="notice"></span>' . "\r\n";
+			$this->adminContent .=	'<span id="pw1-messages" class="notice"></span>' . PHP_EOL;
 			
 			$this->adminContent .=	'<input type="password" name="new_userP1" id="password1" class="password-checker" maxlength="'.PASSWORD_MAX_LENGTH.'" data-minlength="'.PASSWORD_MIN_LENGTH.'" data-tooshort="' . sprintf(ContentsEngine::replaceStaText("{s_error:passlen1}"), PASSWORD_MIN_LENGTH) . '" data-sameasuser="{s_error:pwsameasuser}" data-toolong="' . sprintf(ContentsEngine::replaceStaText("{s_error:passlen2}"), PASSWORD_MAX_LENGTH) . '" data-pwquality="{s_form:pwweak},{s_form:pwnormal},{s_form:pwmedium},{s_form:pwstrong},{s_form:pwverystrong}"';
 			
 			isset($newUserP1) ? $value = htmlspecialchars($newUserP1) : $value = "";
 
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
-			$this->adminContent .=	'<span id="pw-checker-box"></span>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
+			$this->adminContent .=	'<span id="pw-checker-box"></span>' . PHP_EOL;
 			
 			// Password repeat
-			$this->adminContent .=	'<label>{s_label:userP2}</label>' . "\r\n";
+			$this->adminContent .=	'<label>{s_label:userP2}</label>' . PHP_EOL;
 								
 			if(isset($GLOBALS['_POST']['new_userP2']) && isset($errorP2))
 				$this->adminContent .= '<p class="notice">' . $errorP2 . '</p>';
 
-			$this->adminContent .=	'<span id="pw2-messages"></span>' . "\r\n";
+			$this->adminContent .=	'<span id="pw2-messages"></span>' . PHP_EOL;
 			
 			$this->adminContent .=	'<input type="password" name="new_userP2" id="password2" maxlength="'.PASSWORD_MAX_LENGTH.'" data-pwnomatch="{s_error:userpass2}"';
 			
 			isset($newUserP2) ? $value = htmlspecialchars($newUserP2) : $value = "";
 
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
-			$this->adminContent .=	'</li>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
+			$this->adminContent .=	'</li>' . PHP_EOL;
 
 			// E-Mail
-			$this->adminContent .=	'<li><label>{s_label:userM}</label>' . "\r\n";
+			$this->adminContent .=	'<li><label>{s_label:userM}</label>' . PHP_EOL;
 								
 			if(isset($GLOBALS['_POST']['new_userM']) && isset($errorM))
 				$this->adminContent .= '<p class="notice">' . $errorM . '</p>';
@@ -435,16 +433,16 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserM) ? $value = htmlspecialchars($newUserM) : $value = "";
 
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
 			
 			// Newsl
-			$this->adminContent .=	'<br class="clearfloat"><br />' . "\r\n" . 
-									'<label class="markBox"><input name="newsl" id="newsl" type="checkbox"' . (isset($this->newsL) && $this->newsL == 1 ? ' checked="checked"' : '') . (isset($newUserG) && $newUserG == "subscriber" ? 'disabled="true"' : '') . ' /></label>' . "\r\n" .
-									'<label class="inline-label" for="newsl"">{s_label:newsl}</label>' . "\r\n" .
+			$this->adminContent .=	'<br class="clearfloat"><br />' . PHP_EOL . 
+									'<label class="markBox"><input name="newsl" id="newsl" type="checkbox"' . (isset($this->newsL) && $this->newsL == 1 ? ' checked="checked"' : '') . (isset($newUserG) && $newUserG == "subscriber" ? 'disabled="true"' : '') . ' /></label>' . PHP_EOL .
+									'<label class="inline-label" for="newsl"">{s_label:newsl}</label>' . PHP_EOL .
 									'</li>' . "\n";
 			
 			// Real name / author name
-			$this->adminContent .=	'<li><label>{s_label:userRN}</label>' . "\r\n";
+			$this->adminContent .=	'<li><label>{s_label:userRN}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userRN']) && isset($errorRN))
 				$this->adminContent .= '<p class="notice">' . $errorRN . '</p>';
@@ -453,35 +451,35 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserRN) ? $value = htmlspecialchars($newUserRN) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" /></li>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" /></li>' . PHP_EOL;
 			
 			// User details
-			$this->adminContent .=	'<li>' . "\r\n" .
-									'<label class="markBox"><input type="checkbox" name="showUserDetails" id="showUserDetails" class="showUserDetails toggleDetails" data-toggle="userDetailsBox"' . (isset($GLOBALS['_POST']['showUserDetails']) ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-									'<label for="showUserDetails" class="showUserDetails inline-label">{s_label:adduserdetails}</label>' . "\r\n" .
-									'<div id="userDetailsBox" class="userDetails detailsDiv"' . (!isset($GLOBALS['_POST']['showUserDetails']) ? ' style="display:none;"' : '') . '>' . "\r\n" .
-									'<div class="leftBox"><label>{s_form:anrede}</label>' . "\r\n";
+			$this->adminContent .=	'<li>' . PHP_EOL .
+									'<label class="markBox"><input type="checkbox" name="showUserDetails" id="showUserDetails" class="showUserDetails toggleDetails" data-toggle="userDetailsBox"' . (isset($GLOBALS['_POST']['showUserDetails']) ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+									'<label for="showUserDetails" class="showUserDetails inline-label">{s_label:adduserdetails}</label>' . PHP_EOL .
+									'<div id="userDetailsBox" class="userDetails detailsDiv"' . (!isset($GLOBALS['_POST']['showUserDetails']) ? ' style="display:none;"' : '') . '>' . PHP_EOL .
+									'<div class="leftBox"><label>{s_form:anrede}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userA']) && isset($errorA))
 				$this->adminContent .= '<p class="notice">' . $errorA . '</p>';
 			
-			$this->adminContent .=	'<select name="new_userA">' . "\r\n" .
+			$this->adminContent .=	'<select name="new_userA">' . PHP_EOL .
 									'<option value="m"' . (isset($newUserA) && $newUserA == "m" ? ' selected="selected"' : '') . '>{s_form:herr}</option>' .
 									'<option value="f"' . (isset($newUserA) && $newUserA == "f" ? ' selected="selected"' : '') . '>{s_form:frau}</option>' .
 									'</select></div>' .
-									'<div class="leftBox"><label>{s_form:grade}</label>' . "\r\n";
+									'<div class="leftBox"><label>{s_form:grade}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userT']) && isset($errorT))
 				$this->adminContent .= '<p class="notice">' . $errorT . '</p>';
 			
-			$this->adminContent .=	'<select name="new_userT">' . "\r\n" .
+			$this->adminContent .=	'<select name="new_userT">' . PHP_EOL .
 									'<option value="">---</option>' .
 									'<option value="Dr."' . (isset($newUserT) && $newUserT == "Dr." ? ' selected="selected"' : '') . '>{s_form:dr}</option>' .
 									'<option value="Prof. Dr."' . (isset($newUserT) && $newUserT == "Prof. Dr." ? ' selected="selected"' : '') . '>{s_form:prof}</option>' .
 									'<option value="Prof. Dr. Dr."' . (isset($newUserT) && $newUserT == "Prof. Dr. Dr." ? ' selected="selected"' : '') . '>{s_form:profdr}</option>' .
 									'</select></div>' .
 									'<br class="clearfloat" />' .
-									'<label>{s_label:userLN}</label>' . "\r\n";
+									'<label>{s_label:userLN}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userLN']) && isset($errorLN))
 				$this->adminContent .= '<p class="notice">' . $errorLN . '</p>';
@@ -490,8 +488,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserLN) ? $value = htmlspecialchars($newUserLN) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userFN}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userFN}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userFN']) && isset($errorFN))
 				$this->adminContent .= '<p class="notice">' . $errorFN . '</p>';
@@ -500,8 +498,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserFN) ? $value = htmlspecialchars($newUserFN) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userS}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userS}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userS']) && isset($errorS))
 				$this->adminContent .= '<p class="notice">' . $errorS . '</p>';
@@ -510,8 +508,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserS) ? $value = htmlspecialchars($newUserS) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userZ}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userZ}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userZ']) && isset($errorZ))
 				$this->adminContent .= '<p class="notice">' . $errorZ . '</p>';
@@ -520,8 +518,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserZ) ? $value = htmlspecialchars($newUserZ) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userC}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userC}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userC']) && isset($errorC))
 				$this->adminContent .= '<p class="notice">' . $errorC . '</p>';
@@ -530,8 +528,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserC) ? $value = htmlspecialchars($newUserC) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userCn}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userCn}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userCn']) && isset($errorCn))
 				$this->adminContent .= '<p class="notice">' . $errorCn . '</p>';
@@ -540,8 +538,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserCn) ? $value = htmlspecialchars($newUserCn) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_form:phone}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_form:phone}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userPh']) && isset($errorPh))
 				$this->adminContent .= '<p class="notice">' . $errorPh . '</p>';
@@ -550,8 +548,8 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserPh) ? $value = htmlspecialchars($newUserPh) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'<label>{s_label:userCp}</label>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'<label>{s_label:userCp}</label>' . PHP_EOL;
 			
 			if(isset($GLOBALS['_POST']['new_userCp']) && isset($errorCp))
 				$this->adminContent .= '<p class="notice">' . $errorCp . '</p>';
@@ -560,40 +558,40 @@ class Admin_User extends Admin implements AdminTask
 			
 			isset($newUserCp) ? $value = htmlspecialchars($newUserCp) : $value = "";
 								
-			$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-									'</div></li>' . "\r\n";
+			$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+									'</div></li>' . PHP_EOL;
 									
 			// User groups						
-			$this->adminContent .=	'<li><label>{s_label:userG}</label>' . "\r\n";
+			$this->adminContent .=	'<li><label>{s_label:userG}</label>' . PHP_EOL;
 								
 			if(isset($GLOBALS['_POST']['new_userG']) && isset($errorG))
 				$this->adminContent .= '<p class="notice">' . $errorG . '</p>';
 			
 			// Default-Benutzergruppen
-			$this->adminContent .=	'<select name="new_userG" id="selGroup">' . "\r\n";
+			$this->adminContent .=	'<select name="new_userG" id="selGroup">' . PHP_EOL;
 			
 			// Benutzergruppen auslesen
 			foreach($this->userGroupsSelectable as $group) {
 				if ($group != "public")
-					$this->adminContent .='<option value="' . $group . '"' . (isset($newUserG) && $newUserG == $group ? ' selected="selected"' : (!isset($newUserG) && $group == "guest" ? ' selected="selected"' : '')) . '>{s_option:group' . $group . '}</option>' . "\r\n"; // Benutzergruppe
+					$this->adminContent .='<option value="' . $group . '"' . (isset($newUserG) && $newUserG == $group ? ' selected="selected"' : (!isset($newUserG) && $group == "guest" ? ' selected="selected"' : '')) . '>{s_option:group' . $group . '}</option>' . PHP_EOL; // Benutzergruppe
 			}
-			$this->adminContent .=	'</select>' . "\r\n";
+			$this->adminContent .=	'</select>' . PHP_EOL;
 			
 			// Eigene Benutzergruppen
 			if($this->editorLog && count($this->ownGroupsSelectable) > 0) {
 				
-				$this->adminContent .=	'<br class="clearfloat" /><div' . (isset($newUserG) && $newUserG == "subscriber" ? ' style="display:none;"' : '') . '>' . "\r\n" .
-										'<label>{s_label:setusergroup}</label>' . "\r\n" .
-										'<select name="new_userOG[]" multiple="multiple" size="' . (count($this->ownGroupsSelectable) +1) . '" id="selOwnGroups" class="selgroup">' . "\r\n" .
-										'<option value="">{s_option:choose}</option>' . "\r\n";
+				$this->adminContent .=	'<br class="clearfloat" /><div' . (isset($newUserG) && $newUserG == "subscriber" ? ' style="display:none;"' : '') . '>' . PHP_EOL .
+										'<label>{s_label:setusergroup}</label>' . PHP_EOL .
+										'<select name="new_userOG[]" multiple="multiple" size="' . (count($this->ownGroupsSelectable) +1) . '" id="selOwnGroups" class="selgroup">' . PHP_EOL .
+										'<option value="">{s_option:choose}</option>' . PHP_EOL;
 				
 				foreach($this->ownGroupsSelectable as $ownGroup) {
-					$this->adminContent .=	'<option value="' . $ownGroup . '"' . (in_array($ownGroup, $this->ownGroupArray) ? ' selected="selected"' : '') . '>' . $ownGroup . '</option>' . "\r\n"; // Benutzergruppe
+					$this->adminContent .=	'<option value="' . $ownGroup . '"' . (in_array($ownGroup, $this->ownGroupArray) ? ' selected="selected"' : '') . '>' . $ownGroup . '</option>' . PHP_EOL; // Benutzergruppe
 				}
-				$this->adminContent .=	'</select></div>' . "\r\n";
+				$this->adminContent .=	'</select></div>' . PHP_EOL;
 			}
 			
-			$this->adminContent .=	'<br class="clearfloat" /></li>' . "\r\n";
+			$this->adminContent .=	'<br class="clearfloat" /></li>' . PHP_EOL;
 			
 			$this->adminContent .=	'<li class="submit change">' . "\n";
 			
@@ -607,17 +605,17 @@ class Admin_User extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButton($btnDefs);
 			
-			$this->adminContent .=	'<input name="new_user" type="hidden" value="{s_button:adduser}" />' . "\r\n" . 
-									'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+			$this->adminContent .=	'<input name="new_user" type="hidden" value="{s_button:adduser}" />' . PHP_EOL . 
+									parent::getTokenInput();
 			
-			$this->adminContent .=	'</li>' . "\r\n" .
-									'</ul>' . "\r\n" .
-									'</form>' . "\r\n";
+			$this->adminContent .=	'</li>' . PHP_EOL .
+									'</ul>' . PHP_EOL .
+									'</form>' . PHP_EOL;
 
 			// Password checker script
-			$this->adminContent .=	'<script src="' . SYSTEM_HTTP_ROOT . '/access/js/password-checker.min.js"></script>' . "\r\n";
+			$this->adminContent .=	'<script src="' . SYSTEM_HTTP_ROOT . '/access/js/password-checker.min.js"></script>' . PHP_EOL;
 			
-			$this->adminContent .=	'</div>' . "\r\n";
+			$this->adminContent .=	'</div>' . PHP_EOL;
 		
 		}
 
@@ -625,9 +623,9 @@ class Admin_User extends Admin implements AdminTask
 		// Falls ein vorhandener Benutzer bearbeitet werden soll
 		elseif(isset($GLOBALS['_POST']['edit_user'])) {
 			
-			$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:edituser}</h2>' . "\r\n";
+			$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_header:edituser}</h2>' . PHP_EOL;
 			
-			$this->adminContent .=	'<div class="adminBox">' . "\r\n";
+			$this->adminContent .=	'<div class="adminBox">' . PHP_EOL;
 			
 			
 			$editUser = $GLOBALS['_POST']['edit_user'];
@@ -972,11 +970,11 @@ class Admin_User extends Admin implements AdminTask
 				if(isset($error))
 					$this->adminContent .= '<p class="notice error">' . $error . '</p>';
 			
-				$this->adminContent .=	'<form action="'.$this->formAction.'" name="adminfm" method="post" enctype="multipart/form-data">' . "\r\n" .
-										'<ul class="framedItems">' . "\r\n";
+				$this->adminContent .=	'<form action="'.$this->formAction.'" name="adminfm" method="post" enctype="multipart/form-data">' . PHP_EOL .
+										'<ul class="framedItems">' . PHP_EOL;
 				
 				// User name
-				$this->adminContent .=	'<li><label>{s_label:userN}</label>' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:userN}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userN']) && isset($errorN))
 					$this->adminContent .= '<p class="notice">' . $errorN . '</p>';
@@ -985,49 +983,49 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserN) ? $value = htmlspecialchars($editUserN) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" /></li>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" /></li>' . PHP_EOL;
 				
 				// Password
-				$this->adminContent .=	'<li><label>{s_label:userPold}</label>' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:userPold}</label>' . PHP_EOL;
 									
 				$this->adminContent .=	'<input type="password" name="edit_userPold" value="'.str_pad("0",PASSWORD_MAX_LENGTH).'" readonly="readonly" class="readonly" maxlength="'.PASSWORD_MAX_LENGTH.'"';
 				
 				isset($editUserP1) ? $value = htmlspecialchars($editUserP1) : $value = "";
 			
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
 				
 				// Password new
-				$this->adminContent .=	'<label>{s_label:userP1new}</label>' . "\r\n";
+				$this->adminContent .=	'<label>{s_label:userP1new}</label>' . PHP_EOL;
 									
 				if(isset($GLOBALS['_POST']['edit_userP1']) && isset($errorP1))
 					$this->adminContent .= '<p class="notice">' . $errorP1 . '</p>';
 				
-				$this->adminContent .=	'<span id="pw1-messages" class="notice"></span>' . "\r\n";
+				$this->adminContent .=	'<span id="pw1-messages" class="notice"></span>' . PHP_EOL;
 
 				$this->adminContent .=	'<input type="password" name="edit_userP1" id="password1" class="password-checker" maxlength="'.PASSWORD_MAX_LENGTH.'" data-minlength="'.PASSWORD_MIN_LENGTH.'" data-tooshort="' . sprintf(ContentsEngine::replaceStaText("{s_error:passlen1}"), PASSWORD_MIN_LENGTH) . '" data-sameasuser="{s_error:pwsameasuser}" data-toolong="' . sprintf(ContentsEngine::replaceStaText("{s_error:passlen2}"), PASSWORD_MAX_LENGTH) . '" data-pwquality="{s_form:pwweak},{s_form:pwnormal},{s_form:pwmedium},{s_form:pwstrong},{s_form:pwverystrong}"';
 				
 				isset($editUserP1) ? $value = htmlspecialchars($editUserP1) : $value = "";
 			
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
-				$this->adminContent .=	'<span id="pw-checker-box"></span>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
+				$this->adminContent .=	'<span id="pw-checker-box"></span>' . PHP_EOL;
 				
 				// Password new repeat
-				$this->adminContent .=	'<label>{s_label:userP2new}</label>' . "\r\n";
+				$this->adminContent .=	'<label>{s_label:userP2new}</label>' . PHP_EOL;
 									
 				if(isset($GLOBALS['_POST']['edit_userP2']) && isset($errorP2))
 					$this->adminContent .= '<p class="notice">' . $errorP2 . '</p>';
 				
-				$this->adminContent .=	'<span id="pw2-messages"></span>' . "\r\n";
+				$this->adminContent .=	'<span id="pw2-messages"></span>' . PHP_EOL;
 				
 				$this->adminContent .=	'<input type="password" name="edit_userP2" id="password2" maxlength="'.PASSWORD_MAX_LENGTH.'" data-pwnomatch="{s_error:userpass2}"';
 				
 				isset($editUserP2) ? $value = htmlspecialchars($editUserP2) : $value = "";
 			
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
-				$this->adminContent .=	'</li>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
+				$this->adminContent .=	'</li>' . PHP_EOL;
 				
 				// E-Mail
-				$this->adminContent .=	'<li><label>{s_label:userM}</label>' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:userM}</label>' . PHP_EOL;
 									
 				if(isset($GLOBALS['_POST']['edit_userM']) && isset($errorM))
 					$this->adminContent .= '<p class="notice">' . $errorM . '</p>';
@@ -1036,10 +1034,10 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserM) ? $value = htmlspecialchars($editUserM) : $value = "";
 			
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
 				
 				// Newsl
-				$this->adminContent .=	'<br class="clearfloat"><br />' . "\r\n" . 
+				$this->adminContent .=	'<br class="clearfloat"><br />' . PHP_EOL . 
 										'<label class="markBox"><input name="newsl" id="newsl" type="checkbox"' . (isset($this->newsL) && $this->newsL == 1 ? ' checked="checked"' : '') . (isset($editUserG) && $editUserG == "subscriber" ? 'disabled="true"' : '') . ' /></label>' . "\n" .
 										'<label class="inline-label" for="newsl">{s_label:newsl}</label>' . "\n" .
 										'</li>' . "\n";
@@ -1047,7 +1045,7 @@ class Admin_User extends Admin implements AdminTask
 				// User real name / author name
 				$this->adminContent .=	'<li>' . PHP_EOL .
 										'<div class="fullBox">' . PHP_EOL .
-										'<label>{s_label:userRN}</label>' . "\r\n";
+										'<label>{s_label:userRN}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userRN']) && isset($errorRN))
 					$this->adminContent .= '<p class="notice">' . $errorRN . '</p>';
@@ -1056,25 +1054,25 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserRN) ? $value = htmlspecialchars($editUserRN) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" /></div>' . "\r\n";				
+				$this->adminContent .=	' value="' . $value . '" /></div>' . PHP_EOL;				
 				
 				// Benutzerbild, falls vorhanden, sonst empty_avatar.png
 				$userFileSrc	= User::getUserImageSrc($editUserID, true);
 				
 				$this->adminContent .=	'<div class="leftBox">' . PHP_EOL;
 				
-				$this->adminContent .=	'<br /><label>{s_label:userimage}</label>' . "\r\n";
+				$this->adminContent .=	'<br /><label>{s_label:userimage}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_FILES']['edit_userFile']) && isset($errorUserFile))
 					$this->adminContent .= '<p class="notice">' . $errorUserFile . '</p>';
 				
 				$this->adminContent .=	'<input type="file" name="edit_userFile" /><br class="clearfloat" /><br />';
 				
-				$this->adminContent .=	'</div>' . "\r\n";
+				$this->adminContent .=	'</div>' . PHP_EOL;
 				$this->adminContent .=	'<div class="rightBox">' . PHP_EOL;
 				
-				$this->adminContent .=	'<div class="listObject">' . "\r\n" .
-										'<div class="previewBox"><img class="userImage preview" alt="user-file" title="{s_label:userimage}" src="' . $userFileSrc[0] . '" data-img-src="' . $userFileSrc[0] . '" />' . "\r\n";
+				$this->adminContent .=	'<div class="listObject">' . PHP_EOL .
+										'<div class="previewBox"><img class="userImage preview" alt="user-file" title="{s_label:userimage}" src="' . $userFileSrc[0] . '" data-img-src="' . $userFileSrc[0] . '" />' . PHP_EOL;
 										
 				if($userFileSrc[1]) {
 	
@@ -1091,43 +1089,43 @@ class Admin_User extends Admin implements AdminTask
 					
 				}
 				
-				$this->adminContent .=	'</div>' . "\r\n" . 
-										'</div>' . "\r\n" . 
-										'</div>' . "\r\n";
+				$this->adminContent .=	'</div>' . PHP_EOL . 
+										'</div>' . PHP_EOL . 
+										'</div>' . PHP_EOL;
 				
-				$this->adminContent .=	'<br class="clearfloat" />' . "\r\n";
-				$this->adminContent .=	'</li>' . "\r\n";
+				$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL;
+				$this->adminContent .=	'</li>' . PHP_EOL;
 				
 				
 				// Benutzerdetails
-				$this->adminContent .=	'<li>' . "\r\n" .
-										'<label class="markBox"><input type="checkbox" name="showUserDetails" id="showUserDetails" class="showUserDetails toggleDetails" data-toggle="userDetailsBox"' . (isset($GLOBALS['_POST']['showUserDetails']) ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-										'<label for="showUserDetails" class="showUserDetails inline-label">{s_label:moduserdetails}</label>' . "\r\n" .
-										'<div id="userDetailsBox" class="userDetails detailsDiv"' . (!isset($GLOBALS['_POST']['showUserDetails']) ? ' style="display:none;"' : '') . '>' . "\r\n";
+				$this->adminContent .=	'<li>' . PHP_EOL .
+										'<label class="markBox"><input type="checkbox" name="showUserDetails" id="showUserDetails" class="showUserDetails toggleDetails" data-toggle="userDetailsBox"' . (isset($GLOBALS['_POST']['showUserDetails']) ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+										'<label for="showUserDetails" class="showUserDetails inline-label">{s_label:moduserdetails}</label>' . PHP_EOL .
+										'<div id="userDetailsBox" class="userDetails detailsDiv"' . (!isset($GLOBALS['_POST']['showUserDetails']) ? ' style="display:none;"' : '') . '>' . PHP_EOL;
 				
 				
-				$this->adminContent .=	'<div class="leftBox"><label>{s_form:anrede}</label>' . "\r\n";
+				$this->adminContent .=	'<div class="leftBox"><label>{s_form:anrede}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userA']) && isset($errorA))
 					$this->adminContent .= '<p class="notice">' . $errorA . '</p>';
 				
-				$this->adminContent .=	'<select name="edit_userA">' . "\r\n" .
+				$this->adminContent .=	'<select name="edit_userA">' . PHP_EOL .
 										'<option value="m"' . (isset($editUserA) && $editUserA == "m" ? ' selected="selected"' : '') . '>{s_form:herr}</option>' .
 										'<option value="f"' . (isset($editUserA) && $editUserA == "f" ? ' selected="selected"' : '') . '>{s_form:frau}</option>' .
 										'</select></div>' .
-										'<div class="leftBox"><label>{s_form:grade}</label>' . "\r\n";
+										'<div class="leftBox"><label>{s_form:grade}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userT']) && isset($errorT))
 					$this->adminContent .= '<p class="notice">' . $errorT . '</p>';
 				
-				$this->adminContent .=	'<select name="edit_userT">' . "\r\n" .
+				$this->adminContent .=	'<select name="edit_userT">' . PHP_EOL .
 										'<option value="">---</option>' .
 										'<option value="Dr."' . (isset($editUserT) && $editUserT == "Dr." ? ' selected="selected"' : '') . '>{s_form:dr}</option>' .
 										'<option value="Prof. Dr."' . (isset($editUserT) && $editUserT == "Prof. Dr." ? ' selected="selected"' : '') . '>{s_form:prof}</option>' .
 										'<option value="Prof. Dr. Dr."' . (isset($editUserT) && $editUserT == "Prof. Dr. Dr." ? ' selected="selected"' : '') . '>{s_form:profdr}</option>' .
 										'</select></div>' .
 										'<br class="clearfloat" />' .
-										'<label>{s_label:userLN}</label>' . "\r\n";
+										'<label>{s_label:userLN}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userLN']) && isset($errorLN))
 					$this->adminContent .= '<p class="notice">' . $errorLN . '</p>';
@@ -1136,9 +1134,9 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserLN) ? $value = htmlspecialchars($editUserLN) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
 				
-				$this->adminContent .=	'<label>{s_label:userFN}</label>' . "\r\n";
+				$this->adminContent .=	'<label>{s_label:userFN}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userFN']) && isset($errorFN))
 					$this->adminContent .= '<p class="notice">' . $errorFN . '</p>';
@@ -1147,8 +1145,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserFN) ? $value = htmlspecialchars($editUserFN) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_label:userS}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_label:userS}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userS']) && isset($errorS))
 					$this->adminContent .= '<p class="notice">' . $errorS . '</p>';
@@ -1157,8 +1155,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserS) ? $value = htmlspecialchars($editUserS) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_label:userZ}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_label:userZ}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userZ']) && isset($errorZ))
 					$this->adminContent .= '<p class="notice">' . $errorZ . '</p>';
@@ -1167,8 +1165,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserZ) ? $value = htmlspecialchars($editUserZ) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_label:userC}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_label:userC}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userC']) && isset($errorC))
 					$this->adminContent .= '<p class="notice">' . $errorC . '</p>';
@@ -1177,8 +1175,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserC) ? $value = htmlspecialchars($editUserC) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_label:userCn}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_label:userCn}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userCn']) && isset($errorCn))
 					$this->adminContent .= '<p class="notice">' . $errorCn . '</p>';
@@ -1187,8 +1185,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserCn) ? $value = htmlspecialchars($editUserCn) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_form:phone}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_form:phone}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userPh']) && isset($errorPh))
 					$this->adminContent .= '<p class="notice">' . $errorPh . '</p>';
@@ -1197,8 +1195,8 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserPh) ? $value = htmlspecialchars($editUserPh) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n" .
-										'<label>{s_label:userCp}</label>' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL .
+										'<label>{s_label:userCp}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userCp']) && isset($errorCp))
 					$this->adminContent .= '<p class="notice">' . $errorCp . '</p>';
@@ -1207,67 +1205,67 @@ class Admin_User extends Admin implements AdminTask
 				
 				isset($editUserCp) ? $value = htmlspecialchars($editUserCp) : $value = "";
 									
-				$this->adminContent .=	' value="' . $value . '" />' . "\r\n";
+				$this->adminContent .=	' value="' . $value . '" />' . PHP_EOL;
 				
-				$this->adminContent .=	'</div></li>' . "\r\n";
+				$this->adminContent .=	'</div></li>' . PHP_EOL;
 				// Ende Benutzerdetails
 				
 				
 				// Benutzergruppe(n)
-				$this->adminContent .=	'<li><label>{s_label:userG}</label>' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:userG}</label>' . PHP_EOL;
 									
 				if(isset($GLOBALS['_POST']['edit_userG']) && isset($errorG))
 					$this->adminContent .= '<p class="notice">' . $errorG . '</p>';
 				
 				// Default-Benutzergruppen
-				$this->adminContent .=	'<select name="edit_userG" id="selGroup">' . "\r\n";
+				$this->adminContent .=	'<select name="edit_userG" id="selGroup">' . PHP_EOL;
 				
 				// Benutzergruppen auslesen
 				foreach($this->userGroupsSelectable as $group) {
 					if ($group != "public")
-						$this->adminContent .='<option value="' . $group . '"' . (isset($editUserG) && $editUserG == $group ? ' selected="selected"' : '') . '>' . (isset(parent::$staText['option']['group' . $group]) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n"; // Benutzergruppe
+						$this->adminContent .='<option value="' . $group . '"' . (isset($editUserG) && $editUserG == $group ? ' selected="selected"' : '') . '>' . (isset(parent::$staText['option']['group' . $group]) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL; // Benutzergruppe
 				}
 			
-				$this->adminContent .=	'</select>' . "\r\n";
+				$this->adminContent .=	'</select>' . PHP_EOL;
 				
 				// Eigene Benutzergruppen
 				if($this->editorLog && count($this->ownGroupsSelectable) > 0) {
 					
-					$this->adminContent .=	'<br class="clearfloat" /><div' . ($editUserG == "subscriber" ? ' style="display:none;"' : '') . '>' . "\r\n" .
-										'<label>{s_label:setusergroup}</label>' . "\r\n" .
-										'<select name="edit_userOG[]" multiple="multiple" size="' . (count($this->ownGroupsSelectable) +1) . '" id="selOwnGroups" class="selgroup">' . "\r\n" .
-										'<option value="">{s_option:choose}</option>' . "\r\n";
+					$this->adminContent .=	'<br class="clearfloat" /><div' . ($editUserG == "subscriber" ? ' style="display:none;"' : '') . '>' . PHP_EOL .
+										'<label>{s_label:setusergroup}</label>' . PHP_EOL .
+										'<select name="edit_userOG[]" multiple="multiple" size="' . (count($this->ownGroupsSelectable) +1) . '" id="selOwnGroups" class="selgroup">' . PHP_EOL .
+										'<option value="">{s_option:choose}</option>' . PHP_EOL;
 					
 					foreach($this->ownGroupsSelectable as $ownGroup) {
-						$this->adminContent .='<option value="' . $ownGroup . '"' . (in_array($ownGroup, $this->ownGroupArray) ? ' selected="selected"' : '') . '>' . $ownGroup . '</option>' . "\r\n"; // Benutzergruppe
+						$this->adminContent .='<option value="' . $ownGroup . '"' . (in_array($ownGroup, $this->ownGroupArray) ? ' selected="selected"' : '') . '>' . $ownGroup . '</option>' . PHP_EOL; // Benutzergruppe
 					}
-					$this->adminContent .=	'</select></div>' . "\r\n";
+					$this->adminContent .=	'</select></div>' . PHP_EOL;
 				}
 				
-				$this->adminContent .=	'<br class="clearfloat" /></li>' . "\r\n";
+				$this->adminContent .=	'<br class="clearfloat" /></li>' . PHP_EOL;
 				
 				// Sprache im Backend
-				$this->adminContent .=	'<li><label>{s_label:userL}</label>' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:userL}</label>' . PHP_EOL;
 				
 				if(isset($GLOBALS['_POST']['edit_userL']) && isset($errorL))
 					$this->adminContent .= '<p class="notice">' . $errorL . '</p>';
 				
-				$this->adminContent .=	'<select name="edit_userL" id="selLang" style="float:none">' . "\r\n";
+				$this->adminContent .=	'<select name="edit_userL" id="selLang" style="float:none">' . PHP_EOL;
 				
 				// Backend-Sprachen
 				foreach($GLOBALS['adminLangs'] as $key => $adminLang) {
 				
-					$this->adminContent .='<option value="' . $key . '"' . (isset($editUserL) && $editUserL == $key ? ' selected="selected"' : '') . ' style="background:url(' . SYSTEM_IMAGE_DIR . '/flag_' . $key . '.png) no-repeat 99px center">' . $adminLang . '</option>' . "\r\n"; // Benutzergruppe
+					$this->adminContent .='<option value="' . $key . '"' . (isset($editUserL) && $editUserL == $key ? ' selected="selected"' : '') . ' style="background:url(' . SYSTEM_IMAGE_DIR . '/flag_' . $key . '.png) no-repeat 99px center">' . $adminLang . '</option>' . PHP_EOL; // Benutzergruppe
 				}
 						
 				$this->adminContent .=	'</select> ' .
 										parent::getIcon('lang-' . $editUserL, "inline-icon background-icon", 'style="background:url(' . SYSTEM_IMAGE_DIR . '/flag_' . $editUserL . '.png) no-repeat center center"') .
-										'<br class="clearfloat" /></li>' . "\r\n";
+										'<br class="clearfloat" /></li>' . PHP_EOL;
 				
 						
 				// Admin-Skin
-				$this->adminContent .=	'<li><label>{s_label:setadminskin}</label>' . "\r\n" .
-										'<select class="skinSelect left" name="at_skin" onchange="$(this).closest(\'form\').attr(\'data-ajax\',\'false\');">' . "\r\n";
+				$this->adminContent .=	'<li><label>{s_label:setadminskin}</label>' . PHP_EOL .
+										'<select class="skinSelect left" name="at_skin" onchange="$(this).closest(\'form\').attr(\'data-ajax\',\'false\');">' . PHP_EOL;
 								
 				foreach($this->adminSkins as $skin) {
 					
@@ -1275,13 +1273,13 @@ class Admin_User extends Admin implements AdminTask
 					$this->adminContent .=	' data-img-src="' . SYSTEM_IMAGE_DIR . '/skin-' . $skin . '.png"';
 					$this->adminContent .=	' data-img-label="skin-' . $skin . '"';
 					$this->adminContent .=	' data-title="skin-' . $skin . '"';
-					$this->adminContent .=	'>'.$skin.'</option>' . "\r\n";
+					$this->adminContent .=	'>'.$skin.'</option>' . PHP_EOL;
 				}
 				
-				$this->adminContent .=	'</select>' . "\r\n" .
-										'<div id="skinSelectionBox" class="choose imagePicker">' . "\r\n" .
-										'</div>' . "\r\n";
-										'<br class="clearfloat" /></li>' . "\r\n";
+				$this->adminContent .=	'</select>' . PHP_EOL .
+										'<div id="skinSelectionBox" class="choose imagePicker">' . PHP_EOL .
+										'</div>' . PHP_EOL;
+										'<br class="clearfloat" /></li>' . PHP_EOL;
 
 										
 				$this->adminContent .=	'<li class="submit change">' . "\n";
@@ -1296,24 +1294,24 @@ class Admin_User extends Admin implements AdminTask
 				
 				$this->adminContent .=	parent::getButton($btnDefs);
 			
-				$this->adminContent .=	'<input name="edit_user" type="hidden" value="' . $GLOBALS['_POST']['edit_user'] . '" />' . "\r\n" . 
-										'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+				$this->adminContent .=	'<input name="edit_user" type="hidden" value="' . $GLOBALS['_POST']['edit_user'] . '" />' . PHP_EOL . 
+										parent::getTokenInput();
 			
-				$this->adminContent .=	'</li>' . "\r\n" .
-										'</ul>' . "\r\n" .
-										'</form>' . "\r\n";
+				$this->adminContent .=	'</li>' . PHP_EOL .
+										'</ul>' . PHP_EOL .
+										'</form>' . PHP_EOL;
 
 				// Password checker script
-				$this->adminContent .=	'<script src="' . SYSTEM_HTTP_ROOT . '/access/js/password-checker.js"></script>' . "\r\n";
+				$this->adminContent .=	'<script src="' . SYSTEM_HTTP_ROOT . '/access/js/password-checker.js"></script>' . PHP_EOL;
 				
 				// getUserScriptTag
 				$this->adminContent .=	$this->getUserScriptTag();
 
 			} // Ende, falls Userdaten vorhanden
 			else
-				$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p>' . "\r\n";
+				$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p>' . PHP_EOL;
 			
-			$this->adminContent .=	'</div>' . "\r\n";
+			$this->adminContent .=	'</div>' . PHP_EOL;
 			
 		} // Ende Benutzer bearbeiten
 
@@ -1341,9 +1339,9 @@ class Admin_User extends Admin implements AdminTask
 			if(!is_array($delUsersArr)
 			|| count($delUsersArr) == 0
 			) {
-				$this->adminContent .= 	'</div>' . "\r\n";				
-				$this->adminContent .= 	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . "\r\n" . 
-										'<p class="notice error">{s_text:nouser}</p>' . "\r\n";				
+				$this->adminContent .= 	'</div>' . PHP_EOL;				
+				$this->adminContent .= 	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . PHP_EOL . 
+										'<p class="notice error">{s_text:nouser}</p>' . PHP_EOL;				
 				$this->adminContent	.= $this->getBackButtons($showBackButton);				
 				$this->adminContent	.= $this->closeAdminContent();
 				
@@ -1356,9 +1354,9 @@ class Admin_User extends Admin implements AdminTask
 			&& $this->loggedUserGroup != "editor"
 			&& !in_array($this->loggedUser, $delUsersArr)
 			) {
-				$this->adminContent .= 	'</div>' . "\r\n";				
-				$this->adminContent .= 	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . "\r\n" . 
-										'<p class="notice error">{s_error:noaccess}</p>' . "\r\n";				
+				$this->adminContent .= 	'</div>' . PHP_EOL;				
+				$this->adminContent .= 	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . PHP_EOL . 
+										'<p class="notice error">{s_error:noaccess}</p>' . PHP_EOL;				
 				$this->adminContent	.= $this->getBackButtons($showBackButton);				
 				$this->adminContent	.= $this->closeAdminContent();
 				
@@ -1375,7 +1373,7 @@ class Admin_User extends Admin implements AdminTask
 									);
 			
 			// del header
-			$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . "\r\n";
+			$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:deluser}</h2>' . PHP_EOL;
 			
 		
 			// DB del string
@@ -1428,7 +1426,7 @@ class Admin_User extends Admin implements AdminTask
 					&& $this->loggedUser == $delUser
 					) {
 
-							$this->adminContent .=	'<p class="notice error">' . $delUser . ' &#9654; {s_error:dellastadmin}</p>' . "\r\n";
+							$this->adminContent .=	'<p class="notice error">' . $delUser . ' &#9654; {s_error:dellastadmin}</p>' . PHP_EOL;
 							
 							unset($delUsersArr[$uKey]);
 							$deletableUsers--;
@@ -1451,7 +1449,7 @@ class Admin_User extends Admin implements AdminTask
 						// Falls Benutzer gelöscht wurde
 						if($deleteSQL1 === true) {
 							
-							$this->adminContent .=	'<p class="notice success">' . $delUser . ' &#9654; {s_notice:deluser}</p>' . "\r\n";				
+							$this->adminContent .=	'<p class="notice success">' . $delUser . ' &#9654; {s_notice:deluser}</p>' . PHP_EOL;				
 							$deleted = true;
 							
 							// Falls gelöschter Benutzer aktuell eingeloggt, Benutzer ausloggen
@@ -1462,7 +1460,7 @@ class Admin_User extends Admin implements AdminTask
 						// Falls Fehler
 						else {
 
-							$this->adminContent .=	'<p class="notice error">' . $delUser . ' &#9654; {s_error:error}</p>' . "\r\n";
+							$this->adminContent .=	'<p class="notice error">' . $delUser . ' &#9654; {s_error:error}</p>' . PHP_EOL;
 												
 							$noTarget = true;
 							
@@ -1482,7 +1480,7 @@ class Admin_User extends Admin implements AdminTask
 
 			else {
 
-				$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p>' . "\r\n";
+				$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p>' . PHP_EOL;
 									
 				$noTarget = true;
 				
@@ -1497,14 +1495,14 @@ class Admin_User extends Admin implements AdminTask
 			// Formular: Löschen bestätigen
 			if($deleted == false && $noTarget == false) {
 									
-				$this->adminContent .=	'<p class="notice error">{s_header:deluser}</p>' . "\r\n" . 
-										'<ul class="framedItems">' . "\r\n" . 
-										'<li>' . "\r\n" . 
-										'<span class="delbox">' . "\r\n" . 
-										'{s_text:deluser} <span class="" title="{s_title:deluser}">&nbsp;</span><br /><br /><strong>' . implode("<br />", $delUsersArr) . '</strong></span>' . "\r\n" . 
-										'</li>' . "\r\n" . 
-										'<li class="change submit">' . "\r\n" . 
-										'<form action="" id="adminfm2" method="post">' . "\r\n";
+				$this->adminContent .=	'<p class="notice error">{s_header:deluser}</p>' . PHP_EOL . 
+										'<ul class="framedItems">' . PHP_EOL . 
+										'<li>' . PHP_EOL . 
+										'<span class="delbox">' . PHP_EOL . 
+										'{s_text:deluser} <span class="" title="{s_title:deluser}">&nbsp;</span><br /><br /><strong>' . implode("<br />", $delUsersArr) . '</strong></span>' . PHP_EOL . 
+										'</li>' . PHP_EOL . 
+										'<li class="change submit">' . PHP_EOL . 
+										'<form action="" id="adminfm2" method="post">' . PHP_EOL;
 			
 				// Button cancel
 				$btnDefs	= array(	"type"		=> "submit",
@@ -1516,10 +1514,10 @@ class Admin_User extends Admin implements AdminTask
 				
 				$this->adminContent	.=	parent::getButton($btnDefs);
 				
-				$this->adminContent	.=	'<input name="cancel" type="hidden" value="{s_button:cancel}" />' . "\r\n" . 
-										'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-										'</form>' . "\r\n" .
-										'<form action="" id="adminfm" method="post"' . (in_array($this->loggedUser, $delUsersArr) ? ' data-ajax="false"' : '') . '>' . "\r\n";
+				$this->adminContent	.=	'<input name="cancel" type="hidden" value="{s_button:cancel}" />' . PHP_EOL . 
+										parent::getTokenInput() . 
+										'</form>' . PHP_EOL .
+										'<form action="" id="adminfm" method="post"' . (in_array($this->loggedUser, $delUsersArr) ? ' data-ajax="false"' : '') . '>' . PHP_EOL;
 				
 				// Button delete-ok
 				$btnDefs	= array(	"type"		=> "submit",
@@ -1531,19 +1529,19 @@ class Admin_User extends Admin implements AdminTask
 				
 				$this->adminContent	.=	parent::getButton($btnDefs);
 										
-				$this->adminContent	.=	'<input type="hidden" name="step" id="step" value="del" /> ' . "\r\n" . 
-										'<input type="hidden" name="delete" value="true" />' . "\r\n" . 
-										'<input type="hidden" name="del_user" value="array" />' . "\r\n";
+				$this->adminContent	.=	'<input type="hidden" name="step" id="step" value="del" /> ' . PHP_EOL . 
+										'<input type="hidden" name="delete" value="true" />' . PHP_EOL . 
+										'<input type="hidden" name="del_user" value="array" />' . PHP_EOL;
 										
 					
 				foreach($delUsersArr as $delUser) {
-					$this->adminContent .=	'<input type="hidden" name="userNames[]" value="' . $delUser . '" />' . "\r\n";
+					$this->adminContent .=	'<input type="hidden" name="userNames[]" value="' . $delUser . '" />' . PHP_EOL;
 				}
 				
-				$this->adminContent	.=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-										'</form>' . "\r\n" . 
-										'</li>' . "\r\n" . 
-										'</ul>' . "\r\n";
+				$this->adminContent	.=	parent::getTokenInput() . 
+										'</form>' . PHP_EOL . 
+										'</li>' . PHP_EOL . 
+										'</ul>' . PHP_EOL;
 			}
 		}
 
@@ -1561,13 +1559,13 @@ class Admin_User extends Admin implements AdminTask
 
 			// Falls editorLog, Rubrik neuen Benutzer anlegen einfügen
 			if($this->editorLog) {
-				$this->adminContent .= 	'<h2 class="toggle cc-section-heading cc-h2">{s_header:newuser}</h2>' . "\r\n" .
-										'<ul class="editList cc-ist cc-list-large">' . "\r\n" .
+				$this->adminContent .= 	'<h2 class="toggle cc-section-heading cc-h2">{s_header:newuser}</h2>' . PHP_EOL .
+										'<ul class="editList cc-ist cc-list-large">' . PHP_EOL .
 										'<li class="listItem">' . "\r" .
-										'<span class="listName">{s_label:adduser}</span>' . "\r\n" . 
-										'<span class="editButtons-panel">' . "\r\n";
+										'<span class="listName">{s_label:adduser}</span>' . PHP_EOL . 
+										'<span class="editButtons-panel">' . PHP_EOL;
 	
-				$this->adminContent .=	'<form action="" class="adminfm1" method="post">' . "\r\n";
+				$this->adminContent .=	'<form action="" class="adminfm1" method="post">' . PHP_EOL;
 				
 				// Button new
 				$btnDefs	= array(	"type"		=> "submit",
@@ -1582,36 +1580,36 @@ class Admin_User extends Admin implements AdminTask
 				
 				$this->adminContent .=	parent::getButton($btnDefs);
 										
-				$this->adminContent .=	'<input type="hidden" name="new_user" value="new_user" />' . "\r\n" . 
-										'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-										'</form>' . "\r\n" .
-										'</span>' . "\r\n" . 
-										'</li>' . "\r\n" . 
-										'</ul>' . "\r\n";
+				$this->adminContent .=	'<input type="hidden" name="new_user" value="new_user" />' . PHP_EOL . 
+										parent::getTokenInput() . 
+										'</form>' . PHP_EOL .
+										'</span>' . PHP_EOL . 
+										'</li>' . PHP_EOL . 
+										'</ul>' . PHP_EOL;
 			}
 			
 			// Benutzerliste
-			$this->adminContent .= 	'<h2 class="toggle cc-section-heading cc-h2">{s_header:userlist}</h2>' . "\r\n" .
-									'<div class="adminBox">' . "\r\n";
+			$this->adminContent .= 	'<h2 class="toggle cc-section-heading cc-h2">{s_header:userlist}</h2>' . PHP_EOL .
+									'<div class="adminBox">' . PHP_EOL;
 			
 			
 			// Falls editorLog, ControlBar einfügen
 			if($this->editorLog) {
 			
-				$this->adminContent .= 	'<div class="controlBar"><form action="'.$this->formAction.'" method="post">' . "\r\n" . 
-										'<div class="dataCatSelection left"><label>{s_label:usergroup}</label>' . "\r\n" .
-										'<select name="filter_group" class="listCat" data-action="autosubmit">' . "\r\n" . 
-										'<option value="all"' . ($this->filterGroup == "<all>" ? ' selected="selected"' : '') . '>{s_option:allgroup}</option>' . "\r\n";
+				$this->adminContent .= 	'<div class="controlBar"><form action="'.$this->formAction.'" method="post">' . PHP_EOL . 
+										'<div class="dataCatSelection left"><label>{s_label:usergroup}</label>' . PHP_EOL .
+										'<select name="filter_group" class="listCat" data-action="autosubmit">' . PHP_EOL . 
+										'<option value="all"' . ($this->filterGroup == "<all>" ? ' selected="selected"' : '') . '>{s_option:allgroup}</option>' . PHP_EOL;
 			
 				foreach($this->userGroupsControlBar as $userGroup) {
 					
 					if($userGroup != "public")
-						$this->adminContent .='<option value="' . $userGroup . '"' . ($this->filterGroup == $userGroup ? ' selected="selected"' : '') . '>' . (isset(parent::$staText['option']['group' . $userGroup]) ? '{s_option:group' . $userGroup . '}' : $userGroup) . '</option>' . "\r\n";						
+						$this->adminContent .='<option value="' . $userGroup . '"' . ($this->filterGroup == $userGroup ? ' selected="selected"' : '') . '>' . (isset(parent::$staText['option']['group' . $userGroup]) ? '{s_option:group' . $userGroup . '}' : $userGroup) . '</option>' . PHP_EOL;						
 				}
 				
-				$this->adminContent .= 	'</select></div>' . "\r\n" .
-										'<div class="sortOption left"><label>{s_label:sort}</label>' . "\r\n" .
-										'<select name="sort_user" class="listSort" data-action="autosubmit">' . "\r\n";
+				$this->adminContent .= 	'</select></div>' . PHP_EOL .
+										'<div class="sortOption left"><label>{s_label:sort}</label>' . PHP_EOL .
+										'<select name="sort_user" class="listSort" data-action="autosubmit">' . PHP_EOL;
 				
 				$sortOptions = array("nameasc" => "{s_option:nameasc}",
 									 "namedsc" => "{s_option:namedsc}",
@@ -1628,52 +1626,52 @@ class Admin_User extends Admin implements AdminTask
 					if(isset($GLOBALS['_POST']['sort_user']) && $key == $this->sortUser)
 						$this->adminContent .=' selected="selected"';
 						
-					$this->adminContent .= '>' . $value . '</option>' . "\r\n";
+					$this->adminContent .= '>' . $value . '</option>' . PHP_EOL;
 				
 				}
 									
-				$this->adminContent .= 	'</select></div>' . "\r\n";
+				$this->adminContent .= 	'</select></div>' . PHP_EOL;
 				
 				
 				// Limit
-				$this->adminContent .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . "\r\n";
+				$this->adminContent .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . PHP_EOL;
 				
 				$this->adminContent	.=	$this->getLimitSelect($this->limitOptions, $this->maxRows);
 
-				$this->adminContent .= 	'</div>' . "\r\n" .
+				$this->adminContent .= 	'</div>' . PHP_EOL .
 										'<div class="filterOptions cc-table-cell">' . PHP_EOL .
-										'<div class="filterOption left"><label for="all">{s_label:all}</label>' . "\r\n" .
-										'<label class="radioBox markBox">' . "\r\n" .
-										'<input type="radio" name="filter_abo" id="all" value="all"' . ($this->filterAbo == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-										'</label>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="filterOption left"><label for="abo">{s_label:abo}</label>' . "\r\n" .
-										'<label class="radioBox markBox">' . "\r\n" .
-										'<input type="radio" name="filter_abo" id="abo" value="abo"' . ($this->filterAbo == "abo" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-										'</label>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="filterOption left"><label for="nonabo">{s_label:nonabo}</label>' . "\r\n" .
-										'<label class="radioBox markBox">' . "\r\n" .
-										'<input type="radio" name="filter_abo" id="nonabo" value="unabo"' . ($this->filterAbo == "unabo" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-										'</label>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="filterOption left"><label for="online">online</label>' . "\r\n" .
-										'<label class="radioBox markBox">' . "\r\n" .
-										'<input type="radio" name="filter_status" id="online" value="online"' . ($this->filterStatus == "online" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-										'</label>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="filterOption left"><label for="offline">offline</label>' . "\r\n" .
-										'<label class="radioBox markBox">' . "\r\n" .
-										'<input type="radio" name="filter_status" id="offline" value="offline"' . ($this->filterStatus == "offline" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-										'</label>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'</div>' . "\r\n";
+										'<div class="filterOption left"><label for="all">{s_label:all}</label>' . PHP_EOL .
+										'<label class="radioBox markBox">' . PHP_EOL .
+										'<input type="radio" name="filter_abo" id="all" value="all"' . ($this->filterAbo == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+										'</label>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="filterOption left"><label for="abo">{s_label:abo}</label>' . PHP_EOL .
+										'<label class="radioBox markBox">' . PHP_EOL .
+										'<input type="radio" name="filter_abo" id="abo" value="abo"' . ($this->filterAbo == "abo" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+										'</label>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="filterOption left"><label for="nonabo">{s_label:nonabo}</label>' . PHP_EOL .
+										'<label class="radioBox markBox">' . PHP_EOL .
+										'<input type="radio" name="filter_abo" id="nonabo" value="unabo"' . ($this->filterAbo == "unabo" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+										'</label>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="filterOption left"><label for="online">online</label>' . PHP_EOL .
+										'<label class="radioBox markBox">' . PHP_EOL .
+										'<input type="radio" name="filter_status" id="online" value="online"' . ($this->filterStatus == "online" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+										'</label>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="filterOption left"><label for="offline">offline</label>' . PHP_EOL .
+										'<label class="radioBox markBox">' . PHP_EOL .
+										'<input type="radio" name="filter_status" id="offline" value="offline"' . ($this->filterStatus == "offline" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+										'</label>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'</div>' . PHP_EOL;
 		
 				// Suchfunktion
 				$this->adminContent .=	'<div id="ccUserSearch" class="userSearch popup-panel-right hide-init ui-tooltip ui-widget ui-corner-all ui-widget-content"><label>{s_label:searchfor}</label>' .
 										'<span class="singleInput-panel">' . PHP_EOL .
-										'<input type="text" name="userSearch" class="userSearch input-button-right" value="" />' . "\r\n" .
-										'<span class="editButtons-panel">' . "\r\n";
+										'<input type="text" name="userSearch" class="userSearch input-button-right" value="" />' . PHP_EOL .
+										'<span class="editButtons-panel">' . PHP_EOL;
 
 				// Button search
 				$btnDefs	= array(	"type"		=> "submit",
@@ -1687,15 +1685,15 @@ class Admin_User extends Admin implements AdminTask
 				
 				$this->adminContent .=	parent::getButton($btnDefs);
 										
-				$this->adminContent .=	'</span>' . "\r\n" .
-										'</span>' . "\r\n" .
-										'</div>' . "\r\n";
+				$this->adminContent .=	'</span>' . PHP_EOL .
+										'</span>' . PHP_EOL .
+										'</div>' . PHP_EOL;
 			
 			
-				$this->adminContent .=	'</form>' . "\r\n";
+				$this->adminContent .=	'</form>' . PHP_EOL;
 		
 				// Button panel
-				$this->adminContent		.= 	'<span class="editButtons-panel">' . "\r\n";
+				$this->adminContent		.= 	'<span class="editButtons-panel">' . PHP_EOL;
 				
 				// Button search
 				$btnDefs	= array(	"type"		=> "button",
@@ -1708,7 +1706,7 @@ class Admin_User extends Admin implements AdminTask
 					
 				$this->adminContent .=	parent::getButton($btnDefs);
 
-				$this->adminContent .=	'</div>' . "\r\n";
+				$this->adminContent .=	'</div>' . PHP_EOL;
 				
 				
 				// Falls Gruppenfilter oder Abofilter, Filter löschen Button einfügen
@@ -1743,18 +1741,18 @@ class Admin_User extends Admin implements AdminTask
 					}
 					
 					
-					$this->adminContent .=	'<span class="showHiddenListEntries actionBox cc-hint">' . "\r\n";
+					$this->adminContent .=	'<span class="showHiddenListEntries actionBox cc-hint">' . PHP_EOL;
 			
 					// Filter icon
-					$this->adminContent .=	'<span class="listIcon">' . "\r\n" .
+					$this->adminContent .=	'<span class="listIcon">' . PHP_EOL .
 											parent::getIcon("filter", "inline-icon") .
 											'</span>' . "\n";
 
 					$this->adminContent .=	'{s_label:filter}: ' . $filter;
 					
-					$this->adminContent .=	'<form action="'.$this->formAction.'" method="post">' . "\r\n";
+					$this->adminContent .=	'<form action="'.$this->formAction.'" method="post">' . PHP_EOL;
 					
-					$this->adminContent .=	'<span class="editButtons-panel">' . "\r\n";
+					$this->adminContent .=	'<span class="editButtons-panel">' . PHP_EOL;
 			
 					// Button remove filter
 					$btnDefs	= array(	"type"		=> "submit",
@@ -1766,13 +1764,13 @@ class Admin_User extends Admin implements AdminTask
 					
 					$this->adminContent .=	parent::getButton($btnDefs);
 											
-					$this->adminContent .=	'<input type="hidden" value="all" name="filter_group">' . "\r\n" .
-											'<input type="hidden" value="all" name="filter_abo">' . "\r\n" .
-											'<input type="hidden" value="all" name="filter_status">' . "\r\n" .
-											'</span>' . "\r\n" .
-											'</form>' . "\r\n" .
-											'</span>' . "\r\n" .
-											'</span>' . "\r\n";
+					$this->adminContent .=	'<input type="hidden" value="all" name="filter_group">' . PHP_EOL .
+											'<input type="hidden" value="all" name="filter_abo">' . PHP_EOL .
+											'<input type="hidden" value="all" name="filter_status">' . PHP_EOL .
+											'</span>' . PHP_EOL .
+											'</form>' . PHP_EOL .
+											'</span>' . PHP_EOL .
+											'</span>' . PHP_EOL;
 				}
 				
 			} // Ende falls editorLog
@@ -1817,35 +1815,35 @@ class Admin_User extends Admin implements AdminTask
 									($user['username'] == $this->loggedUser ? ' loggedUser' : '') .
 									($userOnline ? ' userOnline' : '') .
 									($i%2 ? '' : ' alternate') .
-									'" data-menu="context" data-target="contextmenu-' . $i . '">' . "\r\n";
+									'" data-menu="context" data-target="contextmenu-' . $i . '">' . PHP_EOL;
 			
 					// Markbox
 					$userList .=	'<label class="markBox">' . 
 									'<input type="checkbox" name="userNames[' . $i . ']" value="' . $user['username'] . '" class="addVal" />' .
 									'</label>';			
 					
-					$userList .= 	'<span class="listUser cc-table-cell">' . "\r\n" .
-									'<span class="userIcon listIcon cc-table-cell">' . "\r\n" .
-									parent::getIcon($userIcon, 'usergroup-' . $user['group'] . ' usergroup-icon inline-icon', 'title="' . ($user['username'] == $this->loggedUser ? '{s_title:me}' : $user['username'] . ' (' . $user['group'] . ')') . '"') .
+					$userList .= 	'<span class="listUser cc-table-cell">' . PHP_EOL .
+									'<span class="userIcon listIcon cc-table-cell">' . PHP_EOL .
+									parent::getIcon($userIcon, 'usergroup-' . $user['group'] . ' usergroup-icon inline-icon' . (!$user['active'] ? ' cc-status-inactive' : ''), 'title="' . ($user['username'] == $this->loggedUser ? '{s_title:me}' : $user['username'] . ' (' . $user['group'] . ')') . (!$user['active'] ? '<br />({s_common:inactive})' : '') . '"') .
 									parent::getIcon($statusIcon, $statusClass . ' inline-icon', 'title="' . $statusTitle . '"') .
-									'</span>' . "\r\n" . 
+									'</span>' . PHP_EOL . 
 									'<span class="userName cc-table-cell" title="' . ($user['username'] == $this->loggedUser ? '{s_title:me}' : $user['username'] . ' (' . $user['group'] . ')') . '">' .
 									(strlen($user['username']) < 25 ? $user['username'] : User::getMailLocalPart($user['username']) . "@...") .
-									'</span>' . "\r\n" . 
+									'</span>' . PHP_EOL . 
 									'<span class="userGroup cc-table-cell" title="{s_label:usergroup}: ' . $user['group'] . ($user['own_groups'] != "" ? ',' . $user['own_groups'] : '') . '">' .
 									$user['group'] . ($user['own_groups'] != "" ? ',' . $user['own_groups'] : '') .
 									($user['own_groups'] != "" && !$this->checkUserGroupExists($user['own_groups']) ? parent::getIcon("warning", "inline-icon", 'title="{s_title:groupnotexits}"') : '') .
 									'</span>' .
-									'<span class="userMail cc-table-cell" title="' . $user['email'] . '">' . $user['email'] . '</span>' . "\r\n" .
+									'<span class="userMail cc-table-cell" title="' . $user['email'] . '">' . $user['email'] . '</span>' . PHP_EOL .
 									'<span class="userNewsl cc-table-cell">' .
 									$newslIcon .
 									$newslAboIcon .
-									'</span>' . "\r\n" . 
-									'</span>' . "\r\n";
+									'</span>' . PHP_EOL . 
+									'</span>' . PHP_EOL;
 											
-					$userList .= 	'<span class="editButtons-panel" data-id="contextmenu-' . $i . '">' . "\r\n";
+					$userList .= 	'<span class="editButtons-panel" data-id="contextmenu-' . $i . '">' . PHP_EOL;
 					
-					$userList .=	'<form action="" class="adminfm1" method="post">' . "\r\n";
+					$userList .=	'<form action="" class="adminfm1" method="post">' . PHP_EOL;
 			
 					// Button edit
 					$btnDefs	= array(	"type"		=> "submit",
@@ -1860,11 +1858,11 @@ class Admin_User extends Admin implements AdminTask
 					
 					$userList .=	parent::getButton($btnDefs);
 					
-					$userList .=	'<input type="hidden" name="edit_user" value="' . $user['username'] . '" />' . "\r\n" . 
-									'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-									'</form>' . "\r\n";
+					$userList .=	'<input type="hidden" name="edit_user" value="' . $user['username'] . '" />' . PHP_EOL . 
+									parent::getTokenInput() . 
+									'</form>' . PHP_EOL;
 			
-					$userList .=	'<form action="" class="adminfm2" method="post">' . "\r\n";
+					$userList .=	'<form action="" class="adminfm2" method="post">' . PHP_EOL;
 					
 					// Button delete
 					$btnDefs	= array(	"type"		=> "submit",
@@ -1879,10 +1877,10 @@ class Admin_User extends Admin implements AdminTask
 					
 					$userList .=	parent::getButton($btnDefs);
 											
-					$userList .=	'<input type="hidden" name="del_user" value="' . $user['username'] . '" />' . "\r\n" . 
-									'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-									'</form>' . "\r\n" . 
-									'</span>' . "\r\n";
+					$userList .=	'<input type="hidden" name="del_user" value="' . $user['username'] . '" />' . PHP_EOL . 
+									parent::getTokenInput() . 
+									'</form>' . PHP_EOL . 
+									'</span>' . PHP_EOL;
 					
 					$i++;
 					$userCnt++;
@@ -1890,15 +1888,15 @@ class Admin_User extends Admin implements AdminTask
 				}
 				
 				if(!$userCnt) {
-					$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p></div>' . "\r\n";
+					$this->adminContent .=	'<p class="notice error">{s_text:nouser}</p></div>' . PHP_EOL;
 				}
 				else {
 					// User list
-					$this->adminContent .=	'<ul id="cc-userList" class="editList">' . "\r\n";
+					$this->adminContent .=	'<ul id="cc-userList" class="editList">' . PHP_EOL;
 					$this->adminContent .=	$userList;
-					$this->adminContent .=	'</ul>' . "\r\n" .
+					$this->adminContent .=	'</ul>' . PHP_EOL .
 											$dataNav . 
-											'</div>' . "\r\n";
+											'</div>' . PHP_EOL;
 				}
 				
 				// Contextmenü-Script
@@ -1907,11 +1905,11 @@ class Admin_User extends Admin implements AdminTask
 		
 			} // Ende if count userQuery > 0
 			else
-				$this->adminContent .=		'<p class="notice error">{s_text:nouser}</p></div>' . "\r\n";
+				$this->adminContent .=		'<p class="notice error">{s_text:nouser}</p></div>' . PHP_EOL;
 				
 		} // Ende else
 
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 
 
@@ -2068,11 +2066,11 @@ class Admin_User extends Admin implements AdminTask
 		$output =		'<div class="actionBox">';
 			
 		// Formular für Multi-Action
-		$output .=		'<form action="' . $this->formAction . '" method="post">' . "\r\n";
+		$output .=		'<form action="' . $this->formAction . '" method="post">' . PHP_EOL;
 		
 		$output .=		'<label class="markAll markBox" data-mark="#cc-userList"><input type="checkbox" id="markAllLB" data-select="all" /></label>' .
-						'<label for="markAllLB" class="markAllLB"> {s_label:mark}</label>' . "\r\n" .
-						'<span class="editButtons-panel">' . "\r\n";
+						'<label for="markAllLB" class="markAllLB"> {s_label:mark}</label>' . PHP_EOL .
+						'<span class="editButtons-panel">' . PHP_EOL;
 		/*
 		// Button publish
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2107,13 +2105,13 @@ class Admin_User extends Admin implements AdminTask
 
 		
 		// Alle Seitenstatus/Löschen Button
-		$output .=		'<input type="hidden" name="del_user" value="array" />' . "\r\n" .
-						'<input type="hidden" class="multiAction" name="multiAction" value="' . $this->formAction . '&array=1" />' . "\r\n";
+		$output .=		'<input type="hidden" name="del_user" value="array" />' . PHP_EOL .
+						'<input type="hidden" class="multiAction" name="multiAction" value="' . $this->formAction . '&array=1" />' . PHP_EOL;
 		
 		
 		$output .=		'</span>' .
-						'</form>' . "\r\n" .
-						'</div>' . "\r\n";
+						'</form>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	
@@ -2159,12 +2157,12 @@ class Admin_User extends Admin implements AdminTask
 	public function getUserScriptTag($hide = false)
 	{
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . "\r\n" .
-				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . "\r\n" .
-				'head.ready("imagepicker", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
+		return	'<script>' . PHP_EOL .
+				'head.ready("jquery", function(){' . PHP_EOL .
+				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . PHP_EOL .
+				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . PHP_EOL .
+				'head.ready("imagepicker", function(){' . PHP_EOL .
+					'$(document).ready(function(){' . PHP_EOL .
 						'$("select.skinSelect").imagepicker({
 							target_box: $("#skinSelectionBox"),
 							hide_select: ' . ($hide ? 'true' : 'false') . ',
@@ -2176,11 +2174,11 @@ class Admin_User extends Admin implements AdminTask
 									$(this).attr("title", $("select.skinSelect").children(":nth-child(" + (i+1) + ")").attr("data-title"));
 								});
 							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	
@@ -2196,10 +2194,10 @@ class Admin_User extends Admin implements AdminTask
 	{
 
 		// Zurückbuttons
-		$output		=	'<p>&nbsp;</p>' . "\r\n" . 
-						'<div class="adminArea">' . "\r\n" . 
-						'<ul>' . "\r\n" .
-						'<li class="submit back">' . "\r\n";
+		$output		=	'<p>&nbsp;</p>' . PHP_EOL . 
+						'<div class="adminArea">' . PHP_EOL . 
+						'<ul>' . PHP_EOL .
+						'<li class="submit back">' . PHP_EOL;
 
 		if($showBackButton) {
 			// Button back
@@ -2216,12 +2214,12 @@ class Admin_User extends Admin implements AdminTask
 		// Button back
 		$output		.=	$this->getButtonLinkBacktomain();
 				
-		$output		.=	'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n" . 
-						'</ul>' . "\r\n" . 
-						'<p>&nbsp;</p>' . "\r\n" . 
-						'<p>&nbsp;</p>' . "\r\n" . 
-						'</div>' . "\r\n";
+		$output		.=	'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL . 
+						'</ul>' . PHP_EOL . 
+						'<p>&nbsp;</p>' . PHP_EOL . 
+						'<p>&nbsp;</p>' . PHP_EOL . 
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	

@@ -119,9 +119,9 @@ class Contactfm extends Modules
      * Betreffzeilen
 	 *
      * @access public
-     * @var    string
+     * @var    array
      */
-    public $subjectItems = "";
+    public $subjectItems = array();
   
     /**
      * E-Mail
@@ -272,6 +272,9 @@ class Contactfm extends Modules
 		
 		if(isset($this->formFields["leg"]) && !$this->formFields["leg"])
 			$this->showLegend	= false;
+
+		if($this->formFields["subj"] && !empty($this->formFields["subji"]))
+			$this->subjectItems	= explode("\n", $this->formFields["subji"]);
 	
 	}
 	
@@ -321,15 +324,15 @@ class Contactfm extends Modules
 			$this->showForm = false;
 		}
 				
-		$form =		'<div id="contactForm" class="form {t_class:form} cc-cform' . ($this->hideLabels ? ' cc-form-labelless' : '') . '">' . "\r\n" .
-					'<div class="top"></div>' . "\r\n" .
-					'<div class="center">' . "\r\n" .
-					'<form id="contactfm" class="' . $this->formClass . '" method="post" action="' . $formAction . '#contactfm">' . "\r\n" .
-					'<fieldset>' . "\r\n";
+		$form =		'<div id="contactForm" class="form {t_class:form} cc-cform' . ($this->hideLabels ? ' cc-form-labelless' : '') . '">' . PHP_EOL .
+					'<div class="top"></div>' . PHP_EOL .
+					'<div class="center">' . PHP_EOL .
+					'<form id="contactfm" class="' . $this->formClass . '" method="post" action="' . $formAction . '#contactfm">' . PHP_EOL .
+					'<fieldset>' . PHP_EOL;
 		
 		// Legend
 		if($this->showLegend)
-			$form .=	'<legend>' . parent::getIcon("mail") . '{s_form:contacttit}</legend>' . "\r\n";
+			$form .=	'<legend>' . parent::getIcon("mail") . '{s_form:contacttit}</legend>' . PHP_EOL;
 		
 					
 		if($this->report != "")
@@ -343,8 +346,8 @@ class Contactfm extends Modules
 			$form .='</fieldset>' . 
 					'</form>' . 
 					'</div>' . 
-					'<div class="bottom"></div>' . "\r\n" .
-					'</div>' . "\r\n";
+					'<div class="bottom"></div>' . PHP_EOL .
+					'</div>' . PHP_EOL;
 
 			return ContentsEngine::replaceStaText($form);
 		}
@@ -352,26 +355,26 @@ class Contactfm extends Modules
 	
 		// Andernfalls Formular anzeigen		
 		// Error box
-		$form .=	'<div class="formErrorBox"></div>' . "\r\n";
+		$form .=	'<div class="formErrorBox"></div>' . PHP_EOL;
 		
 		if(!$this->hideLabels)
-			$form .=	'<p class="footnote topNote {t_class:alert} {t_class:info}">{s_form:req}</p>' . "\r\n";
+			$form .=	'<p class="footnote topNote {t_class:alert} {t_class:info}">{s_form:req}</p>' . PHP_EOL;
 		
-		$form .=	'<ul>' . "\r\n";
+		$form .=	'<ul>' . PHP_EOL;
 		
 		$formRow	= "";
 			
 		// Falls inline
 		if($this->formFormat == "inline") {
 			$labelSpanLft	= "";
-			$fieldSpanLft	= '<span class="fieldLeft {t_class:col5}">' . "\r\n";
+			$fieldSpanLft	= '<span class="fieldLeft {t_class:col5}">' . PHP_EOL;
 			$labelSpanRgt	= "";
-			$fieldSpanRgt	= '<span class="fieldRight {t_class:col5}">' . "\r\n";
+			$fieldSpanRgt	= '<span class="fieldRight {t_class:col5}">' . PHP_EOL;
 		}
 		else {
-			$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . "\r\n";
+			$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . PHP_EOL;
 			$fieldSpanLft	= "";
-			$labelSpanRgt	= '<span class="fieldRight {t_class:halfrowsm} {t_class:omega}">' . "\r\n";
+			$labelSpanRgt	= '<span class="fieldRight {t_class:halfrowsm} {t_class:omega}">' . PHP_EOL;
 			$fieldSpanRgt	= "";
 		}
 		
@@ -387,60 +390,60 @@ class Contactfm extends Modules
 			}
 
 			$formRow .=	$labelSpanLft .
-						'<label class="' . $this->labelClass . '" for="formOfAddress">{s_form:anrede}<em>&#42;</em>' . $secLabel . '</label>' . "\r\n" .
+						'<label class="' . $this->labelClass . '" for="formOfAddress">{s_form:anrede}<em>&#42;</em>' . $secLabel . '</label>' . PHP_EOL .
 						$fieldSpanLft .
-						'<select name="formOfAddress" id="formOfAddress" class="{t_class:select} ' . $this->fieldClass . '" aria-required="true">' . "\r\n" . 
-						'<option' . "\r\n";
+						'<select name="formOfAddress" id="formOfAddress" class="{t_class:select} ' . $this->fieldClass . '" aria-required="true">' . PHP_EOL . 
+						'<option' . PHP_EOL;
 						
 			if(isset($GLOBALS['_POST']['formOfAddress']) && $GLOBALS['_POST']['formOfAddress'] == parent::$staText['form']['herr'])
 				$formRow .= ' selected="selected"';
 					
-			$formRow .=	'>{s_form:herr}</option>' . "\r\n" . 
+			$formRow .=	'>{s_form:herr}</option>' . PHP_EOL . 
 						'<option';
 					
 			if(isset($GLOBALS['_POST']['formOfAddress']) && $GLOBALS['_POST']['formOfAddress'] == parent::$staText['form']['frau']) 
 				$formRow .=	' selected="selected"';
 				
-			$formRow .=	'>{s_form:frau}</option>' . "\r\n" . 
-						'</select>' . "\r\n" . 
-						'</span>' . "\r\n";
+			$formRow .=	'>{s_form:frau}</option>' . PHP_EOL . 
+						'</select>' . PHP_EOL . 
+						'</span>' . PHP_EOL;
 		}
 		
 		// Titel
 		if($this->formFields["title"]) {
 		
 			$formRow .=	$labelSpanRgt .
-						($secLabel == "" ? '<label class="secondLabel ' . $this->labelClass . '" for="title">{s_form:grade}<em></em></label>' . "\r\n" : '') . 
+						($secLabel == "" ? '<label class="secondLabel ' . $this->labelClass . '" for="title">{s_form:grade}<em></em></label>' . PHP_EOL : '') . 
 						$fieldSpanRgt .
-						'<select name="title" id="title" class="' . $this->fieldClass . '">' . "\r\n" . 
-						'<option>---</option>' . "\r\n" . 
+						'<select name="title" id="title" class="' . $this->fieldClass . '">' . PHP_EOL . 
+						'<option>---</option>' . PHP_EOL . 
 						'<option';
 						
 			if(isset($GLOBALS['_POST']['title']) && $GLOBALS['_POST']['title'] == parent::$staText['form']['dr'])
 				$formRow .= ' selected="selected"';
 				
-			$formRow .=	'>{s_form:dr}</option>' . "\r\n" . 
+			$formRow .=	'>{s_form:dr}</option>' . PHP_EOL . 
 						'<option';
 						
 			if(isset($GLOBALS['_POST']['title']) && $GLOBALS['_POST']['title'] == parent::$staText['form']['prof'])
 				$formRow .= ' selected="selected"';
 				
-			$formRow .=	'>{s_form:prof}</option>' . "\r\n" . 
+			$formRow .=	'>{s_form:prof}</option>' . PHP_EOL . 
 						'<option';
 						
 			if(isset($GLOBALS['_POST']['title']) && $GLOBALS['_POST']['title'] == parent::$staText['form']['profdr'])
 				$formRow .= ' selected="selected"';
 				
-			$formRow .=	'>{s_form:profdr}</option>' . "\r\n" . 
-						'</select>' . "\r\n" . 
-						'</span>' . "\r\n";
+			$formRow .=	'>{s_form:profdr}</option>' . PHP_EOL . 
+						'</select>' . PHP_EOL . 
+						'</span>' . PHP_EOL;
 		}
 		
 		if($formRow != "")
-			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : ' {t_class:row}') . '">' . "\r\n" .
+			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : ' {t_class:row}') . '">' . PHP_EOL .
 						$formRow .
-						'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		
 		
 		$formRow	= "";
@@ -453,7 +456,7 @@ class Contactfm extends Modules
 			if($this->hideLabels)
 				$placeH	= ' placeholder="{s_form:name}"';
 			
-			$labelSpanLftClose	= '</span>' . "\r\n";
+			$labelSpanLftClose	= '</span>' . PHP_EOL;
 			
 			// Falls mit Vorname
 			if($this->formFields["fname"]) {
@@ -461,15 +464,15 @@ class Contactfm extends Modules
 				if($this->formFormat == "inline") {
 					$secLabel		= ' / <label for="firstname" class="secondLabel">{s_form:firstname}</label>';
 					$labelSpanLft	= "";
-					$fieldSpanLft	= '<span class="fieldLeft {t_class:col5} {t_class:alpha}">' . "\r\n";
+					$fieldSpanLft	= '<span class="fieldLeft {t_class:col5} {t_class:alpha}">' . PHP_EOL;
 					$labelSpanRgt	= "";
-					$fieldSpanRgt	= '<span class="fieldRight {t_class:col5} {t_class:omega}">' . "\r\n";
+					$fieldSpanRgt	= '<span class="fieldRight {t_class:col5} {t_class:omega}">' . PHP_EOL;
 				}
 				else {
 					$secLabel 		= "";
-					$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . "\r\n";
+					$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . PHP_EOL;
 					$fieldSpanLft	= "";
-					$labelSpanRgt	= '<span class="fieldRight {t_class:halfrowsm} {t_class:omega}">' . "\r\n";
+					$labelSpanRgt	= '<span class="fieldRight {t_class:halfrowsm} {t_class:omega}">' . PHP_EOL;
 					$fieldSpanRgt	= "";
 				}
 			}
@@ -481,12 +484,12 @@ class Contactfm extends Modules
 			}
 		
 			$formRow .=	$labelSpanLft .
-						'<label class="' . $this->labelClass . '" for="name">{s_form:name}<em>&#42;</em>' . $secLabel . '</label>' . "\r\n";
+						'<label class="' . $this->labelClass . '" for="name">{s_form:name}<em>&#42;</em>' . $secLabel . '</label>' . PHP_EOL;
 			
 			$formRow .=	$fieldSpanLft;
 			
 			if($this->errorName != "")
-				$formRow .= $noticeOpenTag . $this->errorName . $noticeCloseTag . "\r\n";
+				$formRow .= $noticeOpenTag . $this->errorName . $noticeCloseTag . PHP_EOL;
 	
 			$formRow .=	'<span class="{t_class:inputgroup}">' . "\n" .
 						'<span class="{t_class:inputaddon}">' . parent::getIcon("user", "", "", "") . '</span>' . "\n" .
@@ -494,9 +497,9 @@ class Contactfm extends Modules
 						
 			isset($GLOBALS['_POST']['name']) ? $formRow .= htmlspecialchars($GLOBALS['_POST']['name']) : '""';
 						
-			$formRow .=	'" maxlength="50" data-validation="required" data-validation-length="max50" />' . "\r\n" . 
+			$formRow .=	'" maxlength="50" data-validation="required" data-validation-length="max50" />' . PHP_EOL . 
 						$labelSpanLftClose .
-						'</span>' . "\r\n";
+						'</span>' . PHP_EOL;
 		}
 		
 		// Vorname
@@ -508,35 +511,35 @@ class Contactfm extends Modules
 				$placeH	= ' placeholder="{s_form:firstname}"';
 		
 			$formRow .=	$labelSpanRgt .
-						($secLabel == "" ? '<label class="secondLabel ' . $this->labelClass . '" for="firstname">{s_form:firstname}</label>' . "\r\n" : '');
+						($secLabel == "" ? '<label class="secondLabel ' . $this->labelClass . '" for="firstname">{s_form:firstname}</label>' . PHP_EOL : '');
 			
 			$formRow .=	$fieldSpanRgt;
 			
 			if($this->errorFirstName != "")
-				$formRow .= $noticeOpenTag . $this->errorFirstName . $noticeCloseTag . "\r\n";
+				$formRow .= $noticeOpenTag . $this->errorFirstName . $noticeCloseTag . PHP_EOL;
 	
 			$formRow .=	'<input name="firstname"' . $placeH . ' type="text" id="firstname" class="' . $this->fieldClass . '" value="';
 						
 			isset($GLOBALS['_POST']['firstname']) ? $formRow .= htmlspecialchars($GLOBALS['_POST']['firstname']) : '""';
 						
-			$formRow .=	'" maxlength="50" />' . "\r\n" . 
-						'</span>' . "\r\n";
+			$formRow .=	'" maxlength="50" />' . PHP_EOL . 
+						'</span>' . PHP_EOL;
 		}
 		
 		if($formRow != "") {
-			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : ' {t_class:row}') . ($this->errorName != "" || $this->errorFirstName != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" .
+			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : ' {t_class:row}') . ($this->errorName != "" || $this->errorFirstName != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL .
 						$formRow .
-						($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : '<br class="clearfloat" />' . "\r\n") .
-						'</li>' . "\r\n";
+						($this->formFormat == "inline" || !$this->formFields["fname"] ? '' : '<br class="clearfloat" />' . PHP_EOL) .
+						'</li>' . PHP_EOL;
 		}
 		
 	
 		// Falls inline form
 		if($this->formFormat == "inline") {
-			$fieldSpanRgt		= '<span class="fieldRight {t_class:col10} {t_class:omega}">' . "\r\n";
+			$fieldSpanRgt		= '<span class="fieldRight {t_class:col10} {t_class:omega}">' . PHP_EOL;
 		}
 		else {
-			$fieldSpanRgt		= '<span class="">' . "\r\n";
+			$fieldSpanRgt		= '<span class="">' . PHP_EOL;
 		}
 		
 		// Firma
@@ -547,13 +550,13 @@ class Contactfm extends Modules
 			if($this->hideLabels)
 				$placeH	= ' placeholder="{s_form:company}"';
 		
-			$form .=	'<li class="{t_class:formrow}' . ($this->errorCompany != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" .
-						'<label class="' . $this->labelClass . '" for="company">{s_form:company}</label>' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}' . ($this->errorCompany != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL .
+						'<label class="' . $this->labelClass . '" for="company">{s_form:company}</label>' . PHP_EOL;
 			
 			$form .=	$fieldSpanRgt;
 			
 			if($this->errorCompany != "")
-				$form .= $noticeOpenTag . $this->errorCompany . $noticeCloseTag . "\r\n";
+				$form .= $noticeOpenTag . $this->errorCompany . $noticeCloseTag . PHP_EOL;
 	
 			$form .=	'<span class="{t_class:inputgroup}">' . "\n" .
 						'<span class="{t_class:inputaddon}">' . parent::getIcon("building", "", "", "") . '</span>' . "\n" .
@@ -561,10 +564,10 @@ class Contactfm extends Modules
 						
 			isset($GLOBALS['_POST']['company']) ? $form .= htmlspecialchars($GLOBALS['_POST']['company']) : '""';
 						
-			$form .=	'" maxlength="50" />' . "\r\n" . 
-						'</span>' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'" maxlength="50" />' . PHP_EOL . 
+						'</span>' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// E-Mail
@@ -575,13 +578,13 @@ class Contactfm extends Modules
 			if($this->hideLabels)
 				$placeH	= ' placeholder="{s_form:email}"';
 		
-			$form .=	'<li class="{t_class:formrow}' . ($this->errorMail != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" .
-						'<label class="' . $this->labelClass . '" for="email">{s_form:email}<em>&#42;</em></label>' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}' . ($this->errorMail != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL .
+						'<label class="' . $this->labelClass . '" for="email">{s_form:email}<em>&#42;</em></label>' . PHP_EOL;
 			
 			$form .=	$fieldSpanRgt;
 						
 			if($this->errorMail != "")
-				$form .= $noticeOpenTag . $this->errorMail . $noticeCloseTag . "\r\n";
+				$form .= $noticeOpenTag . $this->errorMail . $noticeCloseTag . PHP_EOL;
 						
 			$form .=	'<span class="{t_class:inputgroup}">' . "\n" .
 						'<span class="{t_class:inputaddon}">' . parent::getIcon("mail", "", "", "") . '</span>' . "\n" .
@@ -589,10 +592,10 @@ class Contactfm extends Modules
 						
 			isset($GLOBALS['_POST']['email']) ? $form .= htmlspecialchars($GLOBALS['_POST']['email']) : '""';
 			
-			$form .=	'" maxlength="254" data-validation="email" />' . "\r\n" . 
-						'</span>' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'" maxlength="254" data-validation="email" />' . PHP_EOL . 
+						'</span>' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// Phone
@@ -603,13 +606,13 @@ class Contactfm extends Modules
 			if($this->hideLabels)
 				$placeH	= ' placeholder="{s_form:phone}"';
 		
-			$form .=	'<li class="{t_class:formrow}' . ($this->errorPhone != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" .
-						'<label class="' . $this->labelClass . '" for="phone">{s_form:phone}<em>&#42;</em></label>' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}' . ($this->errorPhone != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL .
+						'<label class="' . $this->labelClass . '" for="phone">{s_form:phone}<em>&#42;</em></label>' . PHP_EOL;
 			
 			$form .=	$fieldSpanRgt;
 						
 			if($this->errorPhone != "")
-				$form .= $noticeOpenTag . $this->errorPhone . $noticeCloseTag . "\r\n";
+				$form .= $noticeOpenTag . $this->errorPhone . $noticeCloseTag . PHP_EOL;
 						
 			$form .=	'<span class="{t_class:inputgroup}">' . "\n" .
 						'<span class="{t_class:inputaddon}">' . parent::getIcon("phone", "", "", "") . '</span>' . "\n" .
@@ -617,26 +620,25 @@ class Contactfm extends Modules
 						
 			isset($GLOBALS['_POST']['phone']) ? $form .= htmlspecialchars($GLOBALS['_POST']['phone']) : '""';
 			
-			$form .=	'" maxlength="32" data-validation="required" data-validation-length="max32" />' . "\r\n" . 
-						'</span>' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'" maxlength="32" data-validation="required" data-validation-length="max32" />' . PHP_EOL . 
+						'</span>' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// Betreff
+
 		if($this->formFields["subj"]
 		&& !empty($this->formFields["subji"])
 		) {
-			
-			$this->subjectItems	= explode("\r\n", $this->formFields["subji"]);
 		
-			$form .=	'<li class="{t_class:formrow}">' . "\r\n" . 
-						'<label class="' . $this->labelClass . '" for="subject">{s_form:subject}<em></em></label>' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}">' . PHP_EOL . 
+						'<label class="' . $this->labelClass . '" for="subject">{s_form:subject}<em></em></label>' . PHP_EOL;
 
 			$form .=	$fieldSpanRgt;
 						
-			$form .=	'<select name="subject" id="subject" class="{t_class:select} {t_class:input} ' . $this->fieldClass . '">' . "\r\n" . 
-						'<option value="-1">- {s_form:other} -</option>' . "\r\n"; 
+			$form .=	'<select name="subject" id="subject" class="{t_class:select} {t_class:input} ' . $this->fieldClass . '">' . PHP_EOL . 
+						'<option value="-1">- {s_form:other} -</option>' . PHP_EOL; 
 			
 			foreach($this->subjectItems as $key => $val) {
 				
@@ -647,12 +649,12 @@ class Contactfm extends Modules
 				)
 					$form .= ' selected="selected"';
 				
-				$form .='>' . $val . '</option>' . "\r\n";
+				$form .='>' . $val . '</option>' . PHP_EOL;
 			}
 			
-			$form .=	'</select>' . "\r\n" . 
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'</select>' . PHP_EOL . 
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// Nachricht
@@ -663,21 +665,21 @@ class Contactfm extends Modules
 			if($this->hideLabels)
 				$placeH	= ' placeholder="{s_form:message}"';
 		
-			$form .=	'<li class="{t_class:formrow}' . ($this->errorMes != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" .
-						'<label class="' . $this->labelClass . '" for="message">{s_form:message}<em>&#42;</em></label>' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}' . ($this->errorMes != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL .
+						'<label class="' . $this->labelClass . '" for="message">{s_form:message}<em>&#42;</em></label>' . PHP_EOL;
 						
 			$form .=	$fieldSpanRgt;
 			
 			if($this->errorMes != "")
-				$form .= $noticeOpenTag . $this->errorMes . $noticeCloseTag . "\r\n";
+				$form .= $noticeOpenTag . $this->errorMes . $noticeCloseTag . PHP_EOL;
 						
 			$form .=	'<textarea name="message"' . $placeH . ' id="message" class="{t_class:text} {t_class:input} ' . $this->fieldClass . '" aria-required="true" rows="5" cols="30" accept-charset="UTF-8" data-validation="required" data-validation-length="max1800">';
 						
 			isset($GLOBALS['_POST']['message']) ?  $form .= htmlentities($GLOBALS['_POST']['message'], ENT_QUOTES, 'UTF-8') : '""';
 			
-			$form .=	'</textarea>' . "\r\n" . 
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'</textarea>' . PHP_EOL . 
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// Kopie an Absender
@@ -685,30 +687,30 @@ class Contactfm extends Modules
 			
 			if($this->formFormat == "inline") {
 				$labelClass			= '{t_class:col10}';
-				$fieldSpan			= '<span class="{t_class:col10} {t_class:push2}">' . "\r\n";
+				$fieldSpan			= '<span class="{t_class:col10} {t_class:push2}">' . PHP_EOL;
 			}
 			else {
 				$labelClass			= "{t_class:label} {t_class:checkbox}";
-				$fieldSpan			= '<span class="">' . "\r\n";
+				$fieldSpan			= '<span class="">' . PHP_EOL;
 			}
 		
-			$form .=	'<li class="{t_class:formrow}">' . "\r\n";
+			$form .=	'<li class="{t_class:formrow}">' . PHP_EOL;
 
 			$form .=	$fieldSpan;
 			
-			$form .=	'<div class="{t_class:checkbox}">' . "\r\n";
+			$form .=	'<div class="{t_class:checkbox}">' . PHP_EOL;
 			
-			$form .=	'<label for="copy" class="' . $labelClass . '">' . "\r\n";
+			$form .=	'<label for="copy" class="' . $labelClass . '">' . PHP_EOL;
 						
 			$form .=	'<input type="checkbox" name="copy" id="copy" class="{t_class:fieldcheck}" ';
 						
 			isset($GLOBALS['_POST']['copy']) && $GLOBALS['_POST']['copy'] == "on" ?  $form .= ' checked="checked"' : '""';
 			
-			$form .=	'/>{s_form:copy}</label>' . "\r\n" . 
-						'</div>' . "\r\n" .
-						'</span>' . "\r\n" .
-						'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'/>{s_form:copy}</label>' . PHP_EOL . 
+						'</div>' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		// Captcha
@@ -721,33 +723,33 @@ class Contactfm extends Modules
 		
 			if($this->formFormat == "inline") {
 				$labelSpanLft	= "";
-				$fieldSpanLft	= '<span class="fieldLeft {t_class:col5} {t_class:alpha}">' . "\r\n";
+				$fieldSpanLft	= '<span class="fieldLeft {t_class:col5} {t_class:alpha}">' . PHP_EOL;
 				$labelSpanRgt	= "";
-				$fieldSpanRgt	= '<span class="fieldCaptcha fieldRight {t_class:col5} {t_class:omega}">' . "\r\n";
+				$fieldSpanRgt	= '<span class="fieldCaptcha fieldRight {t_class:col5} {t_class:omega}">' . PHP_EOL;
 			}
 			else {
-				$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . "\r\n";
+				$labelSpanLft	= '<span class="fieldLeft {t_class:halfrowsm} {t_class:alpha}">' . PHP_EOL;
 				$fieldSpanLft	= "";
-				$labelSpanRgt	= '<span class="fieldCaptcha fieldRight {t_class:halfrowsm} {t_class:omega}">' . "\r\n" .
-								  '<label class="' . $this->labelClass . '">&nbsp;</label>' . ($this->hideLabels ? '' : '<br />') . "\r\n";
+				$labelSpanRgt	= '<span class="fieldCaptcha fieldRight {t_class:halfrowsm} {t_class:omega}">' . PHP_EOL .
+								  '<label class="' . $this->labelClass . '">&nbsp;</label>' . ($this->hideLabels ? '' : '<br />') . PHP_EOL;
 				
 				$fieldSpanRgt	= "";
 			}
 		
-			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" ? '' : ' {t_class:row}') . ($this->errorCap != "" ? ' {t_class:fielderror}' : '') . '">' . "\r\n" . 
+			$form .=	'<li class="{t_class:formrow}' . ($this->formFormat == "inline" ? '' : ' {t_class:row}') . ($this->errorCap != "" ? ' {t_class:fielderror}' : '') . '">' . PHP_EOL . 
 						$labelSpanLft .
-						'<label class="' . $this->labelClass . '" for="captcha-confirm">{s_form:captcha}<em>&#42;</em></label>' . "\r\n";
+						'<label class="' . $this->labelClass . '" for="captcha-confirm">{s_form:captcha}<em>&#42;</em></label>' . PHP_EOL;
 		
 			$form .=	$fieldSpanLft;
 			
 			if($this->errorCap != "")
-				$form .= $noticeOpenTag . $this->errorCap . $noticeCloseTag . "\r\n";
+				$form .= $noticeOpenTag . $this->errorCap . $noticeCloseTag . PHP_EOL;
 						
-			$form .=	'<input name="captcha_confirm"' . $placeH . ' type="text" id="captcha-confirm" class="{t_class:input} ' . $this->fieldClass . '" aria-required="true" data-validation="required" />' . "\r\n" .
-						'</span>' . "\r\n" .
+			$form .=	'<input name="captcha_confirm"' . $placeH . ' type="text" id="captcha-confirm" class="{t_class:input} ' . $this->fieldClass . '" aria-required="true" data-validation="required" />' . PHP_EOL .
+						'</span>' . PHP_EOL .
 						$labelSpanRgt .
 						$fieldSpanRgt .
-						'<img src="' . PROJECT_HTTP_ROOT . '/access/captcha.php" alt="{s_form:capalt}" title="{s_form:captit}" class="captcha" />' . "\r\n";
+						'<img src="' . PROJECT_HTTP_ROOT . '/access/captcha.php" alt="{s_form:capalt}" title="{s_form:captit}" class="captcha" />' . PHP_EOL;
 	
 			// Button caprel
 			$btnDefs	= array(	"href"		=> PROJECT_HTTP_ROOT . '/access/captcha.php',
@@ -761,24 +763,24 @@ class Contactfm extends Modules
 			
 			$form .=	parent::getButtonLink($btnDefs);
 			
-			$form .=	'</span>' . "\r\n" . 
-						'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+			$form .=	'</span>' . PHP_EOL . 
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		}
 		
 		
 		// Falls inline
 		if($this->formFormat == "inline") {
 			$labelClass			= '{t_class:col10}';
-			$fieldSpan			= '<span class="{t_class:col10} {t_class:push2}">' . "\r\n";
+			$fieldSpan			= '<span class="{t_class:col10} {t_class:push2}">' . PHP_EOL;
 		}
 		else {
 			$labelClass			= $this->labelClass;
-			$fieldSpan			= '<span class="">' . "\r\n";
+			$fieldSpan			= '<span class="">' . PHP_EOL;
 		}
 		
-		$form .=	'<li class="{t_class:formrow}">' . "\r\n" .
-					'<input type="text" name="m-mail" id="m-mail" class="emptyfield" value="" />' . "\r\n";
+		$form .=	'<li class="{t_class:formrow}">' . PHP_EOL .
+					'<input type="text" name="m-mail" id="m-mail" class="emptyfield" value="" />' . PHP_EOL;
 
 		$form .=	$fieldSpan;
 					
@@ -793,18 +795,18 @@ class Contactfm extends Modules
 			
 		$form .=	parent::getButton($btnDefs);
 		
-		$form .=	'<input name="contactfm" type="hidden" value="{s_button:submit}" />' . "\r\n" .
-					#'<input name="reset" type="button" id="reset" onClick="fieldRes();" value="{s_button:reset}" class="formbutton reset right" />' . "\r\n" .
-					'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-					'<br class="clearfloat" />' . "\r\n" .
-					'</span>' . "\r\n" . 
-					'</li>' . "\r\n" . 
-					'</ul>' . "\r\n" . 
-					'</fieldset>' . "\r\n" . 
-					'</form>' . "\r\n" .
-					'</div>' . "\r\n" .
-					'<div class="bottom"></div>' . "\r\n" .
-					'</div>' . "\r\n";
+		$form .=	'<input name="contactfm" type="hidden" value="{s_button:submit}" />' . PHP_EOL .
+					#'<input name="reset" type="button" id="reset" onClick="fieldRes();" value="{s_button:reset}" class="formbutton reset right" />' . PHP_EOL .
+					parent::getTokenInput() .
+					'<br class="clearfloat" />' . PHP_EOL .
+					'</span>' . PHP_EOL . 
+					'</li>' . PHP_EOL . 
+					'</ul>' . PHP_EOL . 
+					'</fieldset>' . PHP_EOL . 
+					'</form>' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'<div class="bottom"></div>' . PHP_EOL .
+					'</div>' . PHP_EOL;
 		
 			
 		return ContentsEngine::replaceStaText($form);
@@ -989,7 +991,7 @@ class Contactfm extends Modules
 		$domain			= str_replace("https://", "", $domain);
 		$domain			= str_replace("www.", "", $domain);
 		
-		$this->subject	= $this->subject == "-1" ? ContentsEngine::replaceStaText("{s_form:other}") : $this->subject;
+		$this->subject	= $this->subject == "-1" ? ContentsEngine::replaceStaText("{s_form:other}") : (!empty($this->subjectItems[$this->subject]) ? $this->subjectItems[$this->subject] : $this->subject);
 		
 		$subjectPrefix	= htmlspecialchars(ContentsEngine::replaceStaText("{s_form:newcontact}"));
 		$mailSubject	= $subjectPrefix . ($this->subject != "" ? ' - ' . $this->subject : '') . ' - ' . $domain;
@@ -1054,6 +1056,7 @@ class Contactfm extends Modules
 
 		// Klasse phpMailer einbinden
 		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 		
 		// Instanz von PHPMailer bilden
 		$mail = new \PHPMailer();
@@ -1063,7 +1066,7 @@ class Contactfm extends Modules
 		$mail->setMailParameters(SMTP_MAIL, $this->name, CONTACT_EMAIL, $mailSubject, $htmlMail, true, "", "smtp");
 		
 		// E-Mail senden per phpMailer (SMTP)
-		$mailStatus = $mail->Send();
+		$mailStatus = $mail->send();
 		
 		// Falls Versand per SMTP erfolglos, per Sendmail probieren
 		if($mailStatus !== true) {
@@ -1075,7 +1078,7 @@ class Contactfm extends Modules
 			#$mail->Sender = $this->email;		
 			
 			// E-Mail senden per phpMailer (Sendmail)
-			$mailStatus = $mail->Send();
+			$mailStatus = $mail->send();
 		}
 		
 		// Falls Versand per Sendmail erfolglos, per mail() probieren
@@ -1085,7 +1088,7 @@ class Contactfm extends Modules
 			$mail->setMailParameters(AUTO_MAIL_EMAIL, $this->name, CONTACT_EMAIL, $mailSubject, $htmlMail, true);
 			
 			// E-Mail senden per phpMailer (mail())
-			$mailStatus = $mail->Send();
+			$mailStatus = $mail->send();
 		}
 		
 		// Falls Mailversand erfolgreich
@@ -1101,7 +1104,7 @@ class Contactfm extends Modules
 				$mail->setMailParameters(SMTP_MAIL, $this->name, $this->email, $mailSubject, $htmlMail, true, "", "smtp");
 				
 				// E-Mail senden per phpMailer (SMTP)
-				$mailStatusCopy = $mail->Send();
+				$mailStatusCopy = $mail->send();
 				
 				// Falls Versand per SMTP erfolglos, per Sendmail probieren
 				if($mailStatusCopy !== true) {
@@ -1110,7 +1113,7 @@ class Contactfm extends Modules
 					$mail->setMailParameters(AUTO_MAIL_EMAIL, $this->name, $this->email, $mailSubject, $htmlMail, true, "", "sendmail");
 					
 					// E-Mail senden per phpMailer (Sendmail)
-					$mailStatusCopy = $mail->Send();
+					$mailStatusCopy = $mail->send();
 				}
 				
 				// Falls Versand per Sendmail erfolglos, per mail() probieren
@@ -1120,7 +1123,7 @@ class Contactfm extends Modules
 					$mail->setMailParameters(AUTO_MAIL_EMAIL, $this->name, $this->email, $mailSubject, $htmlMail, true);
 					
 					// E-Mail senden per phpMailer (mail())
-					$mailStatusCopy = $mail->Send();
+					$mailStatusCopy = $mail->send();
 				}
 			}
 			

@@ -15,10 +15,10 @@
 						<span class="cc-topbar-icon cc-admin-icons cc-icon-menu-left cc-menu-toggle-icon">&nbsp;</span>
 					</button>
 					{preview}
-				</div><!-- Ende #topHeader -->
-			</div><!-- Ende #topBox -->
+				</div><!-- end #topHeader -->
+			</div><!-- end #topBox -->
 			{HEAD}
-		</div><!-- Ende #header -->
+		</div><!-- end #header -->
 		<div id="mainContent" class="{maincon_class}">
 			{open_headerbox}
 			<button type="button" class="cc-button button btn button-icon-only cc-bar-toggle cc-action-togglesidebar right" data-target="right" title="{s_title:toggle}">
@@ -39,7 +39,7 @@
 			<button type="button" class="cc-button button btn button-icon-only cc-bar-toggle cc-action-togglesidebar" data-target="left" title="{s_title:toggle}">
 				<span class="cc-admin-icons cc-icon-cancel-circle cc-menu-toggle-icon">&nbsp;</span>
 			</button>
-		</div><!-- Ende #sidebar -->
+		</div><!-- end #sidebar -->
 		<div id="right" class="{rightbar_class}">
 			{account}
 			{lang_menu}
@@ -61,11 +61,11 @@
 			<button type="button" class="cc-button button btn button-icon-only cc-bar-toggle cc-action-togglesidebar" data-target="right" title="{s_title:toggle}">
 				<span class="cc-admin-icons cc-icon-cancel-circle cc-menu-toggle-icon">&nbsp;</span>
 			</button>
-		</div><!-- Ende #right -->
+		</div><!-- end #right -->
 		<div id="footer">
 			<p>
 				<span>concise wms &#x00BB;</span> Version {cwms_version}
 				<a href="http://www.hermani-webrealisierung.de" target="_blank">hermani <strong>webrealisierung</strong></a>
 			</p>
 			{FOOT}
-		</div><!-- Ende #footer -->
+		</div><!-- end #footer -->

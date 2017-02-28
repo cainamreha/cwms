@@ -630,7 +630,7 @@ class Search extends Modules
 			$searchForm .=	'</span>' . "\r\n" .
 							'</fieldset>' . "\r\n" .
 							'</form>' . "\r\n" .
-							'</div><!-- Ende #search -->' . "\r\n";
+							'</div><!-- end #search -->' . "\r\n";
 		}
 		elseif($type == "navbar") {
 		
@@ -657,7 +657,7 @@ class Search extends Modules
 			
 			$searchForm .=	'</span>' . "\r\n" .
 							'</div>' . "\r\n" .
-							'</form><!-- Ende #search -->' . "\r\n";
+							'</form><!-- end #search -->' . "\r\n";
 		}
 		else {
 			
@@ -756,7 +756,7 @@ class Search extends Modules
 							$refSearch .
 							'</fieldset>' . "\r\n" .
 							'</form>' . "\r\n" .
-							'</div><!-- Ende #newSearch -->' . "\r\n" .
+							'</div><!-- end #newSearch -->' . "\r\n" .
 							'<script type="text/javascript">' . "\r\n" .
 							($this->headJS ? 'head.ready("jquery",function(){' : '') .
 							'$(document).ready(function(){$("#searchPhrase-' . $uniqueID . '").focus();' . "\r\n" .

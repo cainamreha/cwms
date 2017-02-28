@@ -1192,7 +1192,7 @@ class Comments extends Modules
 		$form .=	'<input name="ct_newentry" type="hidden" value="{s_button:submit}" />' . "\r\n" .
 					#'<input name="reset" type="button" id="reset" onClick="fieldRes();" value="{s_button:reset}" class="formbutton reset right" />' . "\r\n" .
 					'<input name="postdate" type="hidden" id="hidden_date" value="' . date("Y-m-d H:i:s") . '" />' . "\r\n" .
-					'<input type="hidden" name="token" value="' . parent::$token . '" class="token" />' . "\r\n" . 
+					parent::getTokenInput() . 
 					'</li>' . "\r\n" . 
 					'</ul>' . "\r\n" . 
 					'</div>' . "\r\n" .
@@ -1494,7 +1494,7 @@ class Comments extends Modules
 				$mail->setMailParameters(SMTP_MAIL, AUTO_MAIL_AUTHOR, COMMENTS_NOTIFY_EMAIL, $this->mailSubject, $htmlMail, true, "", "smtp");
 				
 				// E-Mail senden per phpMailer (SMTP)
-				$mailStatus = $mail->Send();
+				$mailStatus = $mail->send();
 				
 				// Falls Versand per SMTP erfolglos, per Sendmail probieren
 				if($mailStatus !== true) {
@@ -1506,7 +1506,7 @@ class Comments extends Modules
 					#$mail->Sender = $email;		
 					
 					// E-Mail senden per phpMailer (Sendmail)
-					$mailStatus = $mail->Send();
+					$mailStatus = $mail->send();
 				}
 				// Falls Versand per Sendmail erfolglos, per mail() probieren
 				if($mailStatus !== true) {
@@ -1515,7 +1515,7 @@ class Comments extends Modules
 					$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, COMMENTS_NOTIFY_EMAIL, $this->mailSubject, $htmlMail, true);
 					
 					// E-Mail senden per phpMailer (mail())
-					$mailStatus = $mail->Send();
+					$mailStatus = $mail->send();
 				}					
 								
 				$noticeExt = " {s_notice:moderate}";
@@ -1663,6 +1663,7 @@ class Comments extends Modules
 			
 			// Klasse phpMailer einbinden
 			require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+			require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 			
 			// Instanz von PHPMailer bilden
 			$mail = new \PHPMailer();
@@ -1671,7 +1672,7 @@ class Comments extends Modules
 			$mail->setMailParameters(SMTP_MAIL, AUTO_MAIL_AUTHOR, $recipientEmail, $this->mailSubject, $htmlMail, true, "", "smtp");
 			
 			// E-Mail senden per phpMailer (SMTP)
-			$mailStatus = $mail->Send();
+			$mailStatus = $mail->send();
 			
 			// Falls Versand per SMTP erfolglos, per Sendmail probieren
 			if($mailStatus !== true) {
@@ -1683,7 +1684,7 @@ class Comments extends Modules
 				#$mail->Sender = $recipientEmail;		
 				
 				// E-Mail senden per phpMailer (Sendmail)
-				$mailStatus = $mail->Send();
+				$mailStatus = $mail->send();
 			}
 			// Falls Versand per Sendmail erfolglos, per mail() probieren
 			if($mailStatus !== true) {
@@ -1692,7 +1693,7 @@ class Comments extends Modules
 				$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $recipientEmail, $this->mailSubject, $htmlMail, true);
 				
 				// E-Mail senden per phpMailer (mail())
-				$mailStatus = $mail->Send();
+				$mailStatus = $mail->send();
 			}					
 			
 		}					
@@ -1772,7 +1773,10 @@ class Comments extends Modules
 							form : "#ct_newentry",
 							lang : "' . $this->lang . '",
 							validateOnBlur : false,
-							scrollToTopOnError : false
+							scrollToTopOnError : false,
+							onSuccess : function($form) {
+								$form.find(\'button[type="submit"]\').not(".disabled").addClass("disabled").append(\'&nbsp;&nbsp;<span class="icons icon-refresh icon-spin"></span>\');
+							}
 						});' . "\r\n" .
 					'});' . "\r\n" .
 				'});' . "\r\n" .

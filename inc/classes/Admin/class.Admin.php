@@ -471,7 +471,7 @@ class Admin extends ContentsEngine
 	 * @access class const
      * @const  int
      */
-	const updateInterval = 3000;
+	const updateInterval = 600;
 
 	/**
 	 * Updates verfügbar
@@ -687,7 +687,7 @@ class Admin extends ContentsEngine
 															"submenu"	=> 6,
 															"menu"		=> array(14,0,0,0,22)
 														),
-									"update"	=> array(	"access"	=> array("admin", "editor"),
+									"update"	=> array(	"access"	=> array("admin"),
 															"level"		=> false,
 															"submenu"	=> false,
 															"menu"		=> array(false,false,false,false,false)
@@ -712,9 +712,10 @@ class Admin extends ContentsEngine
 		if($init) {
 		
 			// Auf Updates überprüfen, falls Admin / Editor
-			if(CC_UPDATE_CHECK && $this->editorLog && empty($GLOBALS['_POST']))
-				#$this->checkForUpdates(); // is done via ajax for performance reasons
+			if(CC_UPDATE_CHECK && $this->editorLog && empty($GLOBALS['_POST'])) {
+				$this->checkForUpdates(true); // only from session, true check is done via ajax for performance reasons
 				$this->getUpdateHint();
+			}
 			
 			// Head-Definitionen (headExt)
 			$this->getAdminHeadIncludes();
@@ -1318,22 +1319,21 @@ class Admin extends ContentsEngine
 	public function getHeaderBox()
 	{
 		
-		$headerBox	= '<div class="headerBox';
+		$headerBox	=	'<!-- begin #headerBox -->' . PHP_EOL .
+						'<div id="headerBox" class="headerBox';
 		
 		if($this->currAdminPage == "adminMain")
-			return $headerBox . '">' . "\n";
+			return $headerBox . '">' . PHP_EOL;
 		
 		if($this->isAdminPlugin) {
 			$icon		= parent::getIcon(self::$task, "cc-taskicon");
-			$iconSrc	= PROJECT_HTTP_ROOT . '/plugins/' . self::$task . '/img/conicon_' . self::$task . '.png';
 		}
 		else {
 			$icon		= parent::getIcon($this->currAdminPage, "cc-taskicon");
-			$iconSrc	= SYSTEM_IMAGE_DIR . '/'.$this->currAdminPage.'_symbol.png';
 		}
 		
 		// Hintergrund-Headerbox
-		$headerBox	.=	' withBG header-'.$this->currAdminPage.'">' ."\n" .
+		$headerBox	.=	' withBG header-'.$this->currAdminPage.'">' . PHP_EOL .
 						$icon;
 		
 		return	$headerBox;
@@ -1389,12 +1389,16 @@ class Admin extends ContentsEngine
 	/**
 	 * Auf Updates überprüfen
 	 * 
+	 * @param boolean	$sessionOnly (default = false)
 	 * @access protected
 	 * @return string
 	 */
-	protected function checkForUpdates()
+	protected function checkForUpdates($sessionOnly = false)
 	{
 	
+		if($sessionOnly)
+			return $this->updateAvailable = !empty($this->g_Session['updateAvailable']);
+		
 		// Falls Updates verfügbar, Hinweisbox generieren
 		if($this->updateAvailable = $this->checkUpdateAvailable())
 			$this->getUpdateHint();
@@ -1414,7 +1418,7 @@ class Admin extends ContentsEngine
 	{
 	
 		// Falls bereits gecheckt, Info aus Session
-		if(self::$task != "" && isset($this->g_Session['updateAvailable']))
+		if(isset($this->g_Session['updateAvailable']))
 			return $this->g_Session['updateAvailable'];
 	
 		// Falls Zeitintervall für Überprüfung abgelaufen oder Hauptbereich
@@ -1427,7 +1431,7 @@ class Admin extends ContentsEngine
 		// Plugins wegen Performance nur im Hauptbereich prüfen
 		$checkPlugins	= empty(self::$task) || self::$task == "main" ? true : false;
 		
-		$o_update		= new LiveUpdate($this->DB, $this->installedPlugins);
+		$o_update		= new LiveUpdate($this->DB, $this->o_lng, $this->installedPlugins);
 		$o_update->initLiveUpdater(true, $checkPlugins);
 		$isUpdate		= $o_update->updateAvailable;
 		
@@ -1477,7 +1481,7 @@ class Admin extends ContentsEngine
 		// Icons für Vorschau und Änderungen		
 		// Include hidden updates button (check is done via ajax to prevent hanging due to stream timeouts)
 		if(CC_UPDATE_CHECK && $this->editorLog && self::$updateHint != "")
-			self::$statusNavArray['update']	=	'<div id="updateNav" class="iconPanel-top hide">' . self::$updateHint . '</div>' . "\r\n";
+			self::$statusNavArray['update']	=	'<div id="updateNav" class="iconPanel-top' . (!$this->updateAvailable ? ' hide' : '') . '">' . self::$updateHint . '</div>' . "\r\n";
 		
 		self::$statusNavArray['preview']	=	'<div id="previewNav" class="iconPanel-top">' . "\r\n" .
 												'<span class="previewStatusBox">' . "\r\n";
@@ -2610,7 +2614,7 @@ class Admin extends ContentsEngine
 	public function openAdminContent()
 	{
 	
-		return '<div id="adminContent"><!-- Begin #adminContent -->' . "\r\n";
+		return  '<div id="adminContent">' . PHP_EOL . (!$this->ajax ? '<!-- begin #adminContent -->' . PHP_EOL : '');
 	
 	}
 	
@@ -2625,7 +2629,24 @@ class Admin extends ContentsEngine
 	public function closeAdminContent()
 	{
 	
-		return '</div><!-- End #adminContent -->' . "\r\n";
+		return (!$this->ajax ? '<!-- end #adminContent -->' . PHP_EOL : '') . '</div>' . PHP_EOL;
+	
+	}
+	
+
+
+	/**
+	 * Close a tag
+	 * 
+	 * @access	public
+	 * @param	string $id tag id (default = "")
+	 * @param	string $id tag type (default = "div")
+	 * @return	string
+	 */
+	public function closeTag($id = "", $tag = "div")
+	{
+	
+		return '</' . htmlspecialchars($tag) . '>' . PHP_EOL . '<!-- end ' . htmlspecialchars($id) . ' -->' . PHP_EOL;
 	
 	}
 	
@@ -3233,11 +3254,11 @@ class Admin extends ContentsEngine
 					
 					// Falls keine Formulare / dynamische Inhalte (Gästebuch, News, etc.) vorhanden sind, Seite cachen
 					if(strpos($htmlPage, '<') === 0
-					&& strpos($htmlPage, 'class="cc-con-counter"') === false
-					#&& strpos($htmlPage, 'class="cc-con-register"') === false
-					#&& strpos($htmlPage, 'class="cc-con-form') === false
-					#&& strpos($htmlPage, 'class="cc-con-cform"') === false
-					#&& strpos($htmlPage, 'class="cc-con-oform"') === false
+					#&& strpos($htmlPage, 'cc-con-register') === false
+					#&& strpos($htmlPage, 'cc-con-form') === false
+					#&& strpos($htmlPage, 'cc-con-cform") === false
+					#&& strpos($htmlPage, 'cc-con-oform') === false
+					&& strpos($htmlPage, 'cc-con-counter') === false
 					) {
 						
 						// Kommentar hinzufügen						
@@ -3364,13 +3385,13 @@ class Admin extends ContentsEngine
 		$openListTag	= '<ul class="subMenu">' . "\r\n";
 		$closeListTag	= '</ul>' . "\r\n";
 		$loadViaAjax	= ' data-ajax="true"';
-
 		foreach($this->adminPages as $name => $adminPage) {
 			
 			if(in_array($this->loggedUserGroup, $adminPage['access']) && $adminPage['menu'][$type] !== false) {
 				
 				$menuItemName	= '{s_nav:admin'.$name.'}';
-				$iconTag		= parent::getIcon($name, 'menuicon-' . $name . ' menuItem-icon');
+				$icon			= !empty($adminPage['icon']) ? $adminPage['icon'] : $name;
+				$iconTag		= parent::getIcon($icon, 'menuicon-' . $name . ' menuItem-icon');
 					
 				
 				// Adminmenü oder adminTop (mit Untermenüs bzw. Gruppierung)
@@ -3417,7 +3438,7 @@ class Admin extends ContentsEngine
 							
 								$subMenuItems .=	'<li id="' . ($type == 4 ? 'top' : 'main') . 'MenuItem-' . $name . '-' . $subMenuItem . '" class="subMenuItem' . $activeSub . '">' . "\r\n" .
 													'<a href="' . ADMIN_HTTP_ROOT . '?task='.$name.'&type='.$subMenuItem.'"' . $loadViaAjax . '>' . "\r\n" .
-													parent::getIcon($subMenuItem, 'menuicon-' . $subMenuItem . ' menuItem-icon') .
+													parent::getIcon((!empty($itemDetails['icon']) ? $itemDetails['icon'] : $subMenuItem), 'menuicon-' . $subMenuItem . ' menuItem-icon') .
 													'<span class="menuItem-text"> ' . $subMenuItemName . '</span>' . "\r\n" .
 													'</a>' . "\r\n" .
 													'</li>' . "\r\n";
@@ -3436,7 +3457,7 @@ class Admin extends ContentsEngine
 					// Menüpunkt (ggf. mit Untermenü) ausgeben
 					$adminMenu .=	'<li id="' . ($type == 4 ? 'top' : 'main') . 'MenuItem-' . $name . '" class="' . ($type == 4 ? 'top' : 'main') . 'MenuItem' . $active . '">' . "\r\n" .
 									'<a href="' . ADMIN_HTTP_ROOT . '?task='.$name.'"' . $loadViaAjax . '>' . "\r\n" .
-									parent::getIcon($name, 'menuicon-' . $name . ' menuItem-icon') .
+									parent::getIcon($icon, 'menuicon-' . $name . ' menuItem-icon') .
 									'<span class="menuItem-text"> ' . $menuItemName . '</span>' . "\r\n" .
 									'</a>' . "\r\n" .
 									$subMenuItems .
@@ -3476,7 +3497,7 @@ class Admin extends ContentsEngine
 				elseif($type == 2 && $adminPage['menu'][2] > 0 && $adminPage['submenu'] <= 6)
 					$adminMenu .=	'<li class="shortMenu">' . "\r\n" .
 									'<a href="' . ADMIN_HTTP_ROOT . '?task=modules&type='.$name.'"' . $loadViaAjax . '>' . "\r\n" .
-									parent::getIcon($name, 'menuicon-' . $name . ' menuItem-icon') .
+									parent::getIcon($icon, 'menuicon-' . $name . ' menuItem-icon') .
 									'<span class="menuItem-text"> ' . $menuItemName . '</span>' . "\r\n" .
 									'</a>' . "\r\n" .
 									'</li>' . "\r\n";
@@ -3485,7 +3506,7 @@ class Admin extends ContentsEngine
 				elseif($type == 3 && $adminPage['menu'][3] > 0 && $adminPage['submenu'] <= 6)
 					$adminMenu .=	'<li class="shortMenu">' . "\r\n" .
 									'<a href="' . ADMIN_HTTP_ROOT . '?task=campaigns&type='.$name.'"' . $loadViaAjax . '>' . "\r\n" .
-									parent::getIcon($name, 'menuicon-' . $name . ' menuItem-icon') .
+									parent::getIcon($icon, 'menuicon-' . $name . ' menuItem-icon') .
 									'<span class="menuItem-text"> ' . $menuItemName . '</span>' . "\r\n" .
 									'</a>' . "\r\n" .
 									'</li>' . "\r\n";
@@ -3494,7 +3515,7 @@ class Admin extends ContentsEngine
 				elseif($type == 4 && $adminPage['submenu'] <= 6)
 					$adminMenu .=	'<li>' . "\r\n" .
 									'<a href="' . ADMIN_HTTP_ROOT . '?task=' . ($adminPage['menu'][2] > 0 ? 'modules&type=' : ($adminPage['menu'][3] > 0 ? 'campaigns&type=' : '')) . $name . '" title="' . $menuItemName . '"' . $loadViaAjax . '>' . "\r\n" .
-									parent::getIcon($name, 'menuicon-' . $name . ' menuItem-icon') .
+									parent::getIcon($icon, 'menuicon-' . $name . ' menuItem-icon') .
 									'</a>' . "\r\n" .
 									'</li>' . "\r\n";
 			}
@@ -3672,12 +3693,19 @@ class Admin extends ContentsEngine
 				else
 					$menuNode	= $pluginNode;
 				
+				// Icon
+				if(!empty($pluginDetails["features"]["conicon"]))
+					$menuIcon	= $pluginDetails["features"]["conicon"];
+				else
+					$menuIcon	= "";
+				
 				
 				// Plugins Submenu
 				$menuArr[$menuNode][$plugin] = 	array(	"access"	=> $access,
 														"level"		=> 0,
 														"submenu"	=> $menuNode,
-														"menu"		=> array($menuCount, false, false, false, false)
+														"menu"		=> array($menuCount, false, false, false, false),
+														"icon"		=> $menuIcon
 											);
 				
 				

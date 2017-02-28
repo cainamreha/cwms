@@ -105,7 +105,7 @@ class Admin_Forms extends Admin implements AdminTask
 	
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:adminforms}' . PHP_EOL . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -642,7 +642,7 @@ class Admin_Forms extends Admin implements AdminTask
 					!isset($GLOBALS['_GET']['field']) && 
 					count($this->queryFormFields) > 1
 				) {
-					$this->adminContent .=	'<script type="text/javascript">head.ready(\'ccInitScript\', function(){ $.addInitFunction({name: "$.sortableForm", params: "#sortableForm"}, true); });</script>'."\r\n";
+					$this->adminContent .=	'<script type="text/javascript">head.ready(\'ccInitScript\', function(){ $.addInitFunction({name: "$.sortableForm", params: "#sortableForm"}, true); });</script>' . PHP_EOL;
 					$this->adminContent .=	'<ul id="sortableForm" class="sortable-container ';
 				}
 				else
@@ -681,7 +681,7 @@ class Admin_Forms extends Admin implements AdminTask
 
 
 				$this->adminContent .=	'<input type="hidden" name="form_id" value="' . $this->formID . '" />' . PHP_EOL .
-										'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL .
+										parent::getTokenInput() .
 										'<br class="clearfloat" />' . PHP_EOL .
 										'</li>' . PHP_EOL .
 										'</form>' . PHP_EOL;
@@ -2113,23 +2113,23 @@ class Admin_Forms extends Admin implements AdminTask
 			
 			$output		.=	parent::getButton($btnDefs);
 			
-			$output		 .=	'<input type="hidden" name="go_edit_form" value="' . $formData['id'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="edit_form" value="' . $formData['id'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formName" value="' . $formData['table'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formTitle" value="' . $formData['title_' . $this->editLang] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formForeignKey" value="' . $formData['foreign_key'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formPoll" value="' . $formData['poll'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formActive" value="' . $formData['active'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formEndDate" value="' . ($formData['end_date'] == "NULL" ? '' : implode(".", array_reverse(explode("-", substr($formData['end_date'], 0, 10))))) . '" />' . PHP_EOL .
-							'<input type="hidden" name="formSuccess" value="' . $formData['notice_success_' . $this->editLang] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formError" value="' . $formData['notice_error_' . $this->editLang] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formFieldNotice" value="' . $formData['notice_field_' . $this->editLang] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formCaptcha" value="' . $formData['captcha'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formHttps" value="' . $formData['https'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formAddTable" value="' . $formData['add_table'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formAddFields" value="' . $formData['add_fields'] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formAddLabels" value="' . $formData['add_labels_' . $this->editLang] . '" />' . PHP_EOL .
-							'<input type="hidden" name="formAddPosition" value="' . $formData['add_position'] . '" />' . PHP_EOL .
+			$output		 .=	'<input type="hidden" name="go_edit_form" value="' . htmlspecialchars($formData['id']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="edit_form" value="' . htmlspecialchars($formData['id']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formName" value="' . htmlspecialchars($formData['table']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formTitle" value="' . htmlspecialchars($formData['title_' . $this->editLang]) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formForeignKey" value="' . htmlspecialchars($formData['foreign_key']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formPoll" value="' . htmlspecialchars($formData['poll']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formActive" value="' . htmlspecialchars($formData['active']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formEndDate" value="' . htmlspecialchars($formData['end_date'] == "NULL" ? '' : implode(".", array_reverse(explode("-", substr($formData['end_date'], 0, 10))))) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formSuccess" value="' . htmlspecialchars($formData['notice_success_' . $this->editLang]) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formError" value="' . htmlspecialchars($formData['notice_error_' . $this->editLang]) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formFieldNotice" value="' . htmlspecialchars($formData['notice_field_' . $this->editLang]) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formCaptcha" value="' . htmlspecialchars($formData['captcha']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formHttps" value="' . htmlspecialchars($formData['https']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formAddTable" value="' . htmlspecialchars($formData['add_table']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formAddFields" value="' . htmlspecialchars($formData['add_fields']) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formAddLabels" value="' . htmlspecialchars($formData['add_labels_' . $this->editLang]) . '" />' . PHP_EOL .
+							'<input type="hidden" name="formAddPosition" value="' . htmlspecialchars($formData['add_position']) . '" />' . PHP_EOL .
 							'</form>' . PHP_EOL;
 							
 			// Button: Formular kopieren
@@ -2335,7 +2335,7 @@ class Admin_Forms extends Admin implements AdminTask
 							'<br class="clearfloat" />' . PHP_EOL .
 							'</li>' . PHP_EOL .
 							'<input type="hidden" name="oldParentCat" value="" />' . PHP_EOL .
-							'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL .
+							parent::getTokenInput() .
 							'</ul>' . PHP_EOL .
 							'</form>' . PHP_EOL;
 		}
@@ -2357,7 +2357,7 @@ class Admin_Forms extends Admin implements AdminTask
 							
 			$output		.=	'<input type="hidden" name="submit_edit" value="{s_button:takechange}" />' . PHP_EOL . 
 							'<input type="hidden" name="edit_form" value="' . $this->formID . '" />' . PHP_EOL .
-							'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL . 
+							parent::getTokenInput() . 
 							'</li></ul>' . PHP_EOL .
 							'</form>' . PHP_EOL .
 							'<li class="submit back">' . PHP_EOL .

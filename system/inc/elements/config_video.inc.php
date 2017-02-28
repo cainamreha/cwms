@@ -152,7 +152,7 @@ class VideoConfigElement extends ConfigElementFactory implements ConfigElements
 	public function makeUpdateStr()
 	{
 
-		$videoConValue = json_encode($this->params);
+		$videoConValue = json_encode($this->params, JSON_UNESCAPED_UNICODE);
 		$this->dbUpdateStr = "'" . $this->DB->escapeString($videoConValue) . "',";
 
 	}

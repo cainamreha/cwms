@@ -22,13 +22,13 @@ class EditElements extends Admin
 	private $isFE				= false;
 	private $notify				= false;
 	private $con				= "";
-	private $copyCon			= "";
+	private $sortParams			= array();
+	private $copyCon			= array();
 	private $pasteConNr			= "";
 	private $maxConNr			= "";
 	private $currConNr			= "";
 	private $newConType			= "";
 	private $editConType		= "";
-	private $sortString			= "";
 	private $redirect			= "";
 	
 	
@@ -1028,7 +1028,7 @@ class EditElements extends Admin
 			require_once(PROJECT_DOC_ROOT . "/inc/classes/Contents/class.ContentsEdit.php"); // Klasse einbinden
 			$o_contents				= new ContentsEdit($this->DB, $this->o_lng, true);
 			$contents				= $o_contents->getContents();
-			echo($o_contents::$o_mainTemplate->getTemplate(true) . '<target>' . $this->editRedirect);
+			echo($o_contents::$o_mainTemplate->getTemplate(true) . '<cctarget>' . $this->editRedirect);
 			
 			exit;
 		}
@@ -1040,7 +1040,12 @@ class EditElements extends Admin
 	private function copyCutElements()
 	{
 	
-		$this->copyCon	= $this->editContentsTab.",".$this->con.",".$this->editID.($this->action == "cut" ? ",true" : ",false");
+		$this->copyCon[]	= array("conTab"	=> $this->editContentsTab,
+									"con"		=> $this->con,
+									"eid"		=> $this->editID,
+									"cut"		=> ($this->action == "cut" ? true : false)
+									);
+		
 		$this->setSessionVar('copycon', $this->copyCon);
 		$this->g_Session['copycon']	= $this->copyCon;
 		
@@ -1109,13 +1114,17 @@ class EditElements extends Admin
 	private function sortElements()
 	{
 	
-		$this->sortString = $this->editContentsTab.",".$this->con.",".$this->editID.",true";
+		$this->sortParams = array(	"conTab"	=> $this->editContentsTab,
+									"con"		=> $this->con,
+									"eid"		=> $this->editID,
+									"cut"		=> true
+							);
 	
 	}
 
 	
 	
-	// Einfügen
+	// Element Einfügen
 	private function insertElements()
 	{
 
@@ -1130,10 +1139,10 @@ class EditElements extends Admin
 
 		
 		if($this->action == "new") {
-			$copyCon		= array();
-			$copyCon[0]		= $this->editContentsTab . "_preview";
-			$copyCon[1]		= $this->pasteConNr;
-			$copyCon[2]		= $this->editID;
+			$copyCon			= array();
+			$copyCon["conTab"]	= $this->editContentsTab . "_preview";
+			$copyCon["con"]		= $this->pasteConNr;
+			$copyCon["eid"]		= $this->editID;
 			$this->newQS	= "&new=$this->pasteConNr#content-$this->pasteConNr";
 			
 			// Falls FE-Editing, Redirect anfügen
@@ -1144,89 +1153,28 @@ class EditElements extends Admin
 		}
 		
 		if($this->action == "paste") {
-			$copyCon	= explode(",", ($this->copyCon != "" ? $this->copyCon : $this->g_Session['copycon']));
-			$delConTab	= $copyCon[0];
-			$copyCon[0] = $copyCon[0] . "_preview";
+			$copyCon			= (!empty($this->copyCon[0]) ? $this->copyCon[0] : $this->g_Session['copycon'][0]);
+			$delConTab			= $copyCon["conTab"];
+			$copyCon["conTab"]	= $copyCon["conTab"] . "_preview";
 		}
 		
 		if($this->action == "sort") {
-			$copyCon	= explode(",", $this->sortString);
-			$delConTab	= $copyCon[0];
-			$copyCon[0] = $copyCon[0] . "_preview";
+			$copyCon			= $this->sortParams;
+			$delConTab			= $copyCon["conTab"];
+			$copyCon["conTab"]	= $copyCon["conTab"] . "_preview";
 		}
-		
-		$conFieldUpd	= "";
-		$conTypeUpd		= "";
-		$conStylesUpd	= "";
-		$conFieldPaste	= "";
-		$conTypePaste	= "";
-		$conStylesPaste = "";
-		
-		
-		// Element einfügen
-		for($i = (int)$this->maxConNr; $i >= $this->pasteConNr; $i--) {
-			
-			$j			= $i-1;
-			
-			$stylesStr	= $this->DB->escapeString('{"cols":"full","hide":0}');
-
-			
-			if($i > $this->pasteConNr) {
-				$conTypeUpd .= "`type-con" . $i . "` = `type-con" . $j . "`, ";
-				$conStylesUpd .= "`styles-con" . $i . "` = `styles-con" . $j . "`, ";
-		
-				foreach($this->o_lng->installedLangs as $existLang) {
-					$conFieldUpd .= "`con" . $i . "_" . $existLang . "` = `con" . $j . "_" . $existLang . "`, ";
-				}
-			}
-			if($i == $this->pasteConNr) {
-				
-				// Falls innerhalb eines Inhaltsbereichs
-				if($this->editContentsTabPrev == $copyCon[0] && $this->editID == $copyCon[2]) {
-					
-					if($this->pasteConNr < $copyCon[1]) // Falls der zu kopierende bereits um ein nach hinten verschoben wurde, den Wert zum Auslesen der Inhalte um 1 erhöhen
-						$copyCon[1]++;
-					
-					$conTypePaste .= "`type-con" . $i . "` = " . ($this->newConType != "" ? "'".$this->newConType."', " : "`type-con" . $copyCon[1]. "`, ");
-					$conStylesPaste .= "`styles-con" . $i . "` = " . ($this->newConType != "" ? "'" . $stylesStr . "'" : "`styles-con" . $copyCon[1]. "`");
-					foreach($this->o_lng->installedLangs as $existLang) {
-						$conFieldPaste .= "`con" . $i . "_" . $existLang . "` = " . ($this->newConType != "" ? "'', " : "`con" . $copyCon[1]. "_" . $existLang . "`, ");
-					}
-				}
-				// Falls unterschiedliche Inhaltsbereiche
-				else {
-					$conTypePaste .= "`type-con" . $i . "` = (SELECT `type-con" . $copyCon[1]. "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon[0] . "`) AS t$i WHERE t$i.`page_id` = '$copyCon[2]'), ";
-					$conStylesPaste .= "`styles-con" . $i . "` = (SELECT `styles-con" . $copyCon[1]. "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon[0] . "`) AS s$i WHERE s$i.`page_id` = '$copyCon[2]')";
-			
-					foreach($this->o_lng->installedLangs as $existLang) {
-						$conFieldPaste .= "`con" . $i . "_" . $existLang . "` = (SELECT `con" . $copyCon[1]. "_" . $existLang . "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon[0] . "`) AS c$i WHERE c$i.`page_id` = '$copyCon[2]'), ";
-					}
-				}
-			}
-		} // Ende for
-		
-		$pasteUpd = $conFieldUpd . $conTypeUpd . $conStylesUpd . $conFieldPaste . $conTypePaste . $conStylesPaste;
-
-		
-		// db-Tabelle sperren
-		$lock = $this->DB->query("LOCK TABLES `" . $this->editContentsTabPrevDB . "`");
 
 
-		// Datenbank-Update in _preview (paste)
-		$queryUpdate1 = $this->DB->query( "UPDATE `" . $this->editContentsTabPrevDB . "` 
-												SET $pasteUpd
-												WHERE `page_id` = '$this->editID'
-												");
-		
-		// db-Sperre aufheben
-		$unLock = $this->DB->query("UNLOCK TABLES");
-		
+		// paste element
+		$copyCon	= $this->pasteElement($copyCon);
+
+
 		
 		// Falls ein Inhaltselement ausgeschnitten oder sortiert wurde, das Element nach dem Kopieren löschen
-		if(($this->action == "sort" || $this->action == "paste") && $copyCon[3] == "true") {
+		if(($this->action == "sort" || $this->action == "paste") && $copyCon["cut"] == "true") {
 					
-			$delConNr	= $copyCon[1];
-			$delConID	= $copyCon[2];
+			$delConNr	= $copyCon["con"];
+			$delConID	= $copyCon["eid"];
 		
 			
 			$conFieldUpd	= "";
@@ -1241,8 +1189,8 @@ class EditElements extends Admin
 			$delConTabDB	= DB_TABLE_PREFIX . $delConTab . "_preview";
 				
 			// Falls die selbe Tabelle, ein Element abziehen (da eingefügt)
-			#if($delConTab == $this->editContentsTabPrev) {
-				#$conNrElem--;
+			#if($delConTab == $this->editContentsTab) {
+				#$delConNr--;
 			#}
 			
 			for($i = $delConNr; $i <= $conNrElem; $i++) {
@@ -1269,8 +1217,9 @@ class EditElements extends Admin
 			} // Ende for
 			
 			$moveUpd = $conFieldUpd . $conTypeUpd . $conStylesUpd . $conFieldPaste . $conTypePaste . $conStylesPaste;
-			#die(var_dump($moveUpd));
-			#echo($conNrElem.$delConNr.$this->pasteConNr);
+			
+		#echo($conNrElem.' '.$delConNr.' '.$this->pasteConNr);
+		#die(var_dump($moveUpd));
 		
 			// db-Tabelle sperren
 			$lock = $this->DB->query("LOCK TABLES `" . $delConTabDB . "`");
@@ -1341,7 +1290,7 @@ class EditElements extends Admin
 			$o_contents				= new ContentsEdit($this->DB, $this->o_lng, true);
 			$contents				= $o_contents->getContents();
 			
-			echo($o_contents::$o_mainTemplate->getTemplate(true) . '<target>' . $this->editRedirect);
+			echo($o_contents::$o_mainTemplate->getTemplate(true) . '<cctarget>' . $this->editRedirect);
 			exit;
 			die();
 		}
@@ -1352,6 +1301,83 @@ class EditElements extends Admin
 
 
 	} // Ende if new, sort, paste
+
+	
+	
+	// Paste element
+	private function pasteElement($copyCon)
+	{
+	
+		$conFieldUpd	= "";
+		$conTypeUpd		= "";
+		$conStylesUpd	= "";
+		$conFieldPaste	= "";
+		$conTypePaste	= "";
+		$conStylesPaste = "";
+		
+		
+		// Element einfügen
+		for($i = (int)$this->maxConNr; $i >= $this->pasteConNr; $i--) {
+			
+			$j			= $i-1;
+			
+			$stylesStr	= $this->DB->escapeString('{"cols":"full","hide":0}');
+
+			
+			if($i > $this->pasteConNr) {
+				$conTypeUpd .= "`type-con" . $i . "` = `type-con" . $j . "`, ";
+				$conStylesUpd .= "`styles-con" . $i . "` = `styles-con" . $j . "`, ";
+		
+				foreach($this->o_lng->installedLangs as $existLang) {
+					$conFieldUpd .= "`con" . $i . "_" . $existLang . "` = `con" . $j . "_" . $existLang . "`, ";
+				}
+			}
+			if($i == $this->pasteConNr) {
+				
+				// Falls innerhalb eines Inhaltsbereichs
+				if($this->editContentsTabPrev == $copyCon["conTab"] && $this->editID == $copyCon["eid"]) {
+					
+					if($this->pasteConNr < $copyCon["con"]) // Falls der zu kopierende bereits um ein nach hinten verschoben wurde, den Wert zum Auslesen der Inhalte um 1 erhöhen
+						$copyCon["con"]++;
+					
+					$conTypePaste .= "`type-con" . $i . "` = " . ($this->newConType != "" ? "'".$this->newConType."', " : "`type-con" . $copyCon["con"]. "`, ");
+					$conStylesPaste .= "`styles-con" . $i . "` = " . ($this->newConType != "" ? "'" . $stylesStr . "'" : "`styles-con" . $copyCon["con"]. "`");
+					foreach($this->o_lng->installedLangs as $existLang) {
+						$conFieldPaste .= "`con" . $i . "_" . $existLang . "` = " . ($this->newConType != "" ? "'', " : "`con" . $copyCon["con"]. "_" . $existLang . "`, ");
+					}
+				}
+				// Falls unterschiedliche Inhaltsbereiche
+				else {
+					$conTypePaste .= "`type-con" . $i . "` = (SELECT `type-con" . $copyCon["con"]. "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon["conTab"] . "`) AS t$i WHERE t$i.`page_id` = '" . $copyCon["eid"] . "'), ";
+					$conStylesPaste .= "`styles-con" . $i . "` = (SELECT `styles-con" . $copyCon["con"]. "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon["conTab"] . "`) AS s$i WHERE s$i.`page_id` = '" . $copyCon["eid"] . "')";
+			
+					foreach($this->o_lng->installedLangs as $existLang) {
+						$conFieldPaste .= "`con" . $i . "_" . $existLang . "` = (SELECT `con" . $copyCon["con"]. "_" . $existLang . "` FROM (SELECT * FROM `" . DB_TABLE_PREFIX . $copyCon["conTab"] . "`) AS c$i WHERE c$i.`page_id` = '" . $copyCon["eid"] . "'), ";
+					}
+				}
+			}
+		} // Ende for
+		
+		$pasteUpd = $conFieldUpd . $conTypeUpd . $conStylesUpd . $conFieldPaste . $conTypePaste . $conStylesPaste;
+		
+		
+		// db-Tabelle sperren
+		$lock = $this->DB->query("LOCK TABLES `" . $this->editContentsTabPrevDB . "`");
+
+
+		// Datenbank-Update in _preview (paste)
+		$queryUpdate1 = $this->DB->query( "UPDATE `" . $this->editContentsTabPrevDB . "` 
+												SET $pasteUpd
+												WHERE `page_id` = '$this->editID'
+												");
+		
+		// db-Sperre aufheben
+		$unLock = $this->DB->query("UNLOCK TABLES");
+	
+		return $copyCon;
+	
+	}	
+
 	
 	
 	// Einfügen neuer Inhaltstabellenspalten

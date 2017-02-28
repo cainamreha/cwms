@@ -154,7 +154,10 @@ class Modules extends ContentsEngine
 	/**
 	 * Gibt den Titel eines Datensatzes zurück
 	 * 
-	 * @param	string Alias
+	 * @param	object DB
+	 * @param	int DB
+	 * @param	string DB
+	 * @param	string DB
 	 * @access	public
 	 * @return	string
 	 */
@@ -181,10 +184,11 @@ class Modules extends ContentsEngine
 	 * 
 	 * @param	string	Alias
 	 * @param	boolean	urlencode (default = true)
+	 * @param	boolean	lowercase (default = true)
 	 * @access	public
 	 * @return	string
 	 */
-	public static function getAlias($alias, $urlencode = true)
+	public static function getAlias($alias, $urlencode = true, $lowercase = true)
 	{
 		
 		$search = array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', 'é', 'è', 'à', 'á', 'â', 'ô', 'û', 'í', 'ì', 'ó', 'ò', 'ç', 'r', '&amp;', '&quot;', '&frasl;', '&', '+', ' ', '–', '\'', '/', '.', ',', ':', '?', '!', '"', '\'', '(', ')', '[', ']', '{', '}', "„", "“", "’", "´", "`");
@@ -197,6 +201,9 @@ class Modules extends ContentsEngine
 			$alias = str_replace(array("--","__"), "-", $alias);
 		
 		$alias	= trim($alias, "-");
+		
+		if($lowercase)
+			$alias	= strtolower($alias);
 		
 		if($alias != "" && !preg_match("/^[a-zA-Z0-9_-]+$/", $alias)) { // Falls noch falsche Zeichen vorhanden sind				
 			
@@ -537,12 +544,12 @@ class Modules extends ContentsEngine
 			$absPath	= PROJECT_DOC_ROOT . '/' . $folder;
 		
 		// Get srcset if mobile and no thumbnail
-		if(ContentsEngine::$device["isPhone"]
+		if((CACHE || ContentsEngine::$device["isPhone"])
 		&& file_exists($absPath . 'small/' . $file)
 		)
 			return $folder . 'small/' . $file;
 		
-		if(ContentsEngine::$device["isMobile"]
+		if((CACHE || ContentsEngine::$device["isMobile"])
 		&& file_exists($absPath . 'medium/' . $file)
 		)
 			return $folder . 'medium/' . $file;
@@ -574,15 +581,18 @@ class Modules extends ContentsEngine
 		}
 		
 		// Get srcset if mobile and no thumbnail
-		if(ContentsEngine::$device["isPhone"]
+		if((CACHE || ContentsEngine::$device["isPhone"])
 		&& file_exists($absPath . 'small/' . $file)
 		)
 			$output	.= ' ' . $folder . 'small/' . $file . ' ' . SMALL_IMG_SIZE . 'w,';
 		
-		if(ContentsEngine::$device["isMobile"]
+		if((CACHE || ContentsEngine::$device["isMobile"])
 		&& file_exists($absPath . 'medium/' . $file)
 		)
 			$output	.= ' ' . $folder . 'medium/' . $file . ' ' . MEDIUM_IMG_SIZE . 'w,';
+		
+		if($output != "")
+			$output	.= ' ' . $folder . $file . ' ' . LARGE_IMG_SIZE . 'w,';
 		
 		if($output != "")
 			$output	= substr($output, 0, -1);
@@ -625,9 +635,9 @@ class Modules extends ContentsEngine
 			$output	.= '(';
 						 
 			if($check)
-				$output	.= '{s_text:filesize} ';
+				$output	.= '{s_text:filesize}&nbsp;';
 							 
-			$output	.= $fileSize . ' ' . $unit . ')';				 
+			$output	.= $fileSize . '&nbsp;' . $unit . ')';				 
 		}
 		else
 			$output .= "(file not found)";
@@ -716,7 +726,7 @@ class Modules extends ContentsEngine
 	 */
 	public static function getLocalDateString($date, $lang, $time = false)
 	{
-
+	
 		// Falls kein Zeitstempel mitgegeben wurde, aktuellen Timestamp verwenden
 		$date	= trim($date);
 		

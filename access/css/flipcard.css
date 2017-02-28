@@ -1,0 +1,30 @@
+/* Flip cards */
+.cc-flipcard-panel {
+	overflow: visible;
+	perspective: 1000px;
+	min-height:100%;
+}
+
+.cc-flipcard-panel .cc-flipcard-front,
+.cc-flipcard-panel .cc-flipcard-back {
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 900;
+	text-align: center;
+	transform: rotateY(0deg);
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+	transition: all .6s ease;
+}
+.cc-flipcard-panel .cc-flipcard-back {
+	z-index: 1000;
+	transform: rotateY(-180deg);
+}
+.cc-flipcard-panel.cc-flipcard-flip .cc-flipcard-front {
+	z-index: 900;
+	transform: rotateY(180deg);
+}
+.cc-flipcard-panel.cc-flipcard-flip .cc-flipcard-back {
+	transform: rotateY(0deg);
+}

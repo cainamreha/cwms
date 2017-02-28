@@ -130,7 +130,7 @@ class EditDataObjects extends Admin
 		
 		
 		$output .=	'<li id="object-'.$o.'" class="dataObject listItem" data-sortid="'.$o.'" data-sortidold="'.$o.'">' . "\r\n" .
-					'<span class="type objectToggle' . ($oType != "" ? ' ' . $oType . ' busy' : '') . '">{s_label:object} - '.$o.'</span>' . "\r\n" .
+					'<span class="type objectToggle' . ($oType != "" ? ' ' . $oType . ' busy' : '') . '"><span class="toggle"></span>{s_label:object} - '.$o. ($oType != "" ? '<span class="{t_icons:ccicons} {t_icons:icon}' . $oType . ' conicon-' . $oType . '"></span>' : '') . '</span>' . "\r\n" .
 					'<div class="objects"' . ($oType == "" ? ' style="display:none;"' : '') . '>' . "\r\n";
 
 

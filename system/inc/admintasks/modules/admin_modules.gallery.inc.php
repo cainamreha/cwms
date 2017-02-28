@@ -88,8 +88,8 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 
 		
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:adminmodules}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminmodules}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -258,10 +258,10 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 				$uploadRes		= $o_uploader->uploadFiles($GLOBALS['_FILES']['upload'], explode(",", $GLOBALS['_POST']['selFiles']));
 				
 				if(count($uploadRes["error"]) > 0)
-					$notice = '<p class="error">{s_error:file}</p><ul id="errorMes">' . implode("", $uploadRes["error"]) . '</ul>' . "\r\n";
+					$notice = '<p class="error">{s_error:file}</p><ul id="errorMes">' . implode("", $uploadRes["error"]) . '</ul>' . PHP_EOL;
 				
 				elseif($uploadRes["success"])
-					$notice = '<p class="notice success">{s_notice:fileok}</p>' . "\r\n";
+					$notice = '<p class="notice success">{s_notice:fileok}</p>' . PHP_EOL;
 
 				// Neue Dateien
 				foreach ($uploadRes["newFiles"] as $newFile) {
@@ -315,7 +315,7 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 							$dbUpdateModDate[] = array($validFileName, $gallName); // Array mit ersetzten Dateien (sprich nur Update von ModDate)
 					}
 				}
-				$notice = '<p class="notice success">{s_notice:fileok}</p>' . "\r\n";
+				$notice = '<p class="notice success">{s_notice:fileok}</p>' . PHP_EOL;
 			}
 			
 			if($dbUpdateStr != "" || count($dbUpdateModDate) > 0) {
@@ -434,7 +434,7 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 			// db-Sperre aufheben
 			$unLock = $this->DB->query("UNLOCK TABLES");
 
-			$notice		= '<p class="notice success">{s_notice:takechange}</p>' . "\r\n";
+			$notice		= '<p class="notice success">{s_notice:takechange}</p>' . PHP_EOL;
 			
 			$this->openGall	= $gallName;
 			
@@ -493,27 +493,27 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 
 		
 
-		$this->adminHeader		=	'{s_text:admingallery}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:admingallery}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 		
-		$this->adminContent .=		'<div class="adminArea">' . "\r\n";
+		$this->adminContent .=		'<div class="adminArea">' . PHP_EOL;
 
 		if(isset($notice) && $notice != "")
 			$this->adminContent .= $notice;
 		elseif(isset($this->notice) && $this->notice != "")
-			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . "\r\n";
-			
-					
-		$this->adminContent .=	'<h2 class="switchToggle cc-section-heading cc-h2' . ($this->showGallList || $this->openGall ? ' hideNext' : '') . '">{s_header:newgallery}</h2>' . "\r\n" . 
-								'<ul class="fileUpload framedItems' . ($this->uploadMethod == "uploadify" ? ' fileUpload-uploadifyGallery' : '') . '"><li class="uploadDetails">' . "\r\n" .
-								'<form action="' . $this->formAction . '" method="post" name="uploadfm" id="uploadfm" class="' . $this->uploadMethod . '-uploader gallery-form" enctype="multipart/form-data" accept-charset="UTF-8"' . ($this->uploadMethod == "default" ? ' data-ajax="false"' : '') . '>' . "\r\n" . 
-								'<label>{s_label:gallname}</label>' . "\r\n";
+			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . PHP_EOL;
+		
+		
+		$this->adminContent .=	'<h2 class="switchToggle cc-section-heading cc-h2' . ($this->showGallList || $this->openGall ? ' hideNext' : '') . '">{s_header:newgallery}</h2>' . PHP_EOL . 
+								'<ul class="fileUpload framedItems' . ($this->uploadMethod == "uploadify" ? ' fileUpload-uploadifyGallery' : '') . '"><li class="uploadDetails">' . PHP_EOL .
+								'<form action="' . $this->formAction . '" method="post" name="uploadfm" id="uploadfm" class="' . $this->uploadMethod . '-uploader gallery-form" enctype="multipart/form-data" accept-charset="UTF-8"' . ($this->uploadMethod == "default" ? ' data-ajax="false"' : '') . '>' . PHP_EOL . 
+								'<label>{s_label:gallname}</label>' . PHP_EOL;
 
 		if(isset($errors['name']))
-			$this->adminContent .=	'<p class="notice">' . $errors['name'] . '</p>' . "\r\n";
+			$this->adminContent .=	'<p class="notice">' . $errors['name'] . '</p>' . PHP_EOL;
 
 
-		$this->adminContent .=	'<input type="text" name="gallName" id="gallName" value="' . (isset($gallName) && $gallName != '' ? htmlspecialchars($gallName) : '') . '" maxlength="64" />' . "\r\n";
+		$this->adminContent .=	'<input type="text" name="gallName" id="gallName" value="' . (isset($gallName) && $gallName != '' ? htmlspecialchars($gallName) : '') . '" maxlength="64" />' . PHP_EOL;
 		
 		// Gallery MediaList-Button
 		$mediaListButtonDef		= array(	"class"	 	=> "gallery",
@@ -531,33 +531,33 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 		$this->adminContent .= $o_uploader->getUploaderMask(parent::$type);
 		
 
-		$this->adminContent .=	'<input type="hidden" name="selFiles" id="selFiles" />' . "\r\n" . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-								'</form><br class="clearfloat" /></li>' . "\r\n" . 
-								'<ul id="uploadFilesList" class="framedItems"><li>{s_javascript:nofilessel}</li></ul>' . "\r\n";
+		$this->adminContent .=	'<input type="hidden" name="selFiles" id="selFiles" />' . PHP_EOL . 
+								parent::getTokenInput() . 
+								'</form><br class="clearfloat" /></li>' . PHP_EOL . 
+								'<ul id="uploadFilesList" class="framedItems"><li>{s_javascript:nofilessel}</li></ul>' . PHP_EOL;
 					
 		// Uploadinfo
-		$this->adminContent .=	'<ul class="framedItems">' . "\r\n" .
-								'<li>' . "\r\n" .
-								'<strong>{s_text:uploadfile}</strong>' . "\r\n";
+		$this->adminContent .=	'<ul class="framedItems">' . PHP_EOL .
+								'<li>' . PHP_EOL .
+								'<strong>{s_text:uploadfile}</strong>' . PHP_EOL;
 					
 
 		// File upload method
 		$this->adminContent .=	$o_uploader->getFormChangeDefaultUploadMethod($this->formAction);
 
 					
-		$this->adminContent .=	'<label>' . sprintf(ContentsEngine::replaceStaText('{s_label:filesize}'), MIN_IMG_SIZE, MAX_IMG_SIZE) . '</label>' . Files::getFileSizeStr(Files::getAllowedFileSize()) . "\r\n" .
-								'<label>{s_text:upload}</label>' . implode(", ", $this->allowedFiles) . '<br />' . "\r\n" . 
-								'</li>' . "\r\n" .
-								'</ul></ul>' . "\r\n";
+		$this->adminContent .=	'<label>' . sprintf(ContentsEngine::replaceStaText('{s_label:filesize}'), MIN_IMG_SIZE, MAX_IMG_SIZE) . '</label>' . Files::getFileSizeStr(Files::getAllowedFileSize()) . PHP_EOL .
+								'<label>{s_text:upload}</label>' . implode(", ", $this->allowedFiles) . '<br />' . PHP_EOL . 
+								'</li>' . PHP_EOL .
+								'</ul></ul>' . PHP_EOL;
 							
-		$this->adminContent .= 	'<h2 class="switchToggle cc-section-heading cc-h2' . (!$this->showGallList && !$this->openGall ? ' hideNext' : '') . '">{s_header:gallerytext}</h2>' . "\r\n" .
-								'<ul>' . "\r\n" .
-								'<h3 class="cc-h3 switchToggle">{s_header:editgall}</h3>' . "\r\n" .
-								'<div class="adminBox">' . "\r\n";
+		$this->adminContent .= 	'<h2 class="switchToggle cc-section-heading cc-h2' . (!$this->showGallList && !$this->openGall ? ' hideNext' : '') . '">{s_header:gallerytext}</h2>' . PHP_EOL .
+								'<ul>' . PHP_EOL .
+								'<h3 class="cc-h3 switchToggle">{s_header:editgall}</h3>' . PHP_EOL .
+								'<div class="adminBox">' . PHP_EOL;
 
 
-		$this->adminContent .= 	'<ul class="editList galleryList">' . "\r\n";
+		$this->adminContent .= 	'<ul class="editList galleryList">' . PHP_EOL;
 
 		// Dialog-Form zum Ändern des Gallerienamens, falls Gallerien vorhanden
 		if(count($this->existGalls) > 0) {
@@ -575,12 +575,12 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 		
 
 		// Filter icon
-		$showSLstEntries  .=	'<span class="listIcon">' . "\r\n" .
+		$showSLstEntries  .=	'<span class="listIcon">' . PHP_EOL .
 								parent::getIcon("filter", "inline-icon") .
 								'</span>' . "\n";
 						
 		$showSLstEntries  .=	'{s_label:showlistentries}' .
-								'<span class="editButtons-panel">' . "\r\n";
+								'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button list
 		$btnDefs	= array(	"type"		=> "button",
@@ -592,8 +592,8 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 		
 		$showSLstEntries .=	parent::getButton($btnDefs);
 		
-		$showSLstEntries .=		'</span>' . "\r\n" .
-								'</span>' . "\r\n";
+		$showSLstEntries .=		'</span>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 
 		$gallListEdit		= "";
 		$gallListDel		= "";
@@ -602,14 +602,14 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 		// Vorhandene Galerien auflisten
 		foreach($this->existGalls as $key => $gallery) {
 			
-			$gallPicCount	=	'<span class="fileCount" title="' . $gallery . '" data-content="count"><strong>' . $this->picCount[$key] . '</strong> {s_text:gallcount}</span>' . "\r\n";
-			$gallCreateDate =	'<span class="fileDate" title="' . $gallery . '">' . parent::getDateString($this->mediaDates[$key], $this->adminLang, false) . '</span>' . "\r\n";
+			$gallPicCount	=	'<span class="fileCount" title="' . $gallery . '" data-content="count"><strong>' . $this->picCount[$key] . '</strong> {s_text:gallcount}</span>' . PHP_EOL;
+			$gallCreateDate =	'<span class="fileDate" title="' . $gallery . '">' . parent::getDateString($this->mediaDates[$key], $this->adminLang, false) . '</span>' . PHP_EOL;
 			$gallTags		=	'<span class="gallTags-box" title="Tags: ' . $this->gallTags[$gallery] . '">' . parent::getIcon("tags") .
-								'<span class="gallTags" data-content="tags">' . $this->gallTags[$gallery] . '</span>' . "\r\n" .
-								'</span>' . "\r\n";
+								'<span class="gallTags" data-content="tags">' . $this->gallTags[$gallery] . '</span>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 			
 			// Edit-List
-			$gallListEdit .='<li id="editlist-' . $gallery . '" class="listItem gallListItem ' . (is_numeric($gallery[0]) ? '0-9' : strtoupper($gallery[0])) . ' date-' . $this->mediaDates[$key] . '" data-menu="context" data-target="contextmenu-el-' . $i . '">' . "\r\n";
+			$gallListEdit .='<li id="editlist-' . $gallery . '" class="listItem gallListItem ' . (is_numeric($gallery[0]) ? '0-9' : strtoupper($gallery[0])) . ' date-' . $this->mediaDates[$key] . '" data-menu="context" data-target="contextmenu-el-' . $i . '">' . PHP_EOL;
 		
 			// Gallery MediaList-Button
 			$mediaListButtonDef		= array(	"class"	 	=> "gallery",
@@ -626,7 +626,7 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 			$gallListEdit .=$gallPicCount .
 							$gallCreateDate .
 							$gallTags .
-							'<span class="editButtons-panel" data-id="contextmenu-el-' . $i . '">' . "\r\n";
+							'<span class="editButtons-panel" data-id="contextmenu-el-' . $i . '">' . PHP_EOL;
 		
 			// Button edit
 			$btnDefs	= array(	"type"		=> "button",
@@ -667,11 +667,11 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 			
 			$gallListEdit  .=	$btnDelGall;
 			
-			$gallListEdit .=	'</span>' . "\r\n" .
-								'</li>' . "\r\n";
+			$gallListEdit .=	'</span>' . PHP_EOL .
+								'</li>' . PHP_EOL;
 			
 			// Del-List
-			$gallListDel .=	'<li id="dellist-' . $gallery . '" class="listItem gallListItem ' . (is_numeric($gallery[0]) ? '0-9' : strtoupper($gallery[0])) . ' date-' . $this->mediaDates[$key] . '" data-menu="context" data-target="contextmenu-dl-' . $i . '">' . "\r\n";
+			$gallListDel .=	'<li id="dellist-' . $gallery . '" class="listItem gallListItem ' . (is_numeric($gallery[0]) ? '0-9' : strtoupper($gallery[0])) . ' date-' . $this->mediaDates[$key] . '" data-menu="context" data-target="contextmenu-dl-' . $i . '">' . PHP_EOL;
 		
 			// Gallery MediaList-Button
 			$mediaListButtonDef		= array(	"class"	 	=> "images gallery",
@@ -687,7 +687,7 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 			$gallListDel .= $gallPicCount .
 							$gallCreateDate .
 							$gallTags .
-							'<span class="editButtons-panel" data-id="contextmenu-dl-' . $i . '">' . "\r\n";
+							'<span class="editButtons-panel" data-id="contextmenu-dl-' . $i . '">' . PHP_EOL;
 			
 			// Button edit
 			$gallListDel .=	$btnEditGall;
@@ -699,8 +699,8 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 			$gallListDel .=	$btnDelGall;
 			
 			
-			$gallListDel .=	'</span>' . "\r\n" .
-							'</li>' . "\r\n";
+			$gallListDel .=	'</span>' . PHP_EOL .
+							'</li>' . PHP_EOL;
 
 			$i++;
 			
@@ -710,25 +710,25 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 		$this->adminContent .=	$controlBar;
 		$this->adminContent .=	$showSLstEntries;
 			
-		$this->adminContent .= 	$gallListEdit . '</ul>' . "\r\n"; // Edit-List	
-		$this->adminContent .= 	'</div>' . "\r\n";
+		$this->adminContent .= 	$gallListEdit . '</ul>' . PHP_EOL; // Edit-List	
+		$this->adminContent .= 	'</div>' . PHP_EOL;
 			
-		$this->adminContent .= 	'<h3 class="cc-h3 switchToggle hideNext">{s_header:delgallery}</h3>' . "\r\n" . 
-								'<ul class="editList folderList galleryList">' . "\r\n";
+		$this->adminContent .= 	'<h3 class="cc-h3 switchToggle hideNext">{s_header:delgallery}</h3>' . PHP_EOL . 
+								'<ul class="editList folderList galleryList">' . PHP_EOL;
 							
 		// Control Bar zum Filtern der Anzeige
 		$this->adminContent .=	$controlBar;
 		$this->adminContent .=	$showSLstEntries;
 			
-		$this->adminContent .= 	$gallListDel . '</ul>' . "\r\n"; // Del-List
-		$this->adminContent .= 	'</ul>' . "\r\n";
+		$this->adminContent .= 	$gallListDel . '</ul>' . PHP_EOL; // Del-List
+		$this->adminContent .= 	'</ul>' . PHP_EOL;
 
 		
 		// Contextmenü-Script
 		$this->adminContent .=	$this->getContextMenuScript();
 		
 		
-		$this->adminContent .= 	'</div>' . "\r\n";
+		$this->adminContent .= 	'</div>' . PHP_EOL;
 		
 		$this->adminContent	.= $this->getBackButtons(parent::$type);
 		
@@ -836,23 +836,23 @@ class Admin_ModulesGallery extends Admin_Modules implements AdminTask
 	public function getGalleryEditDialog()
 	{
 		
-		$output	= 	'<div id="dialog-form-gallery" style="display:none;" title="{s_title:gallparams}">' . "\r\n" .
-					'<div class="adminStyle adminArea">' . "\r\n" .
-					'<form action="' . $this->formAction . '" method="post" class="form">' . "\r\n" . 
-					'<label for="newname-gallery">{s_label:gallname}</label>' . "\r\n" .
-					'<p class="notice validateTips"></p>' . "\r\n" .
-					'<input type="text" name="newname-gallery" id="newname-gallery" class="dialogName dialogInput text ui-widget-content ui-corner-all" value="" maxlength="64" />' . "\r\n" .
-					'<span class="inline-tags">' . "\r\n" .
-					'<label>{s_label:tags}</label><input type="text" name="gall_tags" id="gall_tags" class="cc-gallery-tags" value="" />' . "\r\n" .
+		$output	= 	'<div id="dialog-form-gallery" style="display:none;" title="{s_title:gallparams}">' . PHP_EOL .
+					'<div class="adminStyle adminArea">' . PHP_EOL .
+					'<form action="' . $this->formAction . '" method="post" class="form">' . PHP_EOL . 
+					'<label for="newname-gallery">{s_label:gallname}</label>' . PHP_EOL .
+					'<p class="notice validateTips"></p>' . PHP_EOL .
+					'<input type="text" name="newname-gallery" id="newname-gallery" class="dialogName dialogInput text ui-widget-content ui-corner-all" value="" maxlength="64" />' . PHP_EOL .
+					'<span class="inline-tags">' . PHP_EOL .
+					'<label>{s_label:tags}</label><input type="text" name="gall_tags" id="gall_tags" class="cc-gallery-tags" value="" />' . PHP_EOL .
 					$this->getTagEditorScripts() .
-					'</span>' . "\r\n" . 
-					'<input type="hidden" name="oldname-gallery" id="oldname-gallery" class="dialogName dialogInput" value="" />' . "\r\n" .
-					'<input type="hidden" name="scriptpath-gallery" id="scriptpath-gallery" value="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=rename&type=gallery"  />' . "\r\n" .
-					'<input type="hidden" name="phrases-gallery" id="phrases-gallery" value="' . ContentsEngine::replaceStaText("{s_notice:nogallname}<>{s_notice:longname}<>{s_notice:wrongname}<>{s_notice:gallexists}") . '"  />' . "\r\n" .
-					'<input type="hidden" name="buttonLabels-gallery" id="buttonLabels-gallery" value="' . ContentsEngine::replaceStaText("{s_button:takechange}<>{s_button:cancel}") . '"  />' . "\r\n" .
-					'</form>' . "\r\n" .
-					'</div>' . "\r\n" .
-					'</div>' . "\r\n";
+					'</span>' . PHP_EOL . 
+					'<input type="hidden" name="oldname-gallery" id="oldname-gallery" class="dialogName dialogInput" value="" />' . PHP_EOL .
+					'<input type="hidden" name="scriptpath-gallery" id="scriptpath-gallery" value="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=rename&type=gallery"  />' . PHP_EOL .
+					'<input type="hidden" name="phrases-gallery" id="phrases-gallery" value="' . ContentsEngine::replaceStaText("{s_notice:nogallname}<>{s_notice:longname}<>{s_notice:wrongname}<>{s_notice:gallexists}") . '"  />' . PHP_EOL .
+					'<input type="hidden" name="buttonLabels-gallery" id="buttonLabels-gallery" value="' . ContentsEngine::replaceStaText("{s_button:takechange}<>{s_button:cancel}") . '"  />' . PHP_EOL .
+					'</form>' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'</div>' . PHP_EOL;
 
 		return $output;
 	

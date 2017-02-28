@@ -1,4 +1,4 @@
-<FilesMatch "\.inc\.php$">
+<FilesMatch "(config.(php|ini)|listener.|events.|.inc.php)">
 Order allow,deny
 Deny from all
 </FilesMatch>

@@ -83,7 +83,7 @@ class Admin_Stats extends Admin implements AdminTask
 
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:adminstats}' . PHP_EOL . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 							
 		
 		// #adminContent
@@ -288,8 +288,7 @@ class Admin_Stats extends Admin implements AdminTask
 		if(	$statView != 2 && 
 			$statView != 3 && 
 			$statView != 7 && 
-			$statView != 8 && 
-			$statView != 11
+			$statView != 8
 		) {
 			$this->adminContent .=	'<div class="actionField">' .
 									'<form action="' . $this->formAction . '" method="post">' .

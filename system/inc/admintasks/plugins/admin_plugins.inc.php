@@ -50,7 +50,7 @@ class Admin_Plugins extends Admin implements AdminTask
 
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:adminplugins}' . PHP_EOL . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -190,7 +190,7 @@ class Admin_Plugins extends Admin implements AdminTask
 			
 			// Plugin-Icon
 			$pluginEntry .=	'<span class="pluginIcon listIcon">' .
-							parent::getIcon($pluginIconKey, "contype-plugins inline-icon", 'style="background-image:url(' . PROJECT_HTTP_ROOT . '/plugins/' . $plugin . '/img/conicon_' . $plugin . '.png)"') .
+							parent::getIcon($pluginIconKey, "contype-plugins inline-icon") .
 							'</span>' . PHP_EOL;
 			
 			// Plug-In details
@@ -342,7 +342,7 @@ class Admin_Plugins extends Admin implements AdminTask
 		$this->adminContent .=	'<span class="singleInput-panel">' . PHP_EOL .
 								'<input type="text" class="input-button-right" name="pluginUrl" value="' . htmlspecialchars($this->pluginUrl) . '" />' . PHP_EOL .
 								'<input type="hidden" name="install_plugin" value="" />' . PHP_EOL .
-								'<input type="hidden" name="token" value="' . self::$token . '" />' . PHP_EOL .
+								parent::getTokenInput() .
 								'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button new
@@ -565,7 +565,7 @@ class Admin_Plugins extends Admin implements AdminTask
 		
 		$output 	.=	'</div>' . PHP_EOL;
 					
-		$output		 .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL .
+		$output		 .=	parent::getTokenInput() .
 						'</form>' . PHP_EOL .
 						'<br class="clearfloat" /></div>' . PHP_EOL;
 
@@ -657,8 +657,8 @@ class Admin_Plugins extends Admin implements AdminTask
 		$output .=	'</span>' .
 					'</div>' . PHP_EOL;
 		$output .=	'<script type="text/javascript">' . "\n" .
-					'head.ready("jquery",function(){'."\r\n".
-						'$(document).ready(function(){' .
+					'head.ready("jquery",function(){
+						$(document).ready(function(){' .
 							'$(".resetSearchVal").bind("click", function(){
 								$(this).closest(".singleInput-panel").children(".listSearch").val("").focus().trigger("keyup").blur();
 							});' .
@@ -762,14 +762,19 @@ class Admin_Plugins extends Admin implements AdminTask
 	protected function installPluginFile($url)
 	{
 		
+		$dnlOK	= false;
+		
+		// Datei herunterladen
+		if($this->downloadPluginFile())
+			$dnlOK	= true;
+		
 		// Wartungsmodus einschalten
 		if(!$this->activateMaintenanceMode()) {
 			$this->pluginError[]	= '{s_error:mtmodeon}';
 			return false;
 		}
-
-		// Datei herunterladen
-		if($this->downloadPluginFile())
+		
+		if($dnlOK)
 			$this->unzipPluginFile();
 		
 		if(count($this->pluginError) === 0) {
@@ -797,13 +802,33 @@ class Admin_Plugins extends Admin implements AdminTask
 	protected function checkUrlExists($url)
 	{
 		
-		$headers = get_headers($url);
+		// Set to head method for faster stream
+		$context = stream_context_create(
+			array(
+				'http' => array(
+					'method' => 'HEAD',
+					'timeout' => 5
+				)
+			)
+		);
 		
-		// Plugin-Datei herunterladen
-		if(isset($headers[0]) && stripos($headers[0], "OK") !== false)
+		// Suppress error if update server or file not available
+		$errorlevel	= error_reporting();
+		error_reporting(0);
+		
+		$headers	= @file_get_contents($url, false, $context);
+		
+		error_reporting($errorlevel);
+		
+		// Update-Datei herunterladen
+		if($headers !== false
+		&& !empty($http_response_header)
+		&& isset($http_response_header[0])
+		&& stripos($http_response_header[0], "OK") !== false
+		)
 			return true;
-		else
-			return false;
+		
+		return false;
 
 	}
 	

@@ -50,7 +50,7 @@ class Google extends Modules
 			$near = $q;			
 			
 		$googleMap .=	'<div class="registerCenter">' . "\r\n" .
-						'<iframe style="display:block;" width="' . $width . '" height="' . $height . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.de/maps?f=q&amp;source=s_q&amp;hl=' . $GLOBALS['o_lng']->lang . '&amp;geocode=&amp;q=' . $q . '&amp;aq=&amp;ie=UTF8&amp;hq=' . $hq . '&amp;hnear=' . $near . '&amp;radius=' . $radius . '&amp;t=m&amp;output=embed" allowfullscreen></iframe>' . "\r\n" . 
+						'<iframe style="display:block;" width="' . $width . '" height="' . $height . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http' . (HTTPS_PROTOCOL ? 's' : '') . '://maps.google.de/maps?f=q&amp;source=s_q&amp;hl=' . $GLOBALS['o_lng']->lang . '&amp;geocode=&amp;q=' . $q . '&amp;aq=&amp;ie=UTF8&amp;hq=' . $hq . '&amp;hnear=' . $near . '&amp;radius=' . $radius . '&amp;t=m&amp;output=embed" allowfullscreen></iframe>' . "\r\n" . 
 						'</div>' . "\r\n";
 				
 		return $googleMap . $googleMapClose;

@@ -82,7 +82,7 @@ class Log extends ContentsEngine
 		
 		//Session-Nummer		
 		$sessionID		= $this->DB->escapeString(session_id());
-		
+		$realIP			= User::getRealIP();
 		$lang			= $this->DB->escapeString(strtolower($lang));
 		$currentStamp	= time();
 
@@ -91,7 +91,7 @@ class Log extends ContentsEngine
 		if($this->referer != ""
 		&& self::checkSpam($this->referer)
 		) {
-			$this->logPotentialBot(User::getRealIP(), $this->userAgent, $this->referer, $currentStamp);
+			$this->logPotentialBot($realIP, $this->userAgent, $this->referer, $currentStamp);
 			$this->gotoErrorPage(403); // Goto error page with status forbidden
 			return false;
 		}
@@ -123,8 +123,8 @@ class Log extends ContentsEngine
 		
 					
 		// Falls der Klick gezählt werden soll
-		$realIP			= User::getRealIP(ANONYMIZE_IP, true);
-		$realIPdb		= $this->DB->escapeString($realIP);
+		$realIPan		= User::getRealIP(ANONYMIZE_IP, true);
+		$realIPdb		= $this->DB->escapeString($realIPan);
 		$refererDb		= $this->DB->escapeString($this->referer);
 		
 		$lastLog	= $this->DB->query("SELECT MAX(`timestamp`) 
@@ -147,7 +147,7 @@ class Log extends ContentsEngine
 		|| empty($this->referer)
 		) {
 		
-			$this->logPotentialBot(User::getRealIP(), $this->userAgent, $this->referer, $currentStamp);
+			$this->logPotentialBot($realIP, $this->userAgent, $this->referer, $currentStamp);
 		
 		}
 		
@@ -571,6 +571,22 @@ class Log extends ContentsEngine
 			
 		}
 		
+		
+		// Botliste einlesen
+		$bl = file(PROJECT_DOC_ROOT . '/inc/blacklist.txt', FILE_SKIP_EMPTY_LINES);
+		if(!empty($bl)
+		&& is_array($bl)
+		) {
+			$i = 0;
+			$sum = count($bl);
+			
+			while ($i < $sum) {
+				if(!empty(trim($bl[$i])))
+					$queryExt .=  "`referer` LIKE '%" . trim($bl[$i]) . "%' OR ";
+				$i++;
+			}
+		}
+		
 
 		$realIP = User::getRealIP(ANONYMIZE_IP, true);
 
@@ -791,11 +807,11 @@ class Log extends ContentsEngine
 	public static function checkSpam($referer)
 	{
     	
-		if(!empty($referer))
+		if(empty($referer))
 			return false;
 		
 		// Botliste einlesen
-		$bl = file(PROJECT_DOC_ROOT . '/inc/blacklist.txt');
+		$bl = file(PROJECT_DOC_ROOT . '/inc/blacklist.txt', FILE_SKIP_EMPTY_LINES);
 		
 		if(empty($bl)
 		|| !is_array($bl)
@@ -804,10 +820,10 @@ class Log extends ContentsEngine
 		
 		$i = 0;
 		$sum = count($bl);
-	
+		
 		while ($i < $sum) {
-			if(!empty($bl[$i])
-			&& stripos($referer, $bl[$i]) !== false
+			if(!empty(trim($bl[$i]))
+			&& stripos($referer, trim($bl[$i])) !== false
 			)
 				return true;
 			$i++;

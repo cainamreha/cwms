@@ -38,10 +38,17 @@ body.admin {
 	text-align:center;
 	line-height:15px;
 	line-height:0.9375rem;
+	overflow-x:hidden;
+}
+body.admin,
+body.admin iframe {
 	background: #fefeff url('../img/page-spinner.svg') no-repeat center center;
 	background-attachment:fixed;
 	background-size:45px 45px;
-	overflow-x:hidden;
+	backface-visibility: hidden;
+}
+body.admin.cc-domloaded {
+	background-image:none;
 }
 body.admin > div:not(.elfinder-contextmenu) {
 	font-size:11px;
@@ -215,8 +222,9 @@ body.admin > div.elfinder-contextmenu {
 .adminTable td.markBox-cell .markBox {
 	margin-right:0;
 }
-.adminTable .bg-warning td {
-	background-color:#fffacc!important;
+.adminTable tr.highlight td,
+.adminTable tr.bg-warning td {
+	background-color:#fffacc;
 }
 .adminTable td a {
 	display:inline-flex;
@@ -1396,8 +1404,10 @@ body.admin div#right {
 	transition:all .2s ease-in-out;
 }
 body.admin div#right.collapsed {
+	width:0;
 	right:-10.9375rem;
 	visibility:hidden;
+	overflow:hidden;
 }
 @media (min-width: 768px) {
 	body.admin div#left .cc-bar-toggle,
@@ -1569,7 +1579,7 @@ div.previewMenu ul li ul li ul li:hover {
 body.admin div#mainContent {
 	text-align:left;
 	width:auto;
-	min-width:570px;
+	min-width:550px;
 	min-height:38rem;
 	margin:0 175px;
 	margin:0 10.9375rem 3.125rem;
@@ -1605,6 +1615,11 @@ body.admin div#mainContent.expanded-right {
 /* Haupbereich */
 .cc-admin-panel-box {
 	position:relative;
+}
+iframe.cc-admin-iframe {
+	width:100%;
+	min-height:200vh;
+	border:none;
 }
 @media (min-width: 1200px) {
 	#mainContent.expanded-right .cc-admin-panel-box {
@@ -2919,19 +2934,25 @@ h2.toggle:before,
 h2.switchToggle:before,
 .elements fieldset legend:before {
 	color:#fff;
-	content: url(../img/toggle2_fff.png) " ";
 }
+h2.toggle:before,
+h2.switchToggle:before,
 h3.toggle:before,
 h3.switchToggle:before,
 h3.toggleCons:before,
 h4.toggle:before,
 h4.formFields:before,
+.objectToggle .toggle:before,
+span.toggleEditor:before,
+span.toggleCodeEditor:before,
+.elements fieldset legend:before,
 .adminArea *[data-toggle="true"]:not(input):before,
 .formFieldHeader:before,
 ul.contents div.conNr:before,
 .cc-groupitem-content-label:after {
-	content:url(../img/toggle2.png) " ";
-    margin-top:-1px;
+	content:"▼▲\00A0";
+	letter-spacing:-0.35em;
+    margin-right:10px;
 	display:block;
     float:left;
 }
@@ -3093,6 +3114,8 @@ textarea.ownUserGroups {
 	clear:both;
 }
 .adminArea .cc-groupitem-entry .listEntryHeader {
+	color:#336;
+	font-size:0.875rem;
 	margin:-9px -9px 0;
 	margin:-0.5625rem -0.5625rem 0;
 	padding:0 9px;
@@ -3150,7 +3173,6 @@ span.toggleCodeEditor {
 	padding-left:15px;
 	float:right;
 	cursor:pointer;
-	background:url(../img/toggle2.png) no-repeat left 5px;
 }
 
 /* Datenobjekte */
@@ -3165,36 +3187,12 @@ span.toggleCodeEditor {
 	position:relative;
 }
 span.objectToggle {
+	width:calc(100% - 10px);
 	float:none;
-	background:#dce8f1 url(../img/toggle2.png) no-repeat 5px center;
+	background:#dce8f1;
 }
-.objectToggle.img:after,
-.objectToggle.gallery:after,
-.objectToggle.doc:after,
-.objectToggle.video:after,
-.objectToggle.flash:after,
-.objectToggle.audio:after,
-.objectToggle.html:after {
-	position:absolute;
-	right:10px;
-}
-.objectToggle.img:after {
-	background-image:url(../img/icon_image.png);
-}
-.objectToggle.gallery:after {
-	background-image:url(../img/icon_gallery.png);
-}
-.objectToggle.flash:after {
-	background-image:url(../img/icon_flash.png);
-}
-.objectToggle.video:after {
-	background-image:url(../img/icon_video.png);
-}
-.objectToggle.audio:after {
-	background-image:url(../img/icon_audio.png);
-}
-.objectToggle.html:after {
-	background-image:url(../img/conicon_html.png);
+.objectToggle .cc-admin-icons {
+	float:right;
 }
 .toggleObjectType {
 	position:relative;
@@ -3900,7 +3898,7 @@ ul.contents span.type {
 .dataObject span.type {
 	margin-bottom:15px;
 	margin-left:10px;
-	padding-left:30px;
+	padding-left:15px;
 }
 ul.contents span.type:before,
 .dataObject span.type:before {
@@ -5019,7 +5017,7 @@ div.search li.searchItem .highlight {
 	float:none;
 }
 .adminArea div.listEntry p.comments span.toggle:after {
-	content: url(../img/toggle2.png);
+	content:"▼▲";
 	margin-left:5px;
 }
 .adminArea div.listEntry div.comments {
@@ -5347,7 +5345,7 @@ table.stats tr {
 	line-height:auto;
 	vertical-align:middle;
 }
-table.stats tr.highlight td {
+table.stats.overview tr.highlight td {
 	background-color:#f6f8fd;
 }
 table.stats th,

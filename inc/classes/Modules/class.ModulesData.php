@@ -554,7 +554,7 @@ class ModulesData extends Contents
 		$this->o_outputExtendDataEvent->pageKeywords	= $this->o_page->pageKeywords;		
 		$this->o_outputExtendDataEvent->pageDescr		= $this->o_page->pageDescr;		
 		$this->o_outputExtendDataEvent->pageImage		= $this->o_page->pageImage;		
-		$this->o_outputExtendDataEvent->token			= parent::$token;
+		$this->o_outputExtendDataEvent->tokenInput		= parent::getTokenInput();
 		
 		// dispatch event get_data_details
 		$this->o_dispatcher->dispatch('detail.get_data_details', $this->o_outputExtendDataEvent);
@@ -1056,7 +1056,7 @@ class ModulesData extends Contents
 								'<input type="hidden" name="cat_id" value="' . $catID . '" />' . "\r\n" .
 								'<input type="hidden" name="data_id" value="' . $dataID . '" />' . "\r\n" .
 								'<input type="hidden" name="addToCart" value="true" />' . "\r\n" .
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
+								parent::getTokenInput() .
 								$addToCartBtn . 
 								'<input type="text" name="amount" value="1" class="inputAmount {t_class:input} {t_class:fieldinl}" />' . "\r\n" .
 								'<label>' . $dataPrice . ' &euro;</label>' .

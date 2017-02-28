@@ -63,12 +63,12 @@ var itemH = "";
 				if(cancelled){
 					return false;
 				}
-				var oldSortId = ui.item.attr("data-sortidold");
-				var newSortId = ui.item.attr("data-sortid");
+				var oldSortId = parseInt(ui.item.attr("data-sortidold"));
+				var newSortId = parseInt(ui.item.attr("data-sortid"));
 				// Falls die alte sortID kleiner als die neue war, die neue um 1 erhöhen
 				if(oldSortId < newSortId){
-					newSortId++;
-				}
+					newSortId++;				
+				}				
 				var sortObj		= $(this);
 				var targetUrl	= sortObj.attr("data-url");
 				targetUrl += "&con="+oldSortId+"&pastecon="+newSortId;
@@ -341,8 +341,8 @@ var itemH = "";
 									update: function(event, ui){
 										
 										var dataId		= "";
-										var oldSortId	= ui.item.attr("data-sortidold");
-										var newSortId	= ui.item.attr("data-sortid");
+										var oldSortId	= parseInt(ui.item.attr("data-sortidold"));
+										var newSortId	= parseInt(ui.item.attr("data-sortid"));										
 										// Falls die alte sortID kleiner als die neue war, die neue um 1 erhöhen
 										if(oldSortId < newSortId){
 											newSortId=newSortId;

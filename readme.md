@@ -44,6 +44,8 @@ Also remember to change the password of the default user.
 
 - Medienordner umbenannt für klarere Struktur (mp3 => audio, movies => video / CC_MOVIE_FOLDER => CC_VIDEO_FOLDER)
 - Medienordner flash entfernt (flash-Dateien jetzt im Ordner "video" / CC_FLASH_FOLDER => CC_VIDEO_FOLDER)
+- Neue Ordner "medium" und "small" für mobile-optimierte Bilder, inkl. automatischer Thumbnailerstellung
+- Einführung von "srcset"-Attribut bei Bildern und Galerien
 - Mediaplayer-Update auf jPlayer 2.9.2
 - Video-Element update
 - Neues Inhaltselement "cards"
@@ -56,12 +58,16 @@ Also remember to change the password of the default user.
 - Edit-Bereich: Anzahl an Inhaltselementen pro Seite begrenzt (max input size)
 - Custombox update auf v3.0.2
 - Update check via Ajax-Aufruf (verhindert Hängen bei Nichterreichbarkeit des Update-Servers)
+- 2-Faktor-Authentifizierung für Newsletterregistrierung
+- Update PHPMailer auf v5.2.22
 
 
 ###New features:
 
 - Media folders renamed for the sake of conveinience (mp3 => audio, movies => video / CC_MOVIE_FOLDER => CC_VIDEO_FOLDER)
 - Medienordner flash entfernt (flash-Dateien jetzt im Ordner "video" / CC_FLASH_FOLDER => CC_VIDEO_FOLDER)
+- New folders "medium" and "small" for mobile-optimized images, including automatic thumbnail generation
+- Introduction of "srcset" attribute for images and galleries
 - Mediaplayer update to jPlayer 2.9.2
 - Update video element
 - New content element "cards"
@@ -74,6 +80,8 @@ Also remember to change the password of the default user.
 - Edit task: reduced amount of elements per page (max input size)
 - Custombox update to v3.0.2
 - Update check via ajax call (prevents hanging due to non-available update server)
+- 2-factor authentification for newsletter registrations
+- Update PHPMailer to v5.2.22
 
 
 

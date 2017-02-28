@@ -136,7 +136,7 @@ class FileUploader extends FileUploaderFactory implements FileUploaderInterface
 					'<br class="clearfloat" /></div></div>' . "\r\n" .
 					'</span>' . "\r\n" .
 					$this->getFilesUploadMask($this->folder, $this->useFilesFolder) .
-					'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+					parent::getTokenInput();
 			break;
 			
 			case "gallery":
@@ -160,7 +160,7 @@ class FileUploader extends FileUploaderFactory implements FileUploaderInterface
 					'<span class="imgSize"> x </span>' . "\r\n" .
 					'<input type="text" name="imgHeight" id="imgHeight" class="imgHeight" value="' . ($this->imgHeight == 0 ? IMG_HEIGHT : $this->imgHeight) . '" />' . "\r\n" . 
 					'<label class="imgSizeLabel inline-label">' . sprintf(ContentsEngine::replaceStaText('{s_label:filesize3}'), MIN_IMG_SIZE, MAX_IMG_SIZE) . '</label>' . "\r\n" . 
-					'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
+					parent::getTokenInput() .
 					'<br class="clearfloat" /></div></div>' . "\r\n";
 			break;
 		}

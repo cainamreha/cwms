@@ -148,8 +148,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:admin'.parent::$type.'}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:admin'.parent::$type.'}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -281,7 +281,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		// Datenmodul-Bereich
 		// Falls kein Lock gesetzt, Formulare anzeigen
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL;
 
 
 		// Meldungen ausgeben
@@ -294,7 +294,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 
 		
 		// Bereich: Datenmodule
-		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_nav:admin'.parent::$type.'}</h2>' . "\r\n";
+		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_nav:admin'.parent::$type.'}</h2>' . PHP_EOL;
 		
 
 		
@@ -303,13 +303,13 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 			$this->o_extendDataEvent->showCalendar 	= $this->showCalendar;
 		
-			$this->adminContent .= 	'<div id="calendar"></div>' . "\r\n";
-			$this->adminContent .= 	'</div>' . "\r\n"; // close AdminArea
+			$this->adminContent .= 	'<div id="calendar"></div>' . PHP_EOL;
+			$this->adminContent .= 	'</div>' . PHP_EOL; // close AdminArea
 			$this->adminContent .=	self::getFullcalendarScriptTag();
-			$this->adminContent .= 	'<div class="adminArea">' . "\r\n";
+			$this->adminContent .= 	'<div class="adminArea">' . PHP_EOL;
 			$this->adminContent .=	self::getDataNewSection("short");
 			#$this->adminContent .=	self::getEditEntryForm("short");
-			$this->adminContent .= 	'</div>' . "\r\n"; // close AdminArea
+			$this->adminContent .= 	'</div>' . PHP_EOL; // close AdminArea
 			
 			return $this->adminContent;
 		
@@ -323,7 +323,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		// Falls noch keine Kategorien angelegt sind, Ausgabe schließen
 		if(count($this->existCats) == 0) {
 		
-			$this->adminContent .= 	'</div>' . "\r\n"; // close AdminArea
+			$this->adminContent .= 	'</div>' . PHP_EOL; // close AdminArea
 			$this->adminContent .=	self::getScriptTag();
 			$this->adminContent .=	$this->getDataAdminTourScript();
 			
@@ -346,7 +346,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		$this->adminContent .=	$this->getContextMenuScript();
 
 		
-		$this->adminContent .= 	'</div>' . "\r\n"; // close AdminArea
+		$this->adminContent .= 	'</div>' . PHP_EOL; // close AdminArea
 		
 		
 		// Skripts (Editor/Sortable)
@@ -592,17 +592,17 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			$hide	= ' hideNext';
 			
 		// Bereich: Kategorie anlegen bzw. bearbeiten
-		$output		 .=	'<h3 class="cc-h3 switchToggle' . $hide . '">{s_header:'.parent::$type.'cat}</h3>' . "\r\n";
+		$output		 .=	'<h3 class="cc-h3 switchToggle' . $hide . '">{s_header:'.parent::$type.'cat}</h3>' . PHP_EOL;
 		
-		$output		 .=	'<div class="editDataCategories adminBox"' . (!empty($hide) ? ' style="display:none;"' : '') . '>' . "\r\n";
+		$output		 .=	'<div class="editDataCategories adminBox"' . (!empty($hide) ? ' style="display:none;"' : '') . '>' . PHP_EOL;
 		
 		
 		$hideStyle	= !$this->showExistingCats ? ' style="display:none;"' : '';
 		
 		
 		// Bestehende Kategorien
-		$output		 .=	'<h4 class="cc-h4 toggle">{s_label:catexist}</h4>' . "\r\n" .
-						'<div class="existingCatsList adminBox"' . $hideStyle . '>' . "\r\n";
+		$output		 .=	'<h4 class="cc-h4 toggle">{s_label:catexist}</h4>' . PHP_EOL .
+						'<div class="existingCatsList adminBox"' . $hideStyle . '>' . PHP_EOL;
 		
 		
 		// Kategorien auflisten (falls vorhanden)
@@ -612,16 +612,16 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		}
 		else
-			$output		 .=	'<p class="notice error">{s_notice:nocats}</p>' . "\r\n";
+			$output		 .=	'<p class="notice error">{s_notice:nocats}</p>' . PHP_EOL;
 
 		
 		// Button neue Cat
-		$output		 .=	'<span class="newCatButton-panel buttonPanel">' . "\r\n" .
+		$output		 .=	'<span class="newCatButton-panel buttonPanel">' . PHP_EOL .
 						$this->getAddCatButton("right") .
-						'<br class="clearfloat" />' . "\r\n" .
-						'</span>' . "\r\n";
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</span>' . PHP_EOL;
 
-		$output		 .=	'</div>' . "\r\n"; // close .existingCatsList
+		$output		 .=	'</div>' . PHP_EOL; // close .existingCatsList
 
 		
 		// Kategorie neu/bearbeiten
@@ -631,7 +631,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		}		
 		
-		$output		 .=	'</div>' . "\r\n"; // close .editDataCategories
+		$output		 .=	'</div>' . PHP_EOL; // close .editDataCategories
 		
 		return $output;
 	
@@ -659,7 +659,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		// Actionbox
 		$output		 .=	$this->getDataCatActionBox();
 		
-		$output		 .=	'<ul class="editList dataCatList list list-condensed sortableData sortable-container" id="sortableDataCat" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sort&mod=' . parent::$type . '">' . "\r\n";
+		$output		 .=	'<ul class="editList dataCatList list list-condensed sortableData sortable-container" id="sortableDataCat" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sort&mod=' . parent::$type . '">' . PHP_EOL;
 
 		foreach($this->existCats as $cat) {
 			
@@ -693,9 +693,9 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			$catNameList	= $cat['category_' . $this->editLang];
 			
-			$markBox	=	'<label class="markBox' . ($accessDenied ? ' disabled' : '') . '">' . "\r\n" .
-							'<input type="checkbox" class="addVal" name="catIDs[]" value="' . $cat['cat_id'] . '"' . ($accessDenied ? ' disabled="disabled"' : '') . ' />' . "\r\n" .
-							'</label>' . "\r\n";				
+			$markBox	=	'<label class="markBox' . ($accessDenied ? ' disabled' : '') . '">' . PHP_EOL .
+							'<input type="checkbox" class="addVal" name="catIDs[]" value="' . $cat['cat_id'] . '"' . ($accessDenied ? ' disabled="disabled"' : '') . ' />' . PHP_EOL .
+							'</label>' . PHP_EOL;				
 			
 			$output		 .=	'<li id="datacatid-' . $cat['cat_id'] . '" class="';
 			
@@ -709,22 +709,22 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			if($accessDenied)								$output		 .= ' disabled';
 			
-			$output		 .=	' listItem listEntry sortid-' . $cat['sort_id'] . '" data-catid="' . $cat['cat_id'] . '" data-sortid="' . $cat['sort_id'] . '" data-sortidold="' . $cat['sort_id'] . '" data-menu="context" data-target="contextmenu-cats-' . $j . '">' . "\r\n";
+			$output		 .=	' listItem listEntry sortid-' . $cat['sort_id'] . '" data-catid="' . $cat['cat_id'] . '" data-sortid="' . $cat['sort_id'] . '" data-sortidold="' . $cat['sort_id'] . '" data-menu="context" data-target="contextmenu-cats-' . $j . '">' . PHP_EOL;
 			
 			$output		 .=	$markBox;
 
-			$output		 .=	'<span class="listNr">[#' . $cat['cat_id'] . ']</span>' . "\r\n" .
-							'<span class="listName">' . ($childTag != "" ? $childTag . $catNameList . '</span>' . "\r\n" .
-							'<span class="childof">({s_text:childof} #' . $cat['parent_cat'] . ')' : $catNameList) . '</span>' . "\r\n";
+			$output		 .=	'<span class="listNr">[#' . $cat['cat_id'] . ']</span>' . PHP_EOL .
+							'<span class="listName">' . ($childTag != "" ? $childTag . $catNameList . '</span>' . PHP_EOL .
+							'<span class="childof">({s_text:childof} #' . $cat['parent_cat'] . ')' : $catNameList) . '</span>' . PHP_EOL;
 			
 			// EditButtons
-			$output		 .=	'<span class="editButtons-panel" data-id="contextmenu-cats-' . $j . '">' . "\r\n";
+			$output		 .=	'<span class="editButtons-panel" data-id="contextmenu-cats-' . $j . '">' . PHP_EOL;
 
 			// Button new data
 			$editButtons	=	$this->getAddDataToCatButton($cat['cat_id'], "image", $j);
 
 			// Button list data
-			$editButtons	.= '<form action="' . $this->formAction . '#cfm" method="post" accept-charset="UTF-8">' . "\r\n";
+			$editButtons	.= '<form action="' . $this->formAction . '#cfm" method="post" accept-charset="UTF-8">' . PHP_EOL;
 			
 			// Button list
 			$btnDefs	= array(	"type"		=> "submit",
@@ -739,8 +739,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			$editButtons   .=	parent::getButton($btnDefs);
 			
-			$editButtons   .=	'<input type="hidden" name="list_cat" value="' . $cat['cat_id'] . '" />' . "\r\n" .
-								'</form>' . "\r\n";
+			$editButtons   .=	'<input type="hidden" name="list_cat" value="' . $cat['cat_id'] . '" />' . PHP_EOL .
+								'</form>' . PHP_EOL;
 
 			// Falls eine bestimmte Kat angezeigt wird und mehrere Artikel vorhanden sind, nach unten Button einfügen
 			if(count($this->existCats) > 1 && $j < count($this->existCats)) {
@@ -771,7 +771,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				$editButtons	.=	parent::getButton($btnDefs);
 			}
 			
-			$editButtons	 .=	'<form action="' . $this->formAction . '" id="editcatfm" method="post" accept-charset="UTF-8">' . "\r\n";
+			$editButtons	 .=	'<form action="' . $this->formAction . '" id="editcatfm" method="post" accept-charset="UTF-8">' . PHP_EOL;
 			
 			// Button edit
 			$btnDefs	= array(	"type"		=> "submit",
@@ -795,7 +795,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			$editButtons    .=	$this->o_extendDataEvent->getOutput(true);
 			
 			
-			$editButtons .=	'</form>' . "\r\n";
+			$editButtons .=	'</form>' . PHP_EOL;
 			
 			
 			// Button delete
@@ -815,12 +815,12 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				$output.= parent::getIcon("adminuser", "noAccess inline-icon", 'title="{s_text:noaccess}"');
 			
 			
-			$output		.=	'</span>' . "\r\n";
+			$output		.=	'</span>' . PHP_EOL;
 			
-			$output		.=	'</li>' . "\r\n";
+			$output		.=	'</li>' . PHP_EOL;
 		}
 
-		$output		 .=	'</ul>' . "\r\n";
+		$output		 .=	'</ul>' . PHP_EOL;
 		
 		return $output;
 	
@@ -1510,77 +1510,77 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$hide	= 	$this->hideNewCat ? ' style="display:none;"' : '';
 
-		$output		 .=	'</h4>' . "\r\n";
+		$output		 .=	'</h4>' . PHP_EOL;
 		
-		$output		 .=	'<div class="adminBox"' . $hide . '>' . "\r\n";
-		$output		 .=	'<form action="' . $this->formAction . '#cfm" method="post" enctype="multipart/form-data" id="adminfm1" accept-charset="UTF-8">' . "\r\n" . 
-						'<ul class="framedItems">' . "\r\n";
+		$output		 .=	'<div class="adminBox"' . $hide . '>' . PHP_EOL;
+		$output		 .=	'<form action="' . $this->formAction . '#cfm" method="post" enctype="multipart/form-data" id="adminfm1" accept-charset="UTF-8">' . PHP_EOL . 
+						'<ul class="framedItems">' . PHP_EOL;
 		
-		$output		 .=	'<li>' . "\r\n" .
-						'<div class="leftBox"><label>{s_label:catname}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n";
+		$output		 .=	'<li>' . PHP_EOL .
+						'<div class="leftBox"><label>{s_label:catname}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . PHP_EOL;
 
 		if(isset($this->wrongInput['catName']))
-			$output		 .=	'<p class="notice">' . $this->wrongInput['catName'] . '</p>' . "\r\n";
+			$output		 .=	'<p class="notice">' . $this->wrongInput['catName'] . '</p>' . PHP_EOL;
 
 
-		$output		 .=	'<input type="text" class="dataCat" name="dataCatName" value="' . (isset($this->dataCatName) && $this->dataCatName != '' && !$this->editData ? htmlspecialchars($this->dataCatName) : '') . '" maxlength="128" />' . "\r\n" .
-						'</div>' . "\r\n";
+		$output		 .=	'<input type="text" class="dataCat" name="dataCatName" value="' . (isset($this->dataCatName) && $this->dataCatName != '' && !$this->editData ? htmlspecialchars($this->dataCatName) : '') . '" maxlength="128" />' . PHP_EOL .
+						'</div>' . PHP_EOL;
 								
-		$output		 .=	'<div class="rightBox"><label>{s_label:parentcat}</label>' . "\r\n" .
-						'<select class="dataParentCat iconSelect" name="dataParentCat">' . "\r\n" .
-						'<option value="0">-</option>' . "\r\n";
+		$output		 .=	'<div class="rightBox"><label>{s_label:parentcat}</label>' . PHP_EOL .
+						'<select class="dataParentCat iconSelect" name="dataParentCat">' . PHP_EOL .
+						'<option value="0">-</option>' . PHP_EOL;
 
 					
 		$c = 0;
 		foreach($this->existCats as $eCat) {
 			if(!isset($this->catID) || $this->catID != $eCat['cat_id'])
-				$output		 .='<option ' . ($eCat['parent_cat'] == 0 ? 'class="parentCat"' : '') . ' value="' . $eCat['cat_id'] . '"' . (isset($this->dataParentCat) && $this->dataParentCat == $eCat['cat_id'] ? ' selected="selected"' : '') . '>' . $this->catLevelArray[$c] . $eCat['category_'.$this->editLang] . '</option>' . "\r\n"; // Benutzergruppe
+				$output		 .='<option ' . ($eCat['parent_cat'] == 0 ? 'class="parentCat"' : '') . ' value="' . $eCat['cat_id'] . '"' . (isset($this->dataParentCat) && $this->dataParentCat == $eCat['cat_id'] ? ' selected="selected"' : '') . '>' . $this->catLevelArray[$c] . $eCat['category_'.$this->editLang] . '</option>' . PHP_EOL; // Benutzergruppe
 			
 			$c++;
 		}
 			
-		$output		 .=	'</select>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'<br class="clearfloat">' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'</select>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'<br class="clearfloat">' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		
-		$output		 .=	'<li class="fullBox">' . "\r\n" .
-						'<input type="hidden" name="oldParentCat" value="' . (isset($this->oldParentCat) ? $this->oldParentCat : '') . '" />' . "\r\n" .
-						'<input type="hidden" name="sort_id" value="' . (isset($this->catID) ? $this->oldSortID : '') . '" />' . "\r\n" .
-						'<ul class="rowlist">' . "\r\n" .
-						'<label>{s_label:catTeaser}<span class="editLangFlag">' . $this->editLangFlag . '</span><span class="toggleEditor" data-target="catTeaser">Editor</span></label>' . "\r\n" .
-						'<textarea name="catTeaser" id="catTeaser" rows="2" class="teaser cc-editor-add disableEditor">' . (isset($this->dataCatTeaser) ? htmlspecialchars($this->dataCatTeaser) : '') . '</textarea>' . "\r\n" .
-						'</ul>' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'<li class="fullBox">' . PHP_EOL .
+						'<input type="hidden" name="oldParentCat" value="' . (isset($this->oldParentCat) ? $this->oldParentCat : '') . '" />' . PHP_EOL .
+						'<input type="hidden" name="sort_id" value="' . (isset($this->catID) ? $this->oldSortID : '') . '" />' . PHP_EOL .
+						'<ul class="rowlist">' . PHP_EOL .
+						'<label>{s_label:catTeaser}<span class="editLangFlag">' . $this->editLangFlag . '</span><span class="toggleEditor" data-target="catTeaser">Editor</span></label>' . PHP_EOL .
+						'<textarea name="catTeaser" id="catTeaser" rows="2" class="teaser cc-editor-add disableEditor">' . (isset($this->dataCatTeaser) ? htmlspecialchars($this->dataCatTeaser) : '') . '</textarea>' . PHP_EOL .
+						'</ul>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 		
 		// Groups
-		$output		 .=	'<li>' . "\r\n" .
-						'<ul class="rowlist clearfix">' . "\r\n" .
-						'<li>' . "\r\n" .
-						'<div class="leftBox">' . "\r\n" .
-						'<label>{s_label:'.parent::$type.'group} / {s_common:rightsread}</label>' . "\r\n" .
-						'<select multiple="multiple" size="' . count($this->userGroups) . '" name="newsGroupRead[]" class="selgroup">' . "\r\n";
+		$output		 .=	'<li>' . PHP_EOL .
+						'<ul class="rowlist clearfix">' . PHP_EOL .
+						'<li>' . PHP_EOL .
+						'<div class="leftBox">' . PHP_EOL .
+						'<label>{s_label:'.parent::$type.'group} / {s_common:rightsread}</label>' . PHP_EOL .
+						'<select multiple="multiple" size="' . count($this->userGroups) . '" name="newsGroupRead[]" class="selgroup">' . PHP_EOL;
 					
 		foreach($this->userGroups as $group) {
-			$output		 .='<option value="' . $group . '"' . (isset($this->dataGroupRead) && in_array($group, $this->dataGroupRead) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n"; // Benutzergruppe
+			$output		 .='<option value="' . $group . '"' . (isset($this->dataGroupRead) && in_array($group, $this->dataGroupRead) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL; // Benutzergruppe
 		}
 		
 		$output		 .=	'</select>' .
-						'</div>' . "\r\n";
+						'</div>' . PHP_EOL;
 						
-		$output		 .=	'<div class="rightBox">' . "\r\n" .
-						'<label>{s_common:rightswrite}</label>' . "\r\n" .
-						'<select multiple="multiple" size="' . (count($this->loggedUserEditGroups) +1) . '" name="newsGroupWrite[]" class="selgroup">' . "\r\n";
+		$output		 .=	'<div class="rightBox">' . PHP_EOL .
+						'<label>{s_common:rightswrite}</label>' . PHP_EOL .
+						'<select multiple="multiple" size="' . (count($this->loggedUserEditGroups) +1) . '" name="newsGroupWrite[]" class="selgroup">' . PHP_EOL;
 		
-		$output		 .='<option value=""' . (empty($this->dataGroupWrite) ? ' selected="selected"' : '') . '>{s_title:defaultrigths}</option>' . "\r\n"; // Benutzergruppe
+		$output		 .='<option value=""' . (empty($this->dataGroupWrite) ? ' selected="selected"' : '') . '>{s_title:defaultrigths}</option>' . PHP_EOL; // Benutzergruppe
 					
 		foreach($this->loggedUserEditGroups as $group) {
-			$output		 .='<option value="' . $group . '"' . (!empty($this->dataGroupWrite) && in_array($group, $this->dataGroupWrite) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n"; // Benutzergruppe
+			$output		 .='<option value="' . $group . '"' . (!empty($this->dataGroupWrite) && in_array($group, $this->dataGroupWrite) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL; // Benutzergruppe
 		}
 			
-		$output		 .=	'</select>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'</select>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 
 		
 		// Cat Event
@@ -1598,13 +1598,13 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		$output		 .=	$this->o_extendDataEvent->getOutput(true);
 		
 
-		$output		 .=	'</ul>' . "\r\n";
+		$output		 .=	'</ul>' . PHP_EOL;
 
 
 		// Falls neue Kategorie
 		if(!$this->editCat) {
-			$output		 .=	'<ul>' . "\r\n" . 
-							'<li class="submit change">' . "\r\n";
+			$output		 .=	'<ul>' . PHP_EOL . 
+							'<li class="submit change">' . PHP_EOL;
 			
 			// Button submit (new)
 			$btnDefs	= array(	"type"		=> "submit",
@@ -1616,18 +1616,18 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			$output		.=	parent::getButton($btnDefs);
 			
-			$output		.=	'<input type="hidden" name="new_cat" value="{s_button:newcat}" />' . "\r\n" . 
-							'<input type="hidden" name="oldParentCat" value="" />' . "\r\n" .
-							'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-							'</li>' . "\r\n" . 
-							'</ul>' . "\r\n" . 
-							'</form>' . "\r\n";
+			$output		.=	'<input type="hidden" name="new_cat" value="{s_button:newcat}" />' . PHP_EOL . 
+							'<input type="hidden" name="oldParentCat" value="" />' . PHP_EOL .
+							parent::getTokenInput() . 
+							'</li>' . PHP_EOL . 
+							'</ul>' . PHP_EOL . 
+							'</form>' . PHP_EOL;
 		}
 		
 		// Andernfalls Kategorie bearbeiten
 		else {
-			$output		 .=	'<ul>' . "\r\n" . 
-							'<li class="submit change">' . "\r\n";
+			$output		 .=	'<ul>' . PHP_EOL . 
+							'<li class="submit change">' . PHP_EOL;
 			
 			// Button submit (new)
 			$btnDefs	= array(	"type"		=> "submit",
@@ -1639,21 +1639,21 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			$output		.=	parent::getButton($btnDefs);
 			
-			$output		.=	'<input type="hidden" name="submit_edit" value="{s_button:takechange}" />' . "\r\n" . 
-							'<input type="hidden" name="edit_cat" value="' . $this->catID . '" />' . "\r\n" .
-							'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-							'</li>' . "\r\n" .
-							'</ul>' . "\r\n" .
-							'</form>' . "\r\n" .
-							'<ul>' . "\r\n" . 
-							'<li class="submit back">' . "\r\n" .
+			$output		.=	'<input type="hidden" name="submit_edit" value="{s_button:takechange}" />' . PHP_EOL . 
+							'<input type="hidden" name="edit_cat" value="' . $this->catID . '" />' . PHP_EOL .
+							parent::getTokenInput() . 
+							'</li>' . PHP_EOL .
+							'</ul>' . PHP_EOL .
+							'</form>' . PHP_EOL .
+							'<ul>' . PHP_EOL . 
+							'<li class="submit back">' . PHP_EOL .
 							$this->getAddCatButton("left") . 
-							'<br class="clearfloat" />' . "\r\n" .
-							'</li>' . "\r\n" .
-							'</ul>' . "\r\n";
+							'<br class="clearfloat" />' . PHP_EOL .
+							'</li>' . PHP_EOL .
+							'</ul>' . PHP_EOL;
 		}
 		
-		$output		 .=		'</div>' . "\r\n";
+		$output		 .=		'</div>' . PHP_EOL;
 		
 		return $output;
 	
@@ -1690,14 +1690,14 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		)
 			$output		 .=' hideNext';
 			
-		$output		 .=	'">{s_header:edit'.parent::$type.'} ' . (isset($this->editID) && $this->editID != "" ? '(#' . $this->editID . ')' : '') . "\r\n";
+		$output		 .=	'">{s_header:edit'.parent::$type.'} ' . (isset($this->editID) && $this->editID != "" ? '(#' . $this->editID . ')' : '') . PHP_EOL;
 		
 		// Backtolist Button
 		if($this->editAccess) {
 			
-			$output		 .=	'<form action="' . $this->formAction . '" method="post" class="left" data-getcontent="fullpage">' . "\r\n";
+			$output		 .=	'<form action="' . $this->formAction . '" method="post" class="left" data-getcontent="fullpage">' . PHP_EOL;
 			
-			$output		 .=	'<span class="editButtons-panel">' . "\r\n";
+			$output		 .=	'<span class="editButtons-panel">' . PHP_EOL;
 			
 			// Button backtolist
 			$btnDefs	= array(	"type"		=> "submit",
@@ -1711,20 +1711,20 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 			$output		 .=	parent::getButton($btnDefs);
 			
-			$output		 .=	'<input name="list_cat" type="hidden" value="'.$this->dataCat.'" />' . "\r\n" .
-							'</span>' . "\r\n" .
-							'</form>' . "\r\n";
+			$output		 .=	'<input name="list_cat" type="hidden" value="'.$this->dataCat.'" />' . PHP_EOL .
+							'</span>' . PHP_EOL .
+							'</form>' . PHP_EOL;
 		}
 
-		$output		 .=		'</h3>' . "\r\n" .
-							'<div class="editDataEntrySection adminBox">' . "\r\n";
+		$output		 .=		'</h3>' . PHP_EOL .
+							'<div class="editDataEntrySection adminBox">' . PHP_EOL;
 		
 		
 		// Falls Bearbeitungsberechtigung für einen Datensatz besteht
 		if($this->editAccess) {
 			
 			$output		 .=	$this->getEditEntryForm();
-			$output		 .=	'</div>' . "\r\n";
+			$output		 .=	'</div>' . PHP_EOL;
 			return $output;
 
 		}		
@@ -1737,7 +1737,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		// Falls noch keine Kategorie zum Auflisten von Datensätzen ausgewählt wurde
 		if(!$this->listData)
-			$output	   .= '<p class="notice error">{s_text:no'.parent::$type.'}' . (isset($this->editID) && $this->editID != "" ? ' {s_common:or} {s_text:noaccess}' : '') . '.</p>' . "\r\n";
+			$output	   .= '<p class="notice error">{s_text:no'.parent::$type.'}' . (isset($this->editID) && $this->editID != "" ? ' {s_common:or} {s_text:noaccess}' : '') . '.</p>' . PHP_EOL;
 		
 		
 		// Daten auflisten
@@ -1747,7 +1747,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 		}
 		
-		$output .= 	'</div>' . "\r\n"; // close editDataEntrySection
+		$output .= 	'</div>' . PHP_EOL; // close editDataEntrySection
 		
 		return $output;
 	
@@ -1772,32 +1772,32 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 						
 		// Edit form
-		$output		 .=	'<form action="' . $this->formAction . '" method="post" id="adminfm3" enctype="multipart/form-data" accept-charset="UTF-8">' . "\r\n" .
-						'<ul class="framedItems">' . "\r\n";
+		$output		 .=	'<form action="' . $this->formAction . '" method="post" id="adminfm3" enctype="multipart/form-data" accept-charset="UTF-8">' . PHP_EOL .
+						'<ul class="framedItems">' . PHP_EOL;
 
 		
 		// Header
-		$output		 .= 	'<li>' . "\r\n" .
-							'<label>{s_label:'.parent::$type.'header}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n";
+		$output		 .= 	'<li>' . PHP_EOL .
+							'<label>{s_label:'.parent::$type.'header}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . PHP_EOL;
 							
 		if(isset($this->wrongInput['header']))
-			$output		 .=	'<p class="notice">' . $this->wrongInput['header'] . '</p>' . "\r\n";
+			$output		 .=	'<p class="notice">' . $this->wrongInput['header'] . '</p>' . PHP_EOL;
 							
-		$output		 .=	'<input type="text" name="news_header" value="' . (isset($this->dataHeader) && $this->dataHeader != '' ? htmlspecialchars($this->dataHeader) : '') . '" maxlength="300" />' . "\r\n";
+		$output		 .=	'<input type="text" name="news_header" value="' . (isset($this->dataHeader) && $this->dataHeader != '' ? htmlspecialchars($this->dataHeader) : '') . '" maxlength="300" />' . PHP_EOL;
 		
-		$output		 .=	'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 
 						
 		// Newskategorien Auswahl
-		$output		 .=	'<li>' . "\r\n" .
-						'<div class="catSelection leftBox">' . "\r\n" .
-						'<label>{s_label:'.parent::$type.'cat}</label>' . "\r\n";
+		$output		 .=	'<li>' . PHP_EOL .
+						'<div class="catSelection leftBox">' . PHP_EOL .
+						'<label>{s_label:'.parent::$type.'cat}</label>' . PHP_EOL;
 						
 		if(isset($this->wrongInput['cat']))
-			$output		 .=	'<p class="notice">' . $this->wrongInput['cat'] . '</p>' . "\r\n";
+			$output		 .=	'<p class="notice">' . $this->wrongInput['cat'] . '</p>' . PHP_EOL;
 							
-		$output		 .=	'<select name="news_cat">' . "\r\n";
+		$output		 .=	'<select name="news_cat">' . PHP_EOL;
 		
 		
 		$c = 0;
@@ -1809,23 +1809,23 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			if(isset($this->dataCat) && $cat['cat_id'] == $this->dataCat)
 				$output		 .= ' selected="selected"';
 				
-			$output		 .= '>' . (!empty($this->catLevelArray[$c]) ? $this->catLevelArray[$c] : '') . $cat['category_' . $this->editLang] . '</option>' . "\r\n";
+			$output		 .= '>' . (!empty($this->catLevelArray[$c]) ? $this->catLevelArray[$c] : '') . $cat['category_' . $this->editLang] . '</option>' . PHP_EOL;
 			
 			$c++;
 		}
 							
-		$output		 .= 	'</select>' . "\r\n";
-		$output		 .= 	'</div>' . "\r\n";
+		$output		 .= 	'</select>' . PHP_EOL;
+		$output		 .= 	'</div>' . PHP_EOL;
 
 		
 		// Tags
-		$output		 .=	'<div class="tagSelection rightBox">' . "\r\n" .
-						'<label>Tags<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
-						'<input type="text" name="news_tags" value="' . (isset($this->dataTags) && $this->dataTags != '' ? htmlspecialchars($this->dataTags) : '') . '" class="dataTags tags-' . parent::$type . '" data-type="' . parent::$type . '" autocomplete="off" maxlength="512" />' . "\r\n" . 
-						'</div>' . "\r\n";
+		$output		 .=	'<div class="tagSelection rightBox">' . PHP_EOL .
+						'<label>Tags<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . PHP_EOL .
+						'<input type="text" name="news_tags" value="' . (isset($this->dataTags) && $this->dataTags != '' ? htmlspecialchars($this->dataTags) : '') . '" class="dataTags tags-' . parent::$type . '" data-type="' . parent::$type . '" autocomplete="off" maxlength="512" />' . PHP_EOL . 
+						'</div>' . PHP_EOL;
 		
-		$output		 .=	'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 
 		
 		
@@ -1836,21 +1836,21 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		$output		 .= $this->o_extendDataEvent->getOutput(true);
 		
 		
-		$output		 .=	'</ul>' . "\r\n";
+		$output		 .=	'</ul>' . PHP_EOL;
 		
 		
 		// if short form type
 		if($formType === "short") {
 			$output		.=	self::getEditDataSubmit(1, false);
-			$output		.= '</form>' . "\r\n";
+			$output		.= '</form>' . PHP_EOL;
 			return $output;
 		}
 		
 		
-		$output		 .=	'<h4 class="cc-h4 marginTop toggle">{s_option:' . parent::$type . '} - {s_label:objects}</h4>' . "\r\n";
+		$output		 .=	'<h4 class="cc-h4 marginTop toggle">{s_option:' . parent::$type . '} - {s_label:objects}</h4>' . PHP_EOL;
 		
 		// Datenobjekte als sortierbare Liste einbinden
-		$output		 .=	'<ul id="sortableObjects" class="dataObjectList subList sortable-container framedItems" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sortobjects&mod=' . parent::$type . '&cat=' . $this->dataCat. '&id=' . $this->editID . '&lastobject=' . $this->objectNumber . '">' . "\r\n";
+		$output		 .=	'<ul id="sortableObjects" class="dataObjectList subList sortable-container framedItems" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sortobjects&mod=' . parent::$type . '&cat=' . $this->dataCat. '&id=' . $this->editID . '&lastobject=' . $this->objectNumber . '">' . PHP_EOL;
 		
 		
 		// Daten-Objekte einbinden
@@ -1872,9 +1872,9 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 		$output		 .=	parent::getButton($btnDefs);
 		
-		$output		 .=	'</li>' . "\r\n";
+		$output		 .=	'</li>' . PHP_EOL;
 
-		$output		 .=	'</ul>' . "\r\n";
+		$output		 .=	'</ul>' . PHP_EOL;
 
 		
 		// Submit Buttons
@@ -1900,10 +1900,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	{
 		
 		// DataHeader
-		$output		 =	'<div class="borderBox">' . "\r\n" .
-						'<div class="listEntryHeader actionHeader">' . "\r\n" .
-						'<span class="editButtons-panel panel-left">' . "\r\n" .
-						'<span class="switchIcons">' . "\r\n";
+		$output		 =	'<div class="borderBox">' . PHP_EOL .
+						'<div class="listEntryHeader actionHeader">' . PHP_EOL .
+						'<span class="editButtons-panel panel-left">' . PHP_EOL .
+						'<span class="switchIcons">' . PHP_EOL;
 		
 		// Button publish
 		$btnDefs	= array(	"type"		=> "button",
@@ -1927,8 +1927,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output		 .=	'</span>' . "\r\n" .
-						'</span>' . "\r\n";
+		$output		 .=	'</span>' . PHP_EOL .
+						'</span>' . PHP_EOL;
 
 
 						
@@ -1942,15 +1942,15 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 
 		
 		// Author
-		$output		 .=	'<span class="dataAuthor" title="{s_option:author}">' . $this->getEditableAuthor($this->authorName, $this->authorID, $this->editID) . '</span>' . "\r\n";
+		$output		 .=	'<span class="dataAuthor" title="{s_option:author}">' . $this->getEditableAuthor($this->authorName, $this->authorID, $this->editID) . '</span>' . PHP_EOL;
 		
 		// EditButtons
-		$output		 .=	'<span class="dataCalls editButtons-panel panel-left" title="' . $this->dataCalls . ' {s_title:calls}">' . "\r\n" .
+		$output		 .=	'<span class="dataCalls editButtons-panel panel-left" title="' . $this->dataCalls . ' {s_title:calls}">' . PHP_EOL .
 						parent::getIcon("preview", "left-icon") .
-						'<span class="{t_class:badge}">&nbsp;' . $this->dataCalls . '</span>' . "\r\n" .
-						'</span>' . "\r\n";
+						'<span class="{t_class:badge}">&nbsp;' . $this->dataCalls . '</span>' . PHP_EOL .
+						'</span>' . PHP_EOL;
 		
-		$editButtonsPanel		= '<span class="editButtons-panel">' . "\r\n";
+		$editButtonsPanel		= '<span class="editButtons-panel">' . PHP_EOL;
 		
 		if($this->dataRating == 1) {
 			
@@ -1959,9 +1959,9 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			$o_rating	= new Rating($this->DB);
 			$this->mergeHeadCodeArrays($o_rating);
 			
-			$output		 .=	'<span class="editButtons-panel panel-left">' . "\r\n";
-			$output		 .=	$o_rating->getStarRater(parent::$type, $this->dataCat, $this->editID, false, false, false) . "\r\n";
-			$output		 .=	'</span>' . "\r\n";
+			$output		 .=	'<span class="editButtons-panel panel-left">' . PHP_EOL;
+			$output		 .=	$o_rating->getStarRater(parent::$type, $this->dataCat, $this->editID, false, false, false) . PHP_EOL;
+			$output		 .=	'</span>' . PHP_EOL;
 			
 			$output		 .=	$editButtonsPanel;
 
@@ -2002,10 +2002,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output		 .=	'</span>' . "\r\n" .
-						'<br class="clearfloat" />' . "\r\n" .
-						'</div>' . "\r\n" .
-						'</div>' . "\r\n";
+		$output		 .=	'</span>' . PHP_EOL .
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	
@@ -2023,8 +2023,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	{
 	
 		// Submit Buttons
-		$output		 =	'<ul>' . "\r\n" .
-						'<li class="submit change' . (!$fix ? ' buttonpanel-nofix' : '') . '">' . "\r\n";
+		$output		 =	'<ul>' . PHP_EOL .
+						'<li class="submit change' . (!$fix ? ' buttonpanel-nofix' : '') . '">' . PHP_EOL;
 		
 		// Button submit
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2050,10 +2050,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			$output		 .=	parent::getButton($btnDefs);
 		}
 		else
-			$output		 .=	'<input type="hidden" name="edit_news" value="{s_button:takechange}" />' . "\r\n";
+			$output		 .=	'<input type="hidden" name="edit_news" value="{s_button:takechange}" />' . PHP_EOL;
 
 
-		#$output		 .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+		#$output		 .=	parent::getTokenInput();
 		
 		
 		$output		 .=	'<br class="clearfloat" />' . PHP_EOL .
@@ -2074,10 +2074,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	protected function getDataListControlBar()
 	{
 
-		$output		 =	'<div class="controlBar">' . "\r\n" .
-						'<form action="' . $this->formAction . '" method="post">' . "\r\n" . 
-						'<div class="dataCatSelection left"><label>{s_label:'.parent::$type.'cat}</label>' . "\r\n" .
-						'<select name="list_cat" class="listCat" data-action="autosubmit">' . "\r\n";
+		$output		 =	'<div class="controlBar">' . PHP_EOL .
+						'<form action="' . $this->formAction . '" method="post">' . PHP_EOL . 
+						'<div class="dataCatSelection left"><label>{s_label:'.parent::$type.'cat}</label>' . PHP_EOL .
+						'<select name="list_cat" class="listCat" data-action="autosubmit">' . PHP_EOL;
 					
 		if(!$this->listData || count($this->dataEntriesArr) == 0)
 			$output		 .=	'<option value="" disabled="disabled" selected="selected">{s_option:choose}</option>';
@@ -2102,18 +2102,18 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				$output	 .=	' selected="selected"';
 			}
 				
-			$output		 .= '>' . $cat['category_' . $this->editLang] . ' (' . ($cat['id'] == NULL ? 0 : $cat['datasets']) . ')</option>' . "\r\n";
+			$output		 .= '>' . $cat['category_' . $this->editLang] . ' (' . ($cat['id'] == NULL ? 0 : $cat['datasets']) . ')</option>' . PHP_EOL;
 		
 		}
 		
-		$output		 .= 	'</select></div>' . "\r\n";
+		$output		 .= 	'</select></div>' . PHP_EOL;
 		
 		
 		// Sortierungsoptionen einblenden
 		if($this->listData) {
 		
-			$output		 .= 	'<div class="sortOption small left"><label>{s_label:sort}</label>' . "\r\n" .
-								'<select name="sort_param" class="listCat" data-action="autosubmit">' . "\r\n";
+			$output		 .= 	'<div class="sortOption small left"><label>{s_label:sort}</label>' . PHP_EOL .
+								'<select name="sort_param" class="listCat" data-action="autosubmit">' . PHP_EOL;
 			
 			$sortOptions = array("sortid" => "{s_option:sortid}",
 								 "dateasc" => "{s_option:dateasc}",
@@ -2133,40 +2133,40 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				if($key == $this->sortParam)
 					$output		 .=	' selected="selected"';
 					
-				$output		 .= '>' . $value . '</option>' . "\r\n";
+				$output		 .= '>' . $value . '</option>' . PHP_EOL;
 			
 			}
 								
-			$output		 .= 	'</select></div>' . "\r\n";
+			$output		 .= 	'</select></div>' . PHP_EOL;
 			
 			// Limit
-			$output		 .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . "\r\n";
+			$output		 .= 	'<div class="sortOption small left"><label>{s_label:limit}</label>' . PHP_EOL;
 		
 			$output		 .=		$this->getLimitSelect($this->limitOptions, $this->limit);
 			
-			$output		 .= 	'</div>' . "\r\n";
+			$output		 .= 	'</div>' . PHP_EOL;
 			
 			// Filter Optionen
 			$output		 .= 	'<div class="filterOptions cc-table-cell">' . PHP_EOL .
-								'<div class="filterOption left"><label for="all">{s_label:all}</label>' . "\r\n" .
-								'<label class="radioBox markBox">' . "\r\n" .
-								'<input type="radio" name="filter_pub" id="all" value="all"' . ($this->pubFilter == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-								'</label>' . "\r\n" .
-								'</div>' . "\r\n" .
-								'<div class="filterOption left"><label for="pub">{s_label:published}</label>' . "\r\n" .
-								'<label class="radioBox markBox">' . "\r\n" .
-								'<input type="radio" name="filter_pub" id="pub" value="pub"' . ($this->pubFilter == "pub" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-								'</label>' . "\r\n" .
-								'</div>' . "\r\n" .
-								'<div class="filterOption left"><label for="unpub">{s_label:unpublished}</label>' . "\r\n" .
-								'<label class="radioBox markBox">' . "\r\n" .
-								'<input type="radio" name="filter_pub" id="unpub" value="unpub"' . ($this->pubFilter == "unpub" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . "\r\n" .
-								'</label>' . "\r\n" .
-								'</div>' . "\r\n" .
-								'</div>' . "\r\n";
+								'<div class="filterOption left"><label for="all">{s_label:all}</label>' . PHP_EOL .
+								'<label class="radioBox markBox">' . PHP_EOL .
+								'<input type="radio" name="filter_pub" id="all" value="all"' . ($this->pubFilter == "all" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+								'</label>' . PHP_EOL .
+								'</div>' . PHP_EOL .
+								'<div class="filterOption left"><label for="pub">{s_label:published}</label>' . PHP_EOL .
+								'<label class="radioBox markBox">' . PHP_EOL .
+								'<input type="radio" name="filter_pub" id="pub" value="pub"' . ($this->pubFilter == "pub" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+								'</label>' . PHP_EOL .
+								'</div>' . PHP_EOL .
+								'<div class="filterOption left"><label for="unpub">{s_label:unpublished}</label>' . PHP_EOL .
+								'<label class="radioBox markBox">' . PHP_EOL .
+								'<input type="radio" name="filter_pub" id="unpub" value="unpub"' . ($this->pubFilter == "unpub" ? ' checked="checked"' : '') . ' data-action="filterlist" />' . PHP_EOL .
+								'</label>' . PHP_EOL .
+								'</div>' . PHP_EOL .
+								'</div>' . PHP_EOL;
 		
 			// Button panel
-			$output		.= 	'<span class="editButtons-panel">' . "\r\n";
+			$output		.= 	'<span class="editButtons-panel">' . PHP_EOL;
 			
 			// Button search
 			$btnDefs	= array(	"type"		=> "button",
@@ -2200,19 +2200,19 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				
 			$output .=	parent::getButton($btnDefs);
 		
-			$output		 .=	'</span>' . "\r\n";
+			$output		 .=	'</span>' . PHP_EOL;
 		}		
 		
-		$output		.=	'</form>' . "\r\n";
+		$output		.=	'</form>' . PHP_EOL;
 		
 		require_once PROJECT_DOC_ROOT."/inc/classes/Modules/class.Search.php";
 		
 		$o_search	 = new Search($this->DB, $this->o_lng, SEARCH_TYPE, array(parent::$type));
-		$output		.= '<div id="ccDataSearch" class="dataSearch popup-panel-right hide-init ui-tooltip ui-widget ui-corner-all ui-widget-content">' . "\r\n";
+		$output		.= '<div id="ccDataSearch" class="dataSearch popup-panel-right hide-init ui-tooltip ui-widget ui-corner-all ui-widget-content">' . PHP_EOL;
 		$output		.= $o_search->getSearchForm("small");
-		$output		.= '</div>' . "\r\n";
+		$output		.= '</div>' . PHP_EOL;
 
-		$output		.= '</div>' . "\r\n";
+		$output		.= '</div>' . PHP_EOL;
 
 	
 	
@@ -2233,18 +2233,18 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			}
 			
 			
-			$output .=	'<span class="showHiddenListEntries actionBox cc-hint">' . "\r\n";
+			$output .=	'<span class="showHiddenListEntries actionBox cc-hint">' . PHP_EOL;
 
-			$output .=	'<form action="'.$this->formAction.'" method="post">' . "\r\n";
+			$output .=	'<form action="'.$this->formAction.'" method="post">' . PHP_EOL;
 			
 			// Filter icon
-			$output .=	'<span class="listIcon">' . "\r\n" .
+			$output .=	'<span class="listIcon">' . PHP_EOL .
 						parent::getIcon("filter", "inline-icon") .
 						'</span>' . "\n";
 						
 			$output .=	'{s_label:filter}: ' . $filter;
 			
-			$output .=	'<span class="editButtons-panel">' . "\r\n";
+			$output .=	'<span class="editButtons-panel">' . PHP_EOL;
 			
 			// Button remove filter
 			$btnDefs	= array(	"type"		=> "submit",
@@ -2256,11 +2256,11 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				
 			$output .=	parent::getButton($btnDefs);
 						
-			$output .=	'<input type="hidden" value="all" name="filter_pub">' . "\r\n" .
-						'<input type="hidden" value="all" name="list_cat">' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</form>' . "\r\n" .
-						'</span>' . "\r\n";
+			$output .=	'<input type="hidden" value="all" name="filter_pub">' . PHP_EOL .
+						'<input type="hidden" value="all" name="list_cat">' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</form>' . PHP_EOL .
+						'</span>' . PHP_EOL;
 		}
 	
 		return $output;
@@ -2283,16 +2283,16 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		// Falls keine Daten vorhanden sind
 		if(count($this->dataEntriesArr) == 0) {
-			$output		 .=	'<p class="notice error">{s_notice:noentries}</p>' . "\r\n";
-			$output		 .=	'<ul><li class="submit back">' . "\r\n";
+			$output		 .=	'<p class="notice error">{s_notice:noentries}</p>' . PHP_EOL;
+			$output		 .=	'<ul><li class="submit back">' . PHP_EOL;
 		
 			if(is_numeric($this->listCat))			
 				$output		 .=	$this->getAddDataToCatButton($this->listCat, "button");
 			else
 				$output		 .=	$this->getAddDataButton("right");
 				
-			$output		 .=	'<br class="clearfloat" />' . "\r\n";
-			$output		 .=	'</li></ul>' . "\r\n";
+			$output		 .=	'<br class="clearfloat" />' . PHP_EOL;
+			$output		 .=	'</li></ul>' . PHP_EOL;
 			return $output;
 		}
 	
@@ -2305,7 +2305,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		// Daten auflisten
 		// Checkbox zur Mehrfachauswahl zum Löschen und Publizieren
-		$output		 .=	'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=' . parent::$type . '&entryid=array&list_cat=' . $this->listCat . '&action=" method="post">' . "\r\n";
+		$output		 .=	'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=' . parent::$type . '&entryid=array&list_cat=' . $this->listCat . '&action=" method="post">' . PHP_EOL;
 		
 	
 		// ActionBox
@@ -2313,7 +2313,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	
 	
 		// Dateneinträge
-		$output		 .=	'<div class="dataEntries">' . "\r\n";
+		$output		 .=	'<div class="dataEntries">' . PHP_EOL;
 		
 		
 		require_once(PROJECT_DOC_ROOT."/inc/classes/Modules/class.Rating.php"); // Klasse einbinden
@@ -2330,9 +2330,9 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		// Sortierungsoption durch sortableData-Objekt einbinden,
 		// falls nicht alle Kategorien aufgelistet werden und Sortierung = "eigene"
 		if($this->sortable)
-			$output		 .=	' id="sortableData" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sort&mod=' . parent::$type . '&cat=' . $this->listCat . '" class="dataList sortable-container' . (isset($GLOBALS['_COOKIE']['dataList']) && $GLOBALS['_COOKIE']['dataList'] == 2 ? ' collapsed' : '') . '">' . "\r\n";			
+			$output		 .=	' id="sortableData" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=sort&mod=' . parent::$type . '&cat=' . $this->listCat . '" class="dataList sortable-container' . (isset($GLOBALS['_COOKIE']['dataList']) && $GLOBALS['_COOKIE']['dataList'] == 2 ? ' collapsed' : '') . '">' . PHP_EOL;			
 		else
-			$output		 .=	'>' . "\r\n";
+			$output		 .=	'>' . PHP_EOL;
 		
 		
 		// Einträge auflisten
@@ -2376,17 +2376,17 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 					$objParams[1]	= isset($objectConLang[$this->lang]) ? $objectConLang[$this->lang] : '';
 				}
 				
-				$output		 .=	'<div id="dataid-' . $dataEntry['id'] . '" class="listEntry' . ($k % 2 ? '' : ' alternate') . '" data-id="' . $dataEntry['id'] . '" data-sortid="' . $dataEntry['sortid'] . '" data-sortidold="' . $dataEntry['sortid'] . '" data-menu="context" data-target="contextmenu-b-' . $k . ',contextmenu-a-' . $k . '">' . "\r\n" .
-								'<div class="listEntryHeader">' . "\r\n";
+				$output		 .=	'<div id="dataid-' . $dataEntry['id'] . '" class="listEntry' . ($k % 2 ? '' : ' alternate') . '" data-id="' . $dataEntry['id'] . '" data-sortid="' . $dataEntry['sortid'] . '" data-sortidold="' . $dataEntry['sortid'] . '" data-menu="context" data-target="contextmenu-b-' . $k . ',contextmenu-a-' . $k . '">' . PHP_EOL .
+								'<div class="listEntryHeader">' . PHP_EOL;
 						
 				$output		 .=	'<label class="markBox">' . 
 								'<input type="checkbox" name="entryNr[' . $k . ']" class="addVal" />' .
 								'<input type="hidden" name="entryID[' . $k . ']" value="' . $dataEntry['id'] . '" class="getVal" />' .
 								'</label>';
 								
-				$output		 .=	'<span class="editButtons-panel panel-left">' . "\r\n";
+				$output		 .=	'<span class="editButtons-panel panel-left">' . PHP_EOL;
 				
-				$output		 .=	'<span class="switchIcons" data-id="contextmenu-b-' . $k . '">' . "\r\n";
+				$output		 .=	'<span class="switchIcons" data-id="contextmenu-b-' . $k . '">' . PHP_EOL;
 		
 				// Button publish
 				$btnDefs	= array(	"type"		=> "button",
@@ -2410,8 +2410,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 					
 				$output .=	parent::getButton($btnDefs);
 				
-				$output		 .=	'</span>' . "\r\n" .
-								'</span>' . "\r\n";
+				$output		 .=	'</span>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 				
 				
 				
@@ -2426,23 +2426,23 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 
 				
 				// Author
-				$output		 .=	'<span class="dataAuthor" title="{s_option:author}">' . $this->getEditableAuthor($this->authorName, $this->authorID, $dataEntry['id']) . '</span>' . "\r\n";
+				$output		 .=	'<span class="dataAuthor" title="{s_option:author}">' . $this->getEditableAuthor($this->authorName, $this->authorID, $dataEntry['id']) . '</span>' . PHP_EOL;
 					
 				// EditButtons
-				$output		 .=	'<span class="dataCalls editButtons-panel panel-left" title="' . $dataEntry['calls'] . ' {s_title:calls}">' . "\r\n" .
+				$output		 .=	'<span class="dataCalls editButtons-panel panel-left" title="' . $dataEntry['calls'] . ' {s_title:calls}">' . PHP_EOL .
 								parent::getIcon("preview", "left-icon") .
-								'<span class="{t_class:badge}">&nbsp;' . $dataEntry['calls'] . '</span>' . "\r\n" .
-								'</span>' . "\r\n";
+								'<span class="{t_class:badge}">&nbsp;' . $dataEntry['calls'] . '</span>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 				
 				
-				$editButtonsPanel		= '<span class="editButtons-panel" data-id="contextmenu-a-' . $k . '">' . "\r\n";
+				$editButtonsPanel		= '<span class="editButtons-panel" data-id="contextmenu-a-' . $k . '">' . PHP_EOL;
 				
 
 				if($dataEntry['rating'] == 1) {
 				
-					$output		 .=	'<span class="editButtons-panel panel-left">' . "\r\n";
-					$output		 .=	$o_rating->getStarRater(parent::$type, $dataEntry['cat_id'], $dataEntry['id'], false, false, false) . "\r\n";
-					$output		 .=	'</span>' . "\r\n";
+					$output		 .=	'<span class="editButtons-panel panel-left">' . PHP_EOL;
+					$output		 .=	$o_rating->getStarRater(parent::$type, $dataEntry['cat_id'], $dataEntry['id'], false, false, false) . PHP_EOL;
+					$output		 .=	'</span>' . PHP_EOL;
 					
 					$output		 .=	$editButtonsPanel;
 			
@@ -2523,8 +2523,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 					
 				$output .=	parent::getButton($btnDefs);
 				
-				$output		 .=	'</span>' . "\r\n" .
-								'</div>' . "\r\n";
+				$output		 .=	'</span>' . PHP_EOL .
+								'</div>' . PHP_EOL;
 				
 				
 				// Icon attachment
@@ -2550,7 +2550,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				$pastDate		=	"";
 				
 				if(parent::$type == "planner" && Modules::getTimestamp($dataEntry['date_end'], 0, 0, 0, "-", $dataEntry['time_end']) < time())
-					$pastDate	= '<span class="past">{s_text:past}</span>' . "\r\n";
+					$pastDate	= '<span class="past">{s_text:past}</span>' . PHP_EOL;
 				
 				// listEntryHeader
 				$output		 .=	'<h4 class="cc-h4 dataListHeader toggle"><strong title="{s_label:' . parent::$type . 'header}">' . $dataEntry['header_' . $this->editLang] . '&nbsp;</strong>' .
@@ -2559,18 +2559,18 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 								$iconFeatured .
 								$iconAttach .
 								($this->listCat == "all" ? ' <i title="{s_label:' . parent::$type . 'cat}">('.$dataEntry['category_' . $this->editLang].')</i> | ' : '') .
-								'#' . $dataEntry['id'] . "\r\n" .
+								'#' . $dataEntry['id'] . PHP_EOL .
 								'</span>' .
-								'</h4>' . "\r\n";
+								'</h4>' . PHP_EOL;
 				
 				// listEntryContent
-				$output		 .=	'<div class="listEntryContent">' . "\r\n";
+				$output		 .=	'<div class="listEntryContent">' . PHP_EOL;
 
 				// list object				
-				$output		 .=	'<div class="attachment">' . "\r\n" .
-								'<p class="type">{s_label:object}-1</p>' . "\r\n";
+				$output		 .=	'<div class="attachment">' . PHP_EOL .
+								'<p class="type">{s_label:object}-1</p>' . PHP_EOL;
 				
-				$output		 .=	'<div class="listObject">' . "\r\n";
+				$output		 .=	'<div class="listObject">' . PHP_EOL;
 				
 				// Make object type icon list
 				$oKey	= 2;
@@ -2598,18 +2598,18 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 						$imgSrc		= $thumbSrc;
 					}
 					
-					$output		 .=	'<div class="previewBox img">' . "\r\n" .
-									'<img src="' . PROJECT_HTTP_ROOT . '/' . $thumbSrc . '" alt="' . (isset($objParams[1]) && $objParams[1] != "" ? htmlspecialchars($objParams[1]) : '') . '" title="' . (isset($objParams[1]) && $objParams[1] != "" ? htmlspecialchars($objParams[1]) : 'no image') . '" class="preview" data-img-src="' . PROJECT_HTTP_ROOT . '/' . $imgSrc . '?afd" />' . "\r\n" .
-									'</div>' . "\r\n";
+					$output		 .=	'<div class="previewBox img">' . PHP_EOL .
+									'<img src="' . PROJECT_HTTP_ROOT . '/' . $thumbSrc . '" alt="' . (isset($objParams[1]) && $objParams[1] != "" ? htmlspecialchars($objParams[1]) : '') . '" title="' . (isset($objParams[1]) && $objParams[1] != "" ? htmlspecialchars($objParams[1]) : 'no image') . '" class="preview" data-img-src="' . PROJECT_HTTP_ROOT . '/' . $imgSrc . '?afd" />' . PHP_EOL .
+									'</div>' . PHP_EOL;
 				}
 				
 				// Gallery
 				elseif($this->objectCon[$o]["type"] == "gallery")
-					$output		 .=	'<div class="listObjectDetails">{s_text:gallery}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . "\r\n";
+					$output		 .=	'<div class="listObjectDetails">{s_text:gallery}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . PHP_EOL;
 								
 				// Doc
 				elseif($this->objectCon[$o]["type"] == "doc")
-					$output		 .=	'<div class="listObjectDetails">{s_text:doc}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . "\r\n";
+					$output		 .=	'<div class="listObjectDetails">{s_text:doc}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . PHP_EOL;
 								
 				// Audio
 				elseif($this->objectCon[$o]["type"] == "audio") {
@@ -2621,28 +2621,28 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 					else
 						$aFolder	= CC_AUDIO_FOLDER . "/";
 					
-					$output		 .=	'<div class="listObjectDetails">{s_label:audio}<br />' . htmlspecialchars($objParams[0]) . '<br />' . "\r\n" .
+					$output		 .=	'<div class="listObjectDetails">{s_label:audio}<br />' . htmlspecialchars($objParams[0]) . '<br />' . PHP_EOL .
 									AudioContent::getHTML5Audio(PROJECT_HTTP_ROOT . '/' . $aFolder . '/' . $objParams[0], "audio-object-".$k) .
-									'</div>' . "\r\n";
+									'</div>' . PHP_EOL;
 				}
 				
 				// Video
 				elseif($this->objectCon[$o]["type"] == "video") {
-					$output		 .=	'<div class="listObjectDetails">{s_label:video}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . "\r\n";
+					$output		 .=	'<div class="listObjectDetails">{s_label:video}<br />' . htmlspecialchars($objParams[0]) . '<br />(' . htmlspecialchars($objParams[1]) . ')</div>' . PHP_EOL;
 				}
 				
 				// Html
 				elseif($this->objectCon[$o]["type"] == "html")
-					$output		 .=	'<div class="listObjectDetails"><br />&lt;HTML&gt;</div>' . "\r\n";
+					$output		 .=	'<div class="listObjectDetails"><br />&lt;HTML&gt;</div>' . PHP_EOL;
 				
-				$output		 .=	'</div>' . "\r\n";
+				$output		 .=	'</div>' . PHP_EOL;
 				$output		 .=	$oIcons;
-				$output		 .=	'</div>' . "\r\n";
+				$output		 .=	'</div>' . PHP_EOL;
 
 				
 				$output		 .=	'<div class="dataDetails">' . PHP_EOL .
-								'<p class="dataListTeaser">' . (isset($dataEntry['teaser_' . $this->editLang]) && $dataEntry['teaser_' . $this->editLang] != "" ? htmlspecialchars(substr(strip_tags($dataEntry['teaser_' . $this->editLang]), 0, 130)) . '...' : (parent::$type != "articles" ? htmlspecialchars(strip_tags(substr($dataEntry['text_' . $this->editLang], 0, 130))) : '')) . '</p>' . "\r\n" .
-								'<br class="clearfloat" />' . "\r\n";
+								'<p class="dataListTeaser">' . (isset($dataEntry['teaser_' . $this->editLang]) && $dataEntry['teaser_' . $this->editLang] != "" ? htmlspecialchars(substr(strip_tags($dataEntry['teaser_' . $this->editLang]), 0, 130)) . '...' : (parent::$type != "articles" ? htmlspecialchars(strip_tags(substr($dataEntry['text_' . $this->editLang], 0, 130))) : '')) . '</p>' . PHP_EOL .
+								'<br class="clearfloat" />' . PHP_EOL;
 				
 		
 				// Data Event
@@ -2659,10 +2659,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 				// Ggf. Tags einbinden
 				if($dataEntry['tags_' . $this->editLang] != "") {
 					$entryTags		= explode(",", $dataEntry['tags_' . $this->editLang]);
-					$output		 .=	'<div class="{t_class:panelfoot}">' . "\r\n";				
+					$output		 .=	'<div class="{t_class:panelfoot}">' . PHP_EOL;				
 					$output		 .=	parent::getIcon('tags');				
 					$output		 .=	'<span class="{t_class:label}">' . implode('</span> | <span class="{t_class:label}">', $entryTags) . '</span>' . PHP_EOL;
-					$output		 .=	'</div>' . "\r\n";				
+					$output		 .=	'</div>' . PHP_EOL;				
 
 				}
 				
@@ -2678,15 +2678,15 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 						
 					$comments = new Comments($this->DB, $this->o_lng, parent::$type, "", ADMIN_HTTP_ROOT . '?task=modules&type=' . parent::$type, $comGroup);
 		
-					$output		 .=	'<div class="commentBox {t_class:panelfoot}">' . "\r\n";				
+					$output		 .=	'<div class="commentBox {t_class:panelfoot}">' . PHP_EOL;				
 					$output		 .=	$comments->getComments(parent::$type, $dataEntry['id'], COMMENTS_MAX_ROWS);
-					$output		 .=	'</div>' . "\r\n";				
+					$output		 .=	'</div>' . PHP_EOL;				
 
 				}
 				
-				$output		 .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";				
-				$output		 .=	'</div></div>' . "\r\n";				
-				$output		 .=	'</div>' . "\r\n";				
+				$output		 .=	parent::getTokenInput();				
+				$output		 .=	'</div></div>' . PHP_EOL;				
+				$output		 .=	'</div>' . PHP_EOL;				
 				
 			} // Ende if user oder editorLog
 			
@@ -2695,15 +2695,15 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		} // Ende foreach
 		
 		
-		$output		 .=	'</ul>' . "\r\n";
-		$output		 .=	'</div></form>' . "\r\n";
+		$output		 .=	'</ul>' . PHP_EOL;
+		$output		 .=	'</div></form>' . PHP_EOL;
 			
 			
 		$output		 .=	$this->dataNav .			
-						'<ul><li class="submit back">' . "\r\n" .
+						'<ul><li class="submit back">' . PHP_EOL .
 						$this->getAddDataButton("right") .
-						'<br class="clearfloat" />' . "\r\n" .
-						'</li></ul>' . "\r\n";
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</li></ul>' . PHP_EOL;
 
 		return $output;
 	
@@ -2723,36 +2723,36 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	
 		// Section: Datensatz neu anlegen
 		// Neuer Datensatz
-		$output		  =		'<h3 class="cc-h3 switchToggle">{s_header:'.parent::$type.'con}</h3>' . "\r\n";
+		$output		  =		'<h3 class="cc-h3 switchToggle">{s_header:'.parent::$type.'con}</h3>' . PHP_EOL;
 		
-		$output		 .= 	'<div class="adminBox">' . "\r\n";
+		$output		 .= 	'<div class="adminBox">' . PHP_EOL;
 		
-		$output		 .= 	'<form action="' . $this->formAction . '" method="post" id="dialog-form-data" enctype="multipart/form-data" accept-charset="UTF-8">' . "\r\n" . 
-							'<ul class="framedItems">' . "\r\n";
+		$output		 .= 	'<form action="' . $this->formAction . '" method="post" id="dialog-form-data" enctype="multipart/form-data" accept-charset="UTF-8">' . PHP_EOL . 
+							'<ul class="framedItems">' . PHP_EOL;
 		
 		
 		// Header
-		$output		 .= 	'<li>' . "\r\n" .
-							'<label>{s_label:'.parent::$type.'header}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n";
+		$output		 .= 	'<li>' . PHP_EOL .
+							'<label>{s_label:'.parent::$type.'header}<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . PHP_EOL;
 						
 		if(isset($this->wrongInput['header']))
-			$output		 .=	'<p class="notice">' . $this->wrongInput['header'] . '</p>' . "\r\n";
+			$output		 .=	'<p class="notice">' . $this->wrongInput['header'] . '</p>' . PHP_EOL;
 							
-		$output		 .=		'<input type="text" name="news_header" value="' . (isset($this->dataHeader) && isset($GLOBALS['_POST']['mod_submit']) ? htmlspecialchars($this->dataHeader) : '') . '" maxlength="300" />' . "\r\n";
+		$output		 .=		'<input type="text" name="news_header" value="' . (isset($this->dataHeader) && isset($GLOBALS['_POST']['mod_submit']) ? htmlspecialchars($this->dataHeader) : '') . '" maxlength="300" />' . PHP_EOL;
 		
-		$output		 .=		'<br class="clearfloat" />' . "\r\n" .
-							'</li>' . "\r\n";
+		$output		 .=		'<br class="clearfloat" />' . PHP_EOL .
+							'</li>' . PHP_EOL;
 
 								
 		// Newskategorien Auswahl
-		$output		 .= 	'<li>' . "\r\n" .
-							'<div class="catSelection leftBox">' . "\r\n" .
-							'<label>{s_label:'.parent::$type.'cat}</label>' . "\r\n";
+		$output		 .= 	'<li>' . PHP_EOL .
+							'<div class="catSelection leftBox">' . PHP_EOL .
+							'<label>{s_label:'.parent::$type.'cat}</label>' . PHP_EOL;
 							
 		if(isset($this->wrongInput['cat']))
-			$output		 .=	'<p class="notice">' . $this->wrongInput['cat'] . '</p>' . "\r\n";
+			$output		 .=	'<p class="notice">' . $this->wrongInput['cat'] . '</p>' . PHP_EOL;
 							
-		$output		 .=	'<select name="news_cat">' . "\r\n";
+		$output		 .=	'<select name="news_cat">' . PHP_EOL;
 		$output		 .=	'<option disabled="disabled" selected="selected" value="">{s_option:choose}</option>';
 		
 		$c = 0;
@@ -2763,22 +2763,22 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			if(isset($GLOBALS['_POST']['news_cat']) && $cat['cat_id'] == $this->dataCat && isset($GLOBALS['_POST']['mod_submit']))
 				$output		 .= ' selected="selected"';
 				
-			$output		 .= '>' . (!empty($this->catLevelArray[$c]) ? $this->catLevelArray[$c] : '') . $cat['category_' . $this->editLang] . '</option>' . "\r\n";
+			$output		 .= '>' . (!empty($this->catLevelArray[$c]) ? $this->catLevelArray[$c] : '') . $cat['category_' . $this->editLang] . '</option>' . PHP_EOL;
 		
 			$c++;
 		}
 							
-		$output		 .= '</select>' . "\r\n";
-		$output		 .= '</div>' . "\r\n";
+		$output		 .= '</select>' . PHP_EOL;
+		$output		 .= '</div>' . PHP_EOL;
 
 		// Tags
-		$output		 .= '<div class="tagSelection rightBox">' . "\r\n" .
-						'<label>Tags<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
-						'<input type="text" name="news_tags" value="' . (isset($this->dataTags) && isset($GLOBALS['_POST']['mod_submit']) ? htmlspecialchars($this->dataTags) : '') . '" class="dataTags tags-' . parent::$type . '" data-type="' . parent::$type . '" autocomplete="off" maxlength="512" />' . "\r\n" . 
-						'</div>' . "\r\n";
+		$output		 .= '<div class="tagSelection rightBox">' . PHP_EOL .
+						'<label>Tags<span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . PHP_EOL .
+						'<input type="text" name="news_tags" value="' . (isset($this->dataTags) && isset($GLOBALS['_POST']['mod_submit']) ? htmlspecialchars($this->dataTags) : '') . '" class="dataTags tags-' . parent::$type . '" data-type="' . parent::$type . '" autocomplete="off" maxlength="512" />' . PHP_EOL . 
+						'</div>' . PHP_EOL;
 
-		$output		 .=	'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n";
+		$output		 .=	'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL;
 
 
 	
@@ -2792,35 +2792,35 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 
 
 	
-		$output		.=	'</ul>' . "\r\n";
+		$output		.=	'</ul>' . PHP_EOL;
 		
 		
 		// if short form type
 		if($formType === "short") {
 			$output		.=  self::getNewDataSubmit(false);
 			$output		.= '<input type="hidden" name="all_langs" value="on" />';
-			$output		.= '</form>' . "\r\n";
-			$output		.= '</div>' . "\r\n";
+			$output		.= '</form>' . PHP_EOL;
+			$output		.= '</div>' . PHP_EOL;
 			return $output;
 		}
 
 		// Data objects
-		$output		.=	'<h4 class="cc-h4 marginTop toggle">{s_option:' . parent::$type . '} - {s_label:objects}</h4>' . "\r\n";
+		$output		.=	'<h4 class="cc-h4 marginTop toggle">{s_option:' . parent::$type . '} - {s_label:objects}</h4>' . PHP_EOL;
 		
 		// Datenobjekte
-		$output		.=	'<ul class="dataObjectList subList framedItems" title="{s_title:addobjects}">' . "\r\n";
+		$output		.=	'<ul class="dataObjectList subList framedItems" title="{s_title:addobjects}">' . PHP_EOL;
 		
 		
 		// Daten-Objekte einbinden
 		$output		.=	empty($this->objectOutput) ? $this->getDataObject($this->objectCon[1], 1) : $this->objectOutput;
 		
 		
-		$output		.=	'</ul>' . "\r\n";
+		$output		.=	'</ul>' . PHP_EOL;
 
 		$output		.=	self::getNewDataSubmit();
 		
-		$output		.=	'<ul>' . "\r\n" .
-						'<li class="submit change">' . "\r\n";
+		$output		.=	'<ul>' . PHP_EOL .
+						'<li class="submit change">' . PHP_EOL;
 
 		// Button submit (new)
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2832,16 +2832,16 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$output		.=	parent::getButton($btnDefs);
 						
-		$output		.=	'</li>' . "\r\n" .
-						'<input type="hidden" name="mod_submit" value="{s_button:add'.parent::$type.'}" />' . "\r\n" .
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-						'</ul>' . "\r\n"; 
+		$output		.=	'</li>' . PHP_EOL .
+						'<input type="hidden" name="mod_submit" value="{s_button:add'.parent::$type.'}" />' . PHP_EOL .
+						parent::getTokenInput() .
+						'</ul>' . PHP_EOL; 
 	
-		$output		.= '</form>' . "\r\n";
+		$output		.= '</form>' . PHP_EOL;
 
 		$output		.=	self::getBackToListButtons("all");
 
-		$output	 	.= '</div>' . "\r\n"; // close AdminBox
+		$output	 	.= '</div>' . PHP_EOL; // close AdminBox
 		
 		return $output;
 	
@@ -2859,8 +2859,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	protected function getNewDataSubmit($fix = true)
 	{
 
-		$output		=	'<ul>' . "\r\n" .
-						'<li class="submit change' . (!$fix ? ' buttonpanel-nofix' : '') . '">' . "\r\n";
+		$output		=	'<ul>' . PHP_EOL .
+						'<li class="submit change' . (!$fix ? ' buttonpanel-nofix' : '') . '">' . PHP_EOL;
 
 		// Button submit (new)
 		$btnDefs	= array(	"type"		=> "submit",
@@ -2872,10 +2872,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$output		.=	parent::getButton($btnDefs);
 						
-		$output		.=	'</li>' . "\r\n" .
-						'<input type="hidden" name="mod_submit" value="{s_button:add'.parent::$type.'}" />' . "\r\n" .
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-						'</ul>' . "\r\n"; 
+		$output		.=	'</li>' . PHP_EOL .
+						'<input type="hidden" name="mod_submit" value="{s_button:add'.parent::$type.'}" />' . PHP_EOL .
+						parent::getTokenInput() .
+						'</ul>' . PHP_EOL; 
 			
 		return $output;
 	
@@ -3852,16 +3852,16 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 
 		// Meldungen ausgeben
 		if (!empty($this->notice)) {
-			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . "\r\n";
+			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . PHP_EOL;
 			$this->successChange = true;
 		}
 		
 		if(!empty($this->hint))
-			$this->adminContent .= '<p class="error">' . $this->hint . '</p>' . "\r\n";
+			$this->adminContent .= '<p class="error">' . $this->hint . '</p>' . PHP_EOL;
 		
 		
 		if(isset($this->wrongInput) && count($this->wrongInput) > 0)
-			$this->adminContent .= '<p class="error">{s_error:failchange}</p>' . "\r\n";
+			$this->adminContent .= '<p class="error">{s_error:failchange}</p>' . PHP_EOL;
 	
 	}
 	
@@ -3918,12 +3918,12 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	{
 
 		// Checkbox zur Mehrfachauswahl zum Löschen
-		$output =		'<div class="actionBox">' . "\r\n" .
-						'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=' . parent::$type . '&catid=array&list_cat=' . $this->listCat . '&action=" method="post" data-history="false">' . "\r\n" .
-						'<label class="markAll markBox" data-mark="#sortableDataCat">' . "\r\n" .
-						'<input type="checkbox" id="markAllLB-cat" data-select="all" /></label>' . "\r\n" .
-						'<label for="markAllLB-cat" class="markAllLB"> {s_label:mark}</label>' . "\r\n" .
-						'<span class="editButtons-panel">' . "\r\n";
+		$output =		'<div class="actionBox">' . PHP_EOL .
+						'<form action="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&mod=' . parent::$type . '&catid=array&list_cat=' . $this->listCat . '&action=" method="post" data-history="false">' . PHP_EOL .
+						'<label class="markAll markBox" data-mark="#sortableDataCat">' . PHP_EOL .
+						'<input type="checkbox" id="markAllLB-cat" data-select="all" /></label>' . PHP_EOL .
+						'<label for="markAllLB-cat" class="markAllLB"> {s_label:mark}</label>' . PHP_EOL .
+						'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button delete
 		$btnDefs	= array(	"type"		=> "submit",
@@ -3936,9 +3936,9 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			
 		$output .=		parent::getButton($btnDefs);
 						
-		$output .=		'</span>' . "\r\n" .
-						'</form>' . "\r\n" .
-						'</div>' . "\r\n";
+		$output .=		'</span>' . PHP_EOL .
+						'</form>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	
@@ -3953,10 +3953,10 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	protected function getDataActionBox()
 	{
 
-		$actionBox	=	'<div class="actionBox">' . "\r\n" .
-						'<label class="markAll markBox"><input type="checkbox" id="markAllLB" data-select="all" /></label>' . "\r\n" .
-						'<label for="markAllLB" class="markAllLB"> {s_label:mark}</label>' . "\r\n" .
-						'<span class="editButtons-panel">' . "\r\n";
+		$actionBox	=	'<div class="actionBox">' . PHP_EOL .
+						'<label class="markAll markBox"><input type="checkbox" id="markAllLB" data-select="all" /></label>' . PHP_EOL .
+						'<label for="markAllLB" class="markAllLB"> {s_label:mark}</label>' . PHP_EOL .
+						'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Falls Rating für eine Kategorie aktiviert ist, resVotes-Button in ActionBar anzeigen
 		foreach($this->dataEntriesArr as $dataGroup) {
@@ -4011,8 +4011,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$actionBox .=	parent::getButton($btnDefs);
 		
-		$actionBox .=	'</span>' . "\r\n" .
-						'</div>' . "\r\n";
+		$actionBox .=	'</span>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 	
 		return $actionBox;
 	
@@ -4045,7 +4045,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		$dateStr = Modules::getLocalDateString($date, $lang, true);
 		$dateFmt = Modules::getComboDateFormat($lang, true);
 		
-		$output	.=	'<a href="#" id="datadate-' . $id . '" class="editable editable-click editable-empty" data-type="combodate" data-template="DD MM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="DD.MM.YYYY hh:mm" data-pk="' . $id . '" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=setdate&mod=' . parent::$type . '&id=' . $id . '" title="{s_date:created}" data-title="{s_date:created}" data-value="' . $date . '" data-original-title="' . $dateStr . '">' . $dateStr . '</a>' . "\r\n";
+		$output	.=	'<a href="#" id="datadate-' . $id . '" class="editable editable-click editable-empty" data-type="combodate" data-template="DD MM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="DD.MM.YYYY hh:mm" data-pk="' . $id . '" data-url="' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=setdate&mod=' . parent::$type . '&id=' . $id . '" title="{s_date:created}" data-title="{s_date:created}" data-value="' . $date . '" data-original-title="' . $dateStr . '">' . $dateStr . '</a>' . PHP_EOL;
 		
 		$output	.= $this->getCombodateScriptTag('"#datadate-' . $id . '"');
 		
@@ -4059,7 +4059,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	public function getAddCatButton($align = "left")
 	{
 		
-		$output		=	'<form action="' . $this->formAction . '" method="post" data-ajaxform="true" data-getcontent="fullpage">' . "\r\n";
+		$output		=	'<form action="' . $this->formAction . '" method="post" data-ajaxform="true" data-getcontent="fullpage">' . PHP_EOL;
 		
 		// Button neue Kategorie anlegen
 		$btnDefs	= array(	"type"		=> "submit",
@@ -4070,8 +4070,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$output		.=	parent::getButton($btnDefs);
 		
-		$output		.=	'<input name="new_cat" type="hidden" />' . "\r\n" .
-						'</form>' . "\r\n";
+		$output		.=	'<input name="new_cat" type="hidden" />' . PHP_EOL .
+						'</form>' . PHP_EOL;
 			
 		return $output;
 	
@@ -4083,7 +4083,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	public function getAddDataButton($align = "left")
 	{
 	
-		$output		=	'<form action="' . $this->formAction . '" method="post" data-ajaxform="true" data-getcontent="fullpage">' . "\r\n";
+		$output		=	'<form action="' . $this->formAction . '" method="post" data-ajaxform="true" data-getcontent="fullpage">' . PHP_EOL;
 		
 		// Button neuen Artikel anlegen
 		$btnDefs	= array(	"type"		=> "submit",
@@ -4094,8 +4094,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$output		.=	parent::getButton($btnDefs);
 		
-		$output		.=	'<input name="add_new" type="hidden" />' . "\r\n" .
-						'</form>' . "\r\n";
+		$output		.=	'<input name="add_new" type="hidden" />' . PHP_EOL .
+						'</form>' . PHP_EOL;
 			
 		return $output;
 	
@@ -4134,11 +4134,11 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			$input 		=	parent::getButton($btnDefs);
 		}
 			
-		$output		=	'<form action="' . $this->formAction . '" method="post" accept-charset="UTF-8">' . "\r\n" .
+		$output		=	'<form action="' . $this->formAction . '" method="post" accept-charset="UTF-8">' . PHP_EOL .
 						$input .
-						'<input type="hidden" name="mod_submit" value="' . $catID . '" />' . "\r\n" .
-						'<input type="hidden" name="news_cat" value="' . $catID . '" />' . "\r\n" .
-						'</form>' . "\r\n";
+						'<input type="hidden" name="mod_submit" value="' . $catID . '" />' . PHP_EOL .
+						'<input type="hidden" name="news_cat" value="' . $catID . '" />' . PHP_EOL .
+						'</form>' . PHP_EOL;
 		
 		return $output;
 	
@@ -4150,8 +4150,8 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	public function getBackToListButtons($dataCat)
 	{
 	
-		$output		=	'<ul><li class="submit back">' . "\r\n" .
-						'<form action="' . $this->formAction . '" method="post">' . "\r\n"; // Formular mit Buttons zum Zurückgehen
+		$output		=	'<ul><li class="submit back">' . PHP_EOL .
+						'<form action="' . $this->formAction . '" method="post">' . PHP_EOL; // Formular mit Buttons zum Zurückgehen
 		
 		// Button back
 		$btnDefs	= array(	"type"		=> "submit",
@@ -4162,12 +4162,12 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 		
 		$output		.=	parent::getButton($btnDefs);
 		
-		$output		.=	'<input name="list_cat" type="hidden" value="'.$dataCat.'" />' . "\r\n" .
-						'</form>' . "\r\n" .
+		$output		.=	'<input name="list_cat" type="hidden" value="'.$dataCat.'" />' . PHP_EOL .
+						'</form>' . PHP_EOL .
 						$this->getAddDataButton("right") . 
-						'<br class="clearfloat" />' . "\r\n" .
-						'</li>' . "\r\n" .
-						'</ul>' . "\r\n";
+						'<br class="clearfloat" />' . PHP_EOL .
+						'</li>' . PHP_EOL .
+						'</ul>' . PHP_EOL;
 			
 		return $output;
 
@@ -4211,13 +4211,13 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	protected function getScriptTag()
 	{
 	
-		return	'<script>' . "\r\n" .
-				'head.ready("ccInitScript", function(){' . "\r\n" .
-				'$.addInitFunction({name: "$.myTinyMCEModules", params: ""});' . "\r\n" .
-				'$.addInitFunction({name: "$.sortableData", params: ""});' . "\r\n" .
-				'$.addInitFunction({name: "$.sortableObjects", params: ""});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+		return	'<script>' . PHP_EOL .
+				'head.ready("ccInitScript", function(){' . PHP_EOL .
+				'$.addInitFunction({name: "$.myTinyMCEModules", params: ""});' . PHP_EOL .
+				'$.addInitFunction({name: "$.sortableData", params: ""});' . PHP_EOL .
+				'$.addInitFunction({name: "$.sortableObjects", params: ""});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	
@@ -4226,21 +4226,21 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	public function getEditableScriptTag($tag)
 	{
 	
-		return	'<script>' . "\r\n" .
-				'head.ready(function(){' . "\r\n" .
-				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . "\r\n" .
-				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . "\r\n" .
-				'head.ready("xeditable", function(){' . "\r\n" .
-					'$("document").ready(function(){' . "\r\n" .
-						'$(' . $tag . ').editable({' . "\r\n" .
-						'source: "' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=getauthors&mod=' . parent::$type . '",' . "\r\n" .
-						'sourceCache: true,' . "\r\n" .
-						'showbuttons: false' . "\r\n" .
-						'});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+		return	'<script>' . PHP_EOL .
+				'head.ready(function(){' . PHP_EOL .
+				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . PHP_EOL .
+				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . PHP_EOL .
+				'head.ready("xeditable", function(){' . PHP_EOL .
+					'$("document").ready(function(){' . PHP_EOL .
+						'$(' . $tag . ').editable({' . PHP_EOL .
+						'source: "' . SYSTEM_HTTP_ROOT . '/access/editModules.php?page=admin&action=getauthors&mod=' . parent::$type . '",' . PHP_EOL .
+						'sourceCache: true,' . PHP_EOL .
+						'showbuttons: false' . PHP_EOL .
+						'});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	
@@ -4249,13 +4249,13 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	public function getCombodateScriptTag($tag)
 	{
 	
-		return	'<script>' . "\r\n" .
-				'head.ready(function(){' . "\r\n" .
-				'head.load({momentjs: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/moment/moment.min.js"});' . "\r\n" .
-				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . "\r\n" .
-				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . "\r\n" .
-				'head.ready("momentjs", function(){' . "\r\n" .
-				'head.ready("xeditable", function(){' . "\r\n" .
+		return	'<script>' . PHP_EOL .
+				'head.ready(function(){' . PHP_EOL .
+				'head.load({momentjs: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/moment/moment.min.js"});' . PHP_EOL .
+				'head.load({xeditablecss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/css/jqueryui-editable.css"});' . PHP_EOL .
+				'head.load({xeditable: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/x-editable/js/jqueryui-editable.min.js"});' . PHP_EOL .
+				'head.ready("momentjs", function(){' . PHP_EOL .
+				'head.ready("xeditable", function(){' . PHP_EOL .
 					'$("document").ready(function(){
 						var date	= new Date();
 						$(' . $tag . ').editable({
@@ -4265,12 +4265,12 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 								maxYear: date.getFullYear() +1,
 								minuteStep: 5
 							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 
@@ -4279,19 +4279,19 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 	protected function getFullcalendarScriptTag()
 	{
 	
-		$output	=	'<script>' . "\r\n" .
-					'head.ready("ui", function(){' . "\r\n" .
-					'head.load({datadialog: "' . SYSTEM_HTTP_ROOT . '/access/js/myFullCalendar.min.js"});' . "\r\n" .
-					'head.load({fullcalendarcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/fullcalendar.min.css"});' . "\r\n" .
-					'head.load({momentjs: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/lib/moment.min.js"});' . "\r\n" .
-					'});' . "\r\n" .
-					'head.ready("momentjs", function(){' . "\r\n" .
-					'head.load({fullcalendar: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/fullcalendar.min.js"});' . "\r\n" .
-					'head.ready("fullcalendar", function(){' . "\r\n";
+		$output	=	'<script>' . PHP_EOL .
+					'head.ready("ui", function(){' . PHP_EOL .
+					'head.load({datadialog: "' . SYSTEM_HTTP_ROOT . '/access/js/myFullCalendar.min.js"});' . PHP_EOL .
+					'head.load({fullcalendarcss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/fullcalendar.min.css"});' . PHP_EOL .
+					'head.load({momentjs: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/lib/moment.min.js"});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'head.ready("momentjs", function(){' . PHP_EOL .
+					'head.load({fullcalendar: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/fullcalendar.min.js"});' . PHP_EOL .
+					'head.ready("fullcalendar", function(){' . PHP_EOL;
 		if($this->adminLang != "en"){
-			$output	.=	'head.load({fullcalendarln' . $this->adminLang . ': "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/lang/' . $this->adminLang . '.js"});' . "\r\n";
+			$output	.=	'head.load({fullcalendarln' . $this->adminLang . ': "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/fullcalendar/lang/' . $this->adminLang . '.js"});' . PHP_EOL;
 		}
-		$output	.=	'head.ready("fullcalendar' . ($this->adminLang != "en" ? "ln" . $this->adminLang : "") . '", function(){' . "\r\n" .
+		$output	.=	'head.ready("fullcalendar' . ($this->adminLang != "en" ? "ln" . $this->adminLang : "") . '", function(){' . PHP_EOL .
 						'$("document").ready(function(){
 							cc.dataType	= "' . parent::$type . '";
 							cc.dataEvent = {"catid":"","cat":""};
@@ -4388,7 +4388,7 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 									cc.changeDataFcEvent(event, delta, revertFunc);
 								},
 								eventLimit: true, // allow "more" link when too many events
-								events: [' . "\r\n";
+								events: [' . PHP_EOL;
 		
 		// Einträge auflisten
 		foreach($this->dataEntriesArr as $dataEntry) {
@@ -4438,14 +4438,14 @@ class Admin_ModulesData extends Admin_Modules implements AdminTask
 			}
 		}
 			
-		$output	.=			']' . "\r\n";
+		$output	.=			']' . PHP_EOL;
 		
 		$output	.=			'})
-						});' . "\r\n" .
-					'});' . "\r\n" .
-					'});' . "\r\n" .
-					'});' . "\r\n" .
-					'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'</script>' . PHP_EOL;
 	
 		return $output;
 	

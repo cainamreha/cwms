@@ -38,6 +38,10 @@ head.ready('ccInitScript', function(){
 
 $(document).ready(function(){
 
+	// dom loaded
+	$('body').addClass('cc-domloaded');
+	cc.domIsLoaded	= true;
+	
 	// Buttonbeschriftung für jConfirm
 	$.alerts.okButton = 'Ok';
 	$.alerts.cancelButton = ln.cancel;
@@ -2818,7 +2822,7 @@ $(document).ready(function(){
 			var extraM		= $('#newsl_extraemails').val();
 			subExt		= subExt != "" ? " (" + subExt + ")" : "";
 			extraM		= extraM != "" ? "\r\n\r\n" + $('label[for="newsl_extraemails"]').text() + ":\r\n\r\n<strong>" + extraM + "</strong>" : "";
-			confmes		+= "<strong>" + $('#newsl_group').children('option:selected').map(function(){ return $(this).val() }).get().join(", ") + "</strong>";
+			confmes		+= "<strong>" + $('#newsl_group').children('option:selected').map(function(){ return $(this).val().replace(/[<>]/g, "") }).get().join(", ") + "</strong>";
 			confmes		+= subExt;
 			confmes		+= extraM;
 			
@@ -3134,7 +3138,7 @@ $(document).ready(function(){
 
 // Submit button als hidden input an Formular anhängen
 (function($) {
-	$('body').on("mouseup", 'button[type="submit"], input[type="submit"]', function(e) {
+	$('body').on("mouseup", 'button[type="submit"]:not(#send_newsl), input[type="submit"]:not(#send_newsl)', function(e) {
 
 		e.preventDefault();
 		
@@ -3435,7 +3439,7 @@ $(document).ready(function(){
 		}
 		
 		// Falls eine komplette Seite Inhalt der Ajaxantwort ist
-		if(ajax.match('<!-- Start #container -->') != null){	
+		if(ajax.match('<!-- begin #container -->') != null){	
 		
 			$.replaceAdminFullContent(ajax, container);
 			return false;
@@ -3520,8 +3524,8 @@ $(document).ready(function(){
 		});
 		
 		// Content
-		var domRgt		= ajax.split('<!-- Start #container -->')[1];
-		var domLft		= domRgt.split('<!-- Ende #container -->')[0];
+		var domRgt		= ajax.split('<!-- begin #container -->')[1];
+		var domLft		= domRgt.split('<!-- end #container -->')[0];
 		newDom			= $(domLft);
 		var headTags	= {};
 

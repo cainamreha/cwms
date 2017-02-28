@@ -36,9 +36,9 @@ class Admin_Tpl extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:admintpl}' . "\r\n" .
-									'{s_text:admintpl1}' . "\r\n" .
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:admintpl}' . PHP_EOL .
+									'{s_text:admintpl1}' . PHP_EOL .
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -365,10 +365,10 @@ class Admin_Tpl extends Admin implements AdminTask
 			} // Ende if not empty
 			
 			if(count($error) > 0)
-				$notice2 = '<p class="error">{s_error:file}</p><ul id="errorMes">' . implode("", $error) . '</ul>' . "\r\n";
+				$notice2 = '<p class="error">{s_error:file}</p><ul id="errorMes">' . implode("", $error) . '</ul>' . PHP_EOL;
 			
 			elseif($success == true && $emptyArray == false)
-				$notice2 = '<p class="notice success">{s_notice:fileok}</p>' . "\r\n";
+				$notice2 = '<p class="notice success">{s_notice:fileok}</p>' . PHP_EOL;
 				
 		}
 
@@ -474,7 +474,7 @@ class Admin_Tpl extends Admin implements AdminTask
 		$optionsCopyTheme	= $this->listThemes($currTheme, "new");
 		$optionsDelTheme	= $this->listThemes($currTheme, "del");
 
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL;
 
 
 		// Meldungen
@@ -487,27 +487,27 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 
 		if(isset($notice))
-			$this->adminContent .='<p class="notice success">' . $notice . '</p>' . "\r\n";
+			$this->adminContent .='<p class="notice success">' . $notice . '</p>' . PHP_EOL;
 
 		if(isset($notice2))
 			$this->adminContent .= $notice2;
 
-		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:admintpl}</h2>' . "\r\n" .
-								'<div class="controlBar">' . "\r\n" .
-								'<div id="themeSelectionBox" class="choose imagePicker">' . "\r\n" .
-								'<form action="" id="chooseTpl" method="post">' . "\r\n" .
-								'<div class="leftBox">' . "\r\n" .
+		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:admintpl}</h2>' . PHP_EOL .
+								'<div class="controlBar">' . PHP_EOL .
+								'<div id="themeSelectionBox" class="choose imagePicker">' . PHP_EOL .
+								'<form action="" id="chooseTpl" method="post">' . PHP_EOL .
+								'<div class="leftBox">' . PHP_EOL .
 								'<div class="iconBox">' .
 								parent::getIcon("theme") .
-								'</div>' . "\r\n" . 
-								'<label class="label" title="{s_title:choosetheme}">{s_label:activetheme} <span>&#9658;</span> <strong>' . $currTheme . '</strong> </label>' . "\r\n" .
-								'</div>' . "\r\n" .
-								'<div class="selTheme rightBox">' . "\r\n" .
-								'<span class="singleInput-panel">' . "\r\n";
+								'</div>' . PHP_EOL . 
+								'<label class="label" title="{s_title:choosetheme}">{s_label:activetheme} <span>&#9658;</span> <strong>' . $currTheme . '</strong> </label>' . PHP_EOL .
+								'</div>' . PHP_EOL .
+								'<div class="selTheme rightBox">' . PHP_EOL .
+								'<span class="singleInput-panel">' . PHP_EOL;
 		
-		$this->adminContent .=	'<select name="currTheme" id="currTheme" class="select themes input-button-right" onfocus="this.blur();" onclick="this.blur();" data-toggle="image_picker_selector">' . "\r\n" . 
-								$optionsSelTheme . "\r\n" .  
-								'</select>' . "\r\n";
+		$this->adminContent .=	'<select name="currTheme" id="currTheme" class="select themes input-button-right" onfocus="this.blur();" onclick="this.blur();" data-toggle="image_picker_selector">' . PHP_EOL . 
+								$optionsSelTheme . PHP_EOL .  
+								'</select>' . PHP_EOL;
 		
 		// Button toggle themes
 		$btnDefs	= array(	"type"		=> "button",
@@ -520,50 +520,50 @@ class Admin_Tpl extends Admin implements AdminTask
 								"icon"		=> 'theme'
 							);
 		
-		$this->adminContent .=	'<span class="right">' . "\r\n";
+		$this->adminContent .=	'<span class="right">' . PHP_EOL;
 		
 		$this->adminContent .=	parent::getButton($btnDefs, "right");
 		
-		$this->adminContent .=	'</span>' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
 		
-		$this->adminContent .=	'</span>' . "\r\n" .
+		$this->adminContent .=	'</span>' . PHP_EOL .
 								$this->getScriptTag() .
-								'</div>' . "\r\n";
+								'</div>' . PHP_EOL;
 		
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL;
 
 		if(isset($editId) && $editId != "")
-			$this->adminContent .=	'<input type="hidden" name="edit_id" value="' . $editId . '" />' . "\r\n";
+			$this->adminContent .=	'<input type="hidden" name="edit_id" value="' . $editId . '" />' . PHP_EOL;
 
 		if(isset($GLOBALS['_POST']['edit_area']) && $GLOBALS['_POST']['edit_area'] != "") {
-			$this->adminContent .=	'<input type="hidden" name="edit_area" value="' . htmlspecialchars($GLOBALS['_POST']['edit_area']) . '" />' . "\r\n" .
-									'<input type="hidden" name="edit_tpl" value="' . $editId . '" />' . "\r\n";
+			$this->adminContent .=	'<input type="hidden" name="edit_area" value="' . htmlspecialchars($GLOBALS['_POST']['edit_area']) . '" />' . PHP_EOL .
+									'<input type="hidden" name="edit_tpl" value="' . $editId . '" />' . PHP_EOL;
 		}
 
 		elseif(isset($GLOBALS['_GET']['edit_area']) && $GLOBALS['_GET']['edit_area'] != "") {
-			$this->adminContent .=	'<input type="hidden" name="edit_area" value="' . $GLOBALS['_GET']['edit_area'] . '" />' . "\r\n" .
-									'<input type="hidden" name="edit_tpl" value="' . $editId . '" />' . "\r\n";
+			$this->adminContent .=	'<input type="hidden" name="edit_area" value="' . $GLOBALS['_GET']['edit_area'] . '" />' . PHP_EOL .
+									'<input type="hidden" name="edit_tpl" value="' . $editId . '" />' . PHP_EOL;
 		}
 
-		$this->adminContent .= 	'</form>' . "\r\n" .
-								'</div></div>' . "\r\n";
+		$this->adminContent .= 	'</form>' . PHP_EOL .
+								'</div></div>' . PHP_EOL;
 
 		// Template auswählen/bearbeiten
-		$this->adminContent .=	'<h3 class="cc-h3 switchToggle">{s_header:tpledit}</h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<ul class="framedItems">' . "\r\n" .
-								'<li>' . "\r\n" .
-								'<span class="rightBox">' . "\r\n" .
-								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . "\r\n" . 
-								'<label for="newTpl">{s_label:newtpl}</label>' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 switchToggle">{s_header:tpledit}</h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<ul class="framedItems">' . PHP_EOL .
+								'<li>' . PHP_EOL .
+								'<span class="rightBox">' . PHP_EOL .
+								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . PHP_EOL . 
+								'<label for="newTpl">{s_label:newtpl}</label>' . PHP_EOL;
 
 		if(isset($errorName))
-			$this->adminContent .='<p class="notice">' . $errorName . '</p>' . "\r\n";
+			$this->adminContent .='<p class="notice">' . $errorName . '</p>' . PHP_EOL;
 			
-		$this->adminContent .=	'<span class="singleInput-panel">' . "\r\n";
+		$this->adminContent .=	'<span class="singleInput-panel">' . PHP_EOL;
 
-		$this->adminContent .=	'<input type="text" id="newTpl" class="input-button-right" name="newTpl" value="' . (!$this->newTplAdded ? htmlspecialchars($newTpl) : '') . '" maxlength="60" />' . "\r\n" . 
-								'<span class="editButtons-panel">' . "\r\n";
+		$this->adminContent .=	'<input type="text" id="newTpl" class="input-button-right" name="newTpl" value="' . (!$this->newTplAdded ? htmlspecialchars($newTpl) : '') . '" maxlength="60" />' . PHP_EOL . 
+								'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button new
 		$btnDefs	= array(	"type"		=> "submit",
@@ -577,32 +577,32 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	parent::getButton($btnDefs);
 								
-		$this->adminContent .=	'</span>' . "\r\n" .
-								'</span>' . "\r\n" .
-								'<input type="hidden" name="new_tpl" value="' . htmlspecialchars($newTpl) . '" />' . "\r\n" . 
-								'<input type="hidden" name="copy_tpl" value="' . htmlspecialchars($currTpl) . '" />' . "\r\n" . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-								'</form>' . "\r\n" .
-								'</span>' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL .
+								'</span>' . PHP_EOL .
+								'<input type="hidden" name="new_tpl" value="' . htmlspecialchars($newTpl) . '" />' . PHP_EOL . 
+								'<input type="hidden" name="copy_tpl" value="' . htmlspecialchars($currTpl) . '" />' . PHP_EOL . 
+								parent::getTokenInput() . 
+								'</form>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 							
 		// Templates auflisten
 		// Existing Tempates
 		$this->existTemplates	= parent::readTemplateDir();
 			
-		$this->adminContent .=	'<span class="leftBox">' . "\r\n" .
-								'<label class="tplSelect-label">Template</label>' . "\r\n" . 
-								'<span class="singleInput-panel panel-small">' . "\r\n" .
-								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . "\r\n" .
+		$this->adminContent .=	'<span class="leftBox">' . PHP_EOL .
+								'<label class="tplSelect-label">Template</label>' . PHP_EOL . 
+								'<span class="singleInput-panel panel-small">' . PHP_EOL .
+								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . PHP_EOL .
 								parent::listTemplates($currTpl, $this->defaultTemplates, $this->existTemplates, "select", true) .  // Select zum Zuordnen des Templates
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-								'</form>' . "\r\n";
+								parent::getTokenInput() . 
+								'</form>' . PHP_EOL;
 			
 			
 		// Falls kein geschützes Template
 		if(!$this->isProtectedTpl($currTpl)) {
 			
-			$this->adminContent .=	'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . "\r\n";
-			$this->adminContent .=	'<span class="editButtons-panel">' . "\r\n";
+			$this->adminContent .=	'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . PHP_EOL;
+			$this->adminContent .=	'<span class="editButtons-panel">' . PHP_EOL;
 			
 			// Button delete
 			$btnDefs	= array(	"type"		=> "submit",
@@ -615,28 +615,28 @@ class Admin_Tpl extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButton($btnDefs);
 		
-			$this->adminContent .=	'<input type="hidden" name="del_tpl" id="del_tpl" />' . "\r\n" . 
-									'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-									'</span>' . "\r\n" .
-									'</form>' . "\r\n";
+			$this->adminContent .=	'<input type="hidden" name="del_tpl" id="del_tpl" />' . PHP_EOL . 
+									parent::getTokenInput() . 
+									'</span>' . PHP_EOL .
+									'</form>' . PHP_EOL;
 		}
 		
-		$this->adminContent .=	'</span>' . "\r\n";
-		$this->adminContent .=	'</span>' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL;
+		$this->adminContent .=	'</span>' . PHP_EOL;
 		
 		// tplSelectionBox
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" . 
-								'<div id="tplSelectionBox" class="choose imagePicker">' . "\r\n" .
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL . 
+								'<div id="tplSelectionBox" class="choose imagePicker">' . PHP_EOL .
+								'</div>' . PHP_EOL;
 							
-		$this->adminContent .=	'<br class="clearfloat" /></li>' . "\r\n" . 
-								'</ul>' . "\r\n" .
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" /></li>' . PHP_EOL . 
+								'</ul>' . PHP_EOL .
+								'</div>' . PHP_EOL;
 							
 		// Templateinhalte					
-		$this->adminContent .=	'<h3 class="cc-h3 switchToggle' . (isset($errorName) || isset($errorThemeName) ? ' hideNext' : '') . '">{s_header:tplcon} - <span class="right">' . $currTpl . '</span></h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<ul class="editList template">' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 switchToggle' . (isset($errorName) || isset($errorThemeName) ? ' hideNext' : '') . '">{s_header:tplcon} - <span class="right">' . $currTpl . '</span></h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<ul class="editList template">' . PHP_EOL;
 
 		
 		$tc = 0;
@@ -654,7 +654,7 @@ class Admin_Tpl extends Admin implements AdminTask
 			// Falls Änderungen bestehen, die übernommen werden können, Buttons einbinden
 			if(array_key_exists($conTab, $this->diffConTables) && in_array($currTpl, $this->diffConTables[$conTab]) ) {
 			
-				$changesButtons =	'<span class="changesButtons-panel editButtons-panel panel-inline panel-right" data-id="contextmenu-b' . $tc . '">' . "\r\n";
+				$changesButtons =	'<span class="changesButtons-panel editButtons-panel panel-inline panel-right" data-id="contextmenu-b' . $tc . '">' . PHP_EOL;
 				
 				// Button apply
 				$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=changes&affect=1&edit_tpl=' . $currTpl . '&edit_area=' . $conTab . '&edit=0',
@@ -678,20 +678,20 @@ class Admin_Tpl extends Admin implements AdminTask
 			
 				$changesButtons	.=	parent::getButtonLink($btnDefs);
 				
-				$changesButtons .=	'</span>' . "\r\n";
+				$changesButtons .=	'</span>' . PHP_EOL;
 			
 			}
 			
-			$this->adminContent .=	'<li class="listItem' . (!$areaPHexists ? ' inactive' : '') . '" data-menu="context" data-target="contextmenu-a' . $tc . ',contextmenu-b' . $tc . '">' . "\r\n" .
-									'<span class="listIcon">' . "\r\n" .
+			$this->adminContent .=	'<li class="listItem' . (!$areaPHexists ? ' inactive' : '') . '" data-menu="context" data-target="contextmenu-a' . $tc . ',contextmenu-b' . $tc . '">' . PHP_EOL .
+									'<span class="listIcon">' . PHP_EOL .
 									parent::getIcon('area-' . $tplArea) .
-									'</span>' . "\r\n" .
-									'<span class="pageTitle">{s_conareas:' . $conTab . '}</span>' . "\r\n" .
+									'</span>' . PHP_EOL .
+									'<span class="pageTitle">{s_conareas:' . $conTab . '}</span>' . PHP_EOL .
 									'<span class="tplArea-label pageID"> {#' . $areaPH . '}' .
 									($areaPHexists === false ? $noAreaPH : '') .
-									'</span>' . "\r\n" .
+									'</span>' . PHP_EOL .
 									$changesButtons .
-									'<span class="editButtons-panel" data-id="contextmenu-a' . $tc . '">' . "\r\n";
+									'<span class="editButtons-panel" data-id="contextmenu-a' . $tc . '">' . PHP_EOL;
 			
 			// Button edit
 			$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=tpl&type=edit&edit_id=' . $currTpl . '&area=contents_' . $tplArea,
@@ -704,25 +704,25 @@ class Admin_Tpl extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButtonLink($btnDefs);
 									
-			$this->adminContent .=	'</span>' . "\r\n" .
-									'</li>' . "\r\n";
+			$this->adminContent .=	'</span>' . PHP_EOL .
+									'</li>' . PHP_EOL;
 			
 			$tc++;
 		}					
 
-		$this->adminContent .=	'</ul>' . "\r\n";
+		$this->adminContent .=	'</ul>' . PHP_EOL;
 		
 
 		// Contextmenü-Script
 		$this->adminContent .=	$this->getContextMenuScript();
 
 
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 		
 		
 		// Buttons
-		$buttons 	=	'<ul>' . "\r\n" . 
-						'<li class="submit change buttonPanel buttonpanel-nofix">' . "\r\n";
+		$buttons 	=	'<ul>' . PHP_EOL . 
+						'<li class="submit change buttonPanel buttonpanel-nofix">' . PHP_EOL;
 		
 		// Button reset
 		$btnDefs	= array(	"type"		=> "reset",
@@ -763,13 +763,13 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$buttons	.=	parent::getButton($btnDefs);
 			
-		$buttons	.=	'<input name="edit_tpl" type="hidden" value="' . $currTpl . '" />' . "\r\n" . 
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-						'</li></ul>' . "\r\n";
+		$buttons	.=	'<input name="edit_tpl" type="hidden" value="' . $currTpl . '" />' . PHP_EOL . 
+						parent::getTokenInput() . 
+						'</li></ul>' . PHP_EOL;
 
 		// Filemanager
-		$fileManager	=	'<ul class="folderList">' . "\r\n" .
-							'<li class="manageFiles buttonPanel">' . "\r\n" .
+		$fileManager	=	'<ul class="folderList">' . PHP_EOL .
+							'<li class="manageFiles buttonPanel">' . PHP_EOL .
 							parent::getIcon('info', 'tooltipHint right', 'title="{s_hint:filemanager}<br />{s_header:admintpl}"');
 							
 		// Filemanager MediaList-Button
@@ -782,20 +782,20 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$fileManager .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$fileManager .=		'</li>' . "\r\n" .
-							'</ul>' . "\r\n";
+		$fileManager .=		'</li>' . PHP_EOL .
+							'</ul>' . PHP_EOL;
 
 		// Template-HTML
-		$this->adminContent .=	'<h3 class="cc-h3 codeMirrorToggle switchToggle hideNext">{s_header:tpl}</h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<form name="changeTpl" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . "\r\n" . 
-								'<ul class="adminBox">' . "\r\n" .
-								'<li>' . "\r\n" .
-								'<h4 class="cc-h4 codeMirrorEditor-targetfile">' . THEME . '/' . $currTpl . '</h4>' . "\r\n" .
-								'<span class="codeMirrorEditor">' . "\r\n" .
-								'<span class="codeMirrorEditor-content">' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 codeMirrorToggle switchToggle hideNext">{s_header:tpl}</h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<form name="changeTpl" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . PHP_EOL . 
+								'<ul class="adminBox">' . PHP_EOL .
+								'<li>' . PHP_EOL .
+								'<h4 class="cc-h4 codeMirrorEditor-targetfile">' . THEME . '/' . $currTpl . '</h4>' . PHP_EOL .
+								'<span class="codeMirrorEditor">' . PHP_EOL .
+								'<span class="codeMirrorEditor-content">' . PHP_EOL;
 							
-		$this->adminContent .=	'<div class="codeMirrorEditor-targetfile boxHeader ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">' . THEME . '/' . $currTpl . "\r\n";
+		$this->adminContent .=	'<div class="codeMirrorEditor-targetfile boxHeader ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">' . THEME . '/' . $currTpl . PHP_EOL;
 		
 		// Close Button
 		$mediaListButtonDef		= array(	"type"		=> "button",
@@ -808,11 +808,11 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	parent::getButton($mediaListButtonDef);
 								
-		$this->adminContent .=	'</div>' . "\r\n" .
-								'<textarea name="edit_tplHtml" id="editTplCode" class="template customList noTinyMCE" rows="20">' . htmlentities(str_replace("{","{#",$tplHtml)) . '</textarea>' . "\r\n" .
-								'</span>' . "\r\n" . 
-								'<ul>' . "\r\n" .
-								'<li class="toggleFullScreen-panel buttonPanel buttonPanel-last">' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL .
+								'<textarea name="edit_tplHtml" id="editTplCode" class="template customList noTinyMCE" rows="20">' . htmlentities(str_replace("{","{#",$tplHtml)) . '</textarea>' . PHP_EOL .
+								'</span>' . PHP_EOL . 
+								'<ul>' . PHP_EOL .
+								'<li class="toggleFullScreen-panel buttonPanel buttonPanel-last">' . PHP_EOL;
 			
 			// Button toggleFullScreen
 			$btnDefs	= array(	"type"		=> "button",
@@ -823,18 +823,18 @@ class Admin_Tpl extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButton($btnDefs);
 	
-			$this->adminContent .=	'<br class="clearfloat" /></li></ul>' . "\r\n" . 
+			$this->adminContent .=	'<br class="clearfloat" /></li></ul>' . PHP_EOL . 
 									$buttons .
-									#'<div class="code hide" onclick="if(this.style.width==\'1000px\') this.style.width=\'auto\'; else this.style.width=\'1000px\'; this.style.position=\'relative\'">' . $tplHtmlOld . '</div>' . "\r\n" . 
-									'<br class="clearfloat" />' . "\r\n" .
-									'</span>' . "\r\n" .
-									'</li>' . "\r\n" .
-									'</ul>' . "\r\n" .
-									'</form>' . "\r\n";
+									#'<div class="code hide" onclick="if(this.style.width==\'1000px\') this.style.width=\'auto\'; else this.style.width=\'1000px\'; this.style.position=\'relative\'">' . $tplHtmlOld . '</div>' . PHP_EOL . 
+									'<br class="clearfloat" />' . PHP_EOL .
+									'</span>' . PHP_EOL .
+									'</li>' . PHP_EOL .
+									'</ul>' . PHP_EOL .
+									'</form>' . PHP_EOL;
 		
 		// Filemanager
-		$this->adminContent .=	'<ul class="framedItems">' . "\r\n" .
-								'<li class="manageFiles buttonPanel buttonpanel-nofix">' . "\r\n" .
+		$this->adminContent .=	'<ul class="framedItems">' . PHP_EOL .
+								'<li class="manageFiles buttonPanel buttonpanel-nofix">' . PHP_EOL .
 								parent::getIcon('info', 'tooltipHint right', 'title="{s_hint:filemanager}<br />{s_header:admintpl}"');
 							
 		// Filemanager MediaList-Button
@@ -847,29 +847,29 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$this->adminContent .=	'</li>' . "\r\n" .
-								'</ul>' . "\r\n";
+		$this->adminContent .=	'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL;
 		
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 		
 		// Themes kopieren/löschen
-		$this->adminContent .=	'<h3 class="cc-h3 switchToggle' . (isset($errorThemeName) ? '' : ' hideNext') . '">{s_header:themes}</h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . "\r\n" .
-								'<ul class="framedItems">' . "\r\n" .
-								'<li>' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 switchToggle' . (isset($errorThemeName) ? '' : ' hideNext') . '">{s_header:themes}</h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . PHP_EOL .
+								'<ul class="framedItems">' . PHP_EOL .
+								'<li>' . PHP_EOL;
 								
-		$this->adminContent .=	'<span class="leftBox">' . "\r\n" .
-								'<label>{s_label:newtheme}</label>' . "\r\n";
+		$this->adminContent .=	'<span class="leftBox">' . PHP_EOL .
+								'<label>{s_label:newtheme}</label>' . PHP_EOL;
 								
 								
 		if(isset($errorThemeName))
-			$this->adminContent .='<p class="notice">' . $errorThemeName . '</p>' . "\r\n";
+			$this->adminContent .='<p class="notice">' . $errorThemeName . '</p>' . PHP_EOL;
 
-		$this->adminContent .=	'<span class="singleInput-panel panel-small">' . "\r\n" .
-								'<input type="text" class="input-button-right" name="newTheme" value="' . htmlspecialchars($newTheme) . '" maxlength="64" />' . "\r\n" . 
-								'<span class="editButtons-panel">' . "\r\n";
+		$this->adminContent .=	'<span class="singleInput-panel panel-small">' . PHP_EOL .
+								'<input type="text" class="input-button-right" name="newTheme" value="' . htmlspecialchars($newTheme) . '" maxlength="64" />' . PHP_EOL . 
+								'<span class="editButtons-panel">' . PHP_EOL;
 
 		// Button new
 		$btnDefs	= array(	"type"		=> "submit",
@@ -883,46 +883,46 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	parent::getButton($btnDefs);
 								
-		$this->adminContent .=	'</span>' . "\r\n" .
-								'</span>' . "\r\n" .
-								'<input type="hidden" name="new_theme" value="' . htmlspecialchars($newTheme) . '" />' . "\r\n" . 
-								'<input type="hidden" name="copy_theme" value="' . htmlspecialchars($copyTheme) . '" />' . "\r\n" . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-								'</span>' . "\r\n";
+		$this->adminContent .=	'</span>' . PHP_EOL .
+								'</span>' . PHP_EOL .
+								'<input type="hidden" name="new_theme" value="' . htmlspecialchars($newTheme) . '" />' . PHP_EOL . 
+								'<input type="hidden" name="copy_theme" value="' . htmlspecialchars($copyTheme) . '" />' . PHP_EOL . 
+								parent::getTokenInput() . 
+								'</span>' . PHP_EOL;
 			
-		$this->adminContent .=	'<span class="rightBox">' . "\r\n" .
-								'<label>{s_label:ascopy}</label>' . "\r\n";
+		$this->adminContent .=	'<span class="rightBox">' . PHP_EOL .
+								'<label>{s_label:ascopy}</label>' . PHP_EOL;
 								
 		if(isset($errorThemeName))
-			$this->adminContent .='<p class="notice">&nbsp;</p>' . "\r\n";
+			$this->adminContent .='<p class="notice">&nbsp;</p>' . PHP_EOL;
 								
-		$this->adminContent .=	'<div class="selTheme">' . "\r\n" .
-								'<span class="singleInput-panel">' . "\r\n" .							
-								'<select name="copyTheme" class="template themes">' . "\r\n" .
+		$this->adminContent .=	'<div class="selTheme">' . PHP_EOL .
+								'<span class="singleInput-panel">' . PHP_EOL .							
+								'<select name="copyTheme" class="template themes">' . PHP_EOL .
 								$optionsCopyTheme .  
-								'</select>' . "\r\n" .
-								'</span>' . "\r\n" .
-								'</div>' . "\r\n" .
-								'</span>' . "\r\n" .
-								'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" .
-								'</ul>' . "\r\n" .
-								'</form>' . "\r\n";
+								'</select>' . PHP_EOL .
+								'</span>' . PHP_EOL .
+								'</div>' . PHP_EOL .
+								'</span>' . PHP_EOL .
+								'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL .
+								'</form>' . PHP_EOL;
 		
 		// Theme löschen
 		if($optionsDelTheme != "") {
 			
-			$this->adminContent .=	'<ul class="framedItems">' . "\r\n" .
-									'<li>' . "\r\n" .
-									'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . "\r\n" .
-									'<span class="leftBox">' . "\r\n" .
-									'<label>{s_label:deltheme}</label>' . "\r\n" .
-									'<span class="singleInput-panel panel-small">' . "\r\n" .							
-									'<div class="selTheme">' . "\r\n" .
-									'<select name="del_theme" class="template themes">' . "\r\n" .
+			$this->adminContent .=	'<ul class="framedItems">' . PHP_EOL .
+									'<li>' . PHP_EOL .
+									'<form action="' . ADMIN_HTTP_ROOT . '?task=tpl" class="adminfm1" method="post">' . PHP_EOL .
+									'<span class="leftBox">' . PHP_EOL .
+									'<label>{s_label:deltheme}</label>' . PHP_EOL .
+									'<span class="singleInput-panel panel-small">' . PHP_EOL .							
+									'<div class="selTheme">' . PHP_EOL .
+									'<select name="del_theme" class="template themes">' . PHP_EOL .
 									$optionsDelTheme .
-									'</select></div>' . "\r\n" . 
-									'<span class="editButtons-panel">' . "\r\n";
+									'</select></div>' . PHP_EOL . 
+									'<span class="editButtons-panel">' . PHP_EOL;
 
 			// Button delete
 			$btnDefs	= array(	"type"		=> "submit",
@@ -935,27 +935,27 @@ class Admin_Tpl extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButton($btnDefs);
 									
-			$this->adminContent .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-									'</span>' . "\r\n" .
-									'</span>' . "\r\n" .
-									'</span>' . "\r\n" .
-									'</form>' . "\r\n" .
-									'<br class="clearfloat" /></li>' . "\r\n";
-									'</ul>' . "\r\n";
+			$this->adminContent .=	parent::getTokenInput() . 
+									'</span>' . PHP_EOL .
+									'</span>' . PHP_EOL .
+									'</span>' . PHP_EOL .
+									'</form>' . PHP_EOL .
+									'<br class="clearfloat" /></li>' . PHP_EOL;
+									'</ul>' . PHP_EOL;
 		}
 		
 		// Filemanager
 		$this->adminContent .=	$fileManager;
 		
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 		
 		
 		// Theme-Graphiken
-		$this->adminContent .=	'<h3 class="cc-h3 switchToggle hideNext">{s_header:tplfile}</h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" .
-								'<form name="uploadfm" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post" enctype="multipart/form-data" data-ajax="false">' . "\r\n" . 
-								'<ul class="framedItems">' . "\r\n" . 
-								'<li class="submit buttonPanel buttonpanel-nofix">' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 switchToggle hideNext">{s_header:tplfile}</h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL .
+								'<form name="uploadfm" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post" enctype="multipart/form-data" data-ajax="false">' . PHP_EOL . 
+								'<ul class="framedItems">' . PHP_EOL . 
+								'<li class="submit buttonPanel buttonpanel-nofix">' . PHP_EOL;
 		
 		// Button upload
 		$btnDefs	= array(	"type"		=> "submit",
@@ -966,18 +966,18 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	parent::getButton($btnDefs);
 		
-		$this->adminContent .=	'<input type="hidden" name="uploadThemeImage" value="" />' . "\r\n" . 
-								'<input type="file" id="upload" class="upload-themefile" name="upload[]" multiple="true" maxlength="10" accept="' . implode("|", $allowedFiles) . '" />' . "\r\n" . 
-								'<input type="hidden" name="selFiles" id="selFiles" />' . "\r\n" . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
+		$this->adminContent .=	'<input type="hidden" name="uploadThemeImage" value="" />' . PHP_EOL . 
+								'<input type="file" id="upload" class="upload-themefile" name="upload[]" multiple="true" maxlength="10" accept="' . implode("|", $allowedFiles) . '" />' . PHP_EOL . 
+								'<input type="hidden" name="selFiles" id="selFiles" />' . PHP_EOL . 
+								parent::getTokenInput() . 
 								parent::getIcon("warning", "inline-icon", 'title="{s_title:overwrite}"') .
-								'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" .
-								'<ul id="uploadFilesList" class="framedItems">' . "\r\n" . 
-								'<li>{s_text:upload}: ' . (implode(", ", $allowedFiles)) . '</li>' . "\r\n" . 
-								'</ul>' . "\r\n" .
-								'<li>' . "\r\n" .
-								'<div style="position:relative">' . "\r\n";
+								'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'<ul id="uploadFilesList" class="framedItems">' . PHP_EOL . 
+								'<li>{s_text:upload}: ' . (implode(", ", $allowedFiles)) . '</li>' . PHP_EOL . 
+								'</ul>' . PHP_EOL .
+								'<li>' . PHP_EOL .
+								'<div style="position:relative">' . PHP_EOL;
 							
 		// Images MediaList-Button
 		$mediaListButtonDef		= array(	"class"	 	=> "images",
@@ -989,25 +989,25 @@ class Admin_Tpl extends Admin implements AdminTask
 		
 		$this->adminContent .=	$this->getButtonMediaList($mediaListButtonDef);
 		
-		$this->adminContent .=	'</div>' . "\r\n" .
-								'</li>' . "\r\n" .
-								'</ul>' . "\r\n" .
-								'</form>' . "\r\n" .
+		$this->adminContent .=	'</div>' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL .
+								'</form>' . PHP_EOL .
 								$fileManager;
 
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 
 		// Theme-Farben
 		$totColors	= count($colorsArr);
 		
-		$this->adminContent .=	'<h3 class="cc-h3 switchToggle hideNext">{s_header:themecolors}</h3>' . "\r\n" . 
-								'<div class="adminBox">' . "\r\n" . 
-								'<form name="themecolors" id="themecolors" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . "\r\n" . 
-								'<ul class="framedItems">' . "\r\n" . 
-								'<li id="totColors" class="totColors-' . $totColors . '">' . "\r\n";
+		$this->adminContent .=	'<h3 class="cc-h3 switchToggle hideNext">{s_header:themecolors}</h3>' . PHP_EOL . 
+								'<div class="adminBox">' . PHP_EOL . 
+								'<form name="themecolors" id="themecolors" action="' . ADMIN_HTTP_ROOT . '?task=tpl" method="post">' . PHP_EOL . 
+								'<ul class="framedItems">' . PHP_EOL . 
+								'<li id="totColors" class="totColors-' . $totColors . '">' . PHP_EOL;
 
-		$this->adminContent .=	'<div class="halfBox">' . "\r\n";
+		$this->adminContent .=	'<div class="halfBox">' . PHP_EOL;
 		
 		$c = 1;
 		
@@ -1018,7 +1018,7 @@ $colsArrHex=array();
 			
 			if(strlen($color) >= 6) {
 				
-				$color			= str_replace(array("\r\n", "\n", "<br />", "<br>"), "", $color);
+				$color			= str_replace(array(PHP_EOL, "\n", "<br />", "<br>"), "", $color);
 				$hexVal			= str_replace("#", "", $color);
 				
 				$description	= substr($color, strpos($color, "(")+1, ($c == $totColors ? -1 : -1));
@@ -1033,17 +1033,17 @@ $colsArrHex=array();
 				// Häufigkeit
 				$occurance	=	$this->themeColors["cnt"][$c-1];
 				
-				$this->adminContent .=	'<div id="col-' . $c . '" class="colorTab tableRow">' . "\r\n" .
-										'<label class="color tableCell">{s_label:color} ' . $c . ' <span> (<i>' . $occurance . ' x</i>)</span></label>' . "\r\n" .
-										'<div class="tableCell colorSample-box" title="{s_title:rescolor}">' . "\r\n" .
-										'<span style="background-color:#' . $hexVal . ';" class="colorSample">&nbsp;</span>' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="color tableCell">' . "\r\n" .
-										'#<input type="text" name="colors[]" class="color" value="' . $hexVal . '" />' . "\r\n" .
-										'</div>' . "\r\n" .
-										'<div class="colorAffect tableCell">' . $description . '</div>' . "\r\n" .
-										'<br class="clearfloat" />' . "\r\n" .
-										'</div>' . "\r\n" .
+				$this->adminContent .=	'<div id="col-' . $c . '" class="colorTab tableRow">' . PHP_EOL .
+										'<label class="color tableCell">{s_label:color} ' . $c . ' <span> (<i>' . $occurance . ' x</i>)</span></label>' . PHP_EOL .
+										'<div class="tableCell colorSample-box" title="{s_title:rescolor}">' . PHP_EOL .
+										'<span style="background-color:#' . $hexVal . ';" class="colorSample">&nbsp;</span>' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="color tableCell">' . PHP_EOL .
+										'#<input type="text" name="colors[]" class="color" value="' . $hexVal . '" />' . PHP_EOL .
+										'</div>' . PHP_EOL .
+										'<div class="colorAffect tableCell">' . $description . '</div>' . PHP_EOL .
+										'<br class="clearfloat" />' . PHP_EOL .
+										'</div>' . PHP_EOL .
 										($c == ceil(count($colorsArr)/2) ? '</div>' . PHP_EOL . '<div class="halfBox">' . PHP_EOL : '');
 										
 				$c++;
@@ -1054,11 +1054,11 @@ $colsArrHex=array();
 #echo("<p><br><br></p>");				
 #echo("<pre>$cols</pre>");				
 	
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 		
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" .
-								'<li class="submit change">' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'<li class="submit change">' . PHP_EOL;
 		
 		// Button submit (edit colors)
 		$btnDefs	= array(	"type"		=> "submit",
@@ -1071,7 +1071,7 @@ $colsArrHex=array();
 		
 		$this->adminContent .=	parent::getButton($btnDefs);
 								
-		$this->adminContent .=	'<input name="submitColors" type="hidden" value="1" />' . "\r\n";
+		$this->adminContent .=	'<input name="submitColors" type="hidden" value="1" />' . PHP_EOL;
 		
 		// Button submit (reset colors)
 		$btnDefs	= array(	"id"		=> "resetColors",
@@ -1083,24 +1083,24 @@ $colsArrHex=array();
 		
 		$this->adminContent .=	parent::getButton($btnDefs);
 								
-		$this->adminContent .=	'<input name="edit_tpl" type="hidden" value="' . $currTpl . '" />' . "\r\n" . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
-								'</li></ul>' . "\r\n" . 
-								'</form>' . "\r\n" . 
-								'</div>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<input name="edit_tpl" type="hidden" value="' . $currTpl . '" />' . PHP_EOL . 
+								parent::getTokenInput() . 
+								'</li></ul>' . PHP_EOL . 
+								'</form>' . PHP_EOL . 
+								'</div>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" . 
-								'<ul>' . "\r\n" .
-								'<li class="submit back buttonpanel-nofix">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL . 
+								'<ul>' . PHP_EOL .
+								'<li class="submit back buttonpanel-nofix">' . PHP_EOL;
 		
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 				
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" . 
-								'</ul>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL . 
+								'</ul>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 							
 		
 		// #adminContent close
@@ -1262,19 +1262,19 @@ $colsArrHex=array();
 	public function getScriptTag()
 	{
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . "\r\n" .
-				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . "\r\n" .
-				'head.ready("imagepicker", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
+		return	'<script>' . PHP_EOL .
+				'head.ready("jquery", function(){' . PHP_EOL .
+				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . PHP_EOL .
+				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . PHP_EOL .
+				'head.ready("imagepicker", function(){' . PHP_EOL .
+					'$(document).ready(function(){' . PHP_EOL .
 						'$("#currTheme").imagepicker({
 							target_box: $("#themeSelectionBox"),
 							hide_select: true,
 							show_label: true,
 							show_title: true,
 							limit: undefined
-						});' . "\r\n" .
+						});' . PHP_EOL .
 						'$("select.tplSelect").imagepicker({
 							target_box: $("#tplSelectionBox"),
 							hide_select: false,
@@ -1288,11 +1288,11 @@ $colsArrHex=array();
 									$(this).append(\'<span class="label">\' + title + \'</span>\');
 								});
 							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 	

@@ -44,11 +44,14 @@ class LiveUpdate extends Admin
 	 * @param	$installedPlugins array installed plug-ins
 	 * @access	public
 	 */
-	public function __construct($DB, $installedPlugins)
+	public function __construct($DB, $o_lng, $installedPlugins)
 	{
 
 		// DB-Objekt
 		$this->DB					= $DB;
+		
+		// Lng-Objekt
+		$this->o_lng				= $o_lng;
 		
 		// Security-Objekt
 		$this->o_security			= Security::getInstance();
@@ -203,7 +206,10 @@ class LiveUpdate extends Admin
 			$upd = true;
 			$this->setSessionVar('updateAvailable', true);
 		}
-		else
+		
+		if(!$upd
+		&& $checkCoreUpd
+		)
 			$this->unsetSessionKey('updateAvailable');
 		
 		return $upd;
@@ -526,7 +532,7 @@ class LiveUpdate extends Admin
 		require_once $this->updateScript; // Update-Script einbinden
 
 		// ConciseCoreUpdater instance
-		$o_CoreUpdater = new ConciseCoreUpdater($this->DB, $this->updateVersion);
+		$o_CoreUpdater = new ConciseCoreUpdater($this->DB, $this->o_lng, $this->updateVersion);
 		$o_CoreUpdater->runCWMSUpdater("all");
 
 		// Objektinstanz aus updateScript
@@ -676,7 +682,7 @@ class LiveUpdate extends Admin
 	{
 
 		$formAction		= ADMIN_HTTP_ROOT . '?task=update';
-		$token			= '<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+		$token			= parent::getTokenInput();
 		
 		$output 		=	'<p class="hint">{s_hint:newupdates} &nbsp; ' .
 							'<strong>({s_hint:latestversion}: ' .
@@ -768,7 +774,7 @@ class LiveUpdate extends Admin
 	{
 
 		$formAction		= SYSTEM_HTTP_ROOT . '/access/editPlugins.php?page=admin&action=update';
-		$token			= '<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+		$token			= parent::getTokenInput();
 		
 		$output 		=	'<p class="hint">{s_hint:newupdates} {s_hint:forplugins}:</p>' . "\r\n";
 	
@@ -846,7 +852,7 @@ class LiveUpdate extends Admin
 		}
 		
 		$checkUrl		= SYSTEM_HTTP_ROOT . '/access/editPlugins.php?page=admin&action=update';
-		$token			= '<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+		$token			= parent::getTokenInput();
 		
 		$output 		=	'<div id="updatePluginsList">' . "\r\n";
 		

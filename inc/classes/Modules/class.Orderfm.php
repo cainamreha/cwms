@@ -1004,7 +1004,7 @@ class Orderfm extends Modules
 
 			// Token einfügen bei letztem Schritt
 			if($this->orderStep == 4)
-				$form .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+				$form .=	parent::getTokenInput();
 
 			$form .=	'<br class="clearfloat" />' . "\r\n" .
 						'</li>' . "\r\n" . 
@@ -1896,6 +1896,7 @@ class Orderfm extends Modules
 		
 		// Klasse phpMailer einbinden
 		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 		
 		// Instanz von PHPMailer bilden
 		$mail = new \PHPMailer();
@@ -1905,7 +1906,7 @@ class Orderfm extends Modules
 		$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, ORDER_EMAIL, $subject_1, $htmlMail_1, true, "", "smtp");
 		
 		// E-Mail senden per phpMailer (SMTP)
-		$mailStatus = $mail->Send();
+		$mailStatus = $mail->send();
 		
 		// Falls Versand per SMTP erfolglos, per mail() probieren
 		if($mailStatus !== true) {
@@ -1914,7 +1915,7 @@ class Orderfm extends Modules
 			$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, ORDER_EMAIL, $subject_1, $htmlMail_1, true, "", "sendmail");
 			
 			// E-Mail senden per phpMailer (mail())
-			$mailStatus = $mail->Send();
+			$mailStatus = $mail->send();
 		}
 		
 		// Falls Versand per SMTP erfolglos, per mail() probieren
@@ -1924,7 +1925,7 @@ class Orderfm extends Modules
 			$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, ORDER_EMAIL, $subject_1, $htmlMail_1, true);
 			
 			// E-Mail senden per phpMailer (mail())
-			$mailStatus = $mail->Send();
+			$mailStatus = $mail->send();
 		}
 		
 		// E-Mail senden per phpMailer und falls sie versandt wurde, eine 2. E-Mail an Besteller senden
@@ -1940,7 +1941,7 @@ class Orderfm extends Modules
 			$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $this->email, $subject_2, $htmlMail_2, true, "", "smtp");
 			
 			// E-Mail senden per phpMailer (SMTP)
-			$mailStatus_2 = $mail->Send();
+			$mailStatus_2 = $mail->send();
 			
 			// Falls Versand per SMTP erfolglos, per mail() probieren
 			if($mailStatus_2 !== true) {
@@ -1949,7 +1950,7 @@ class Orderfm extends Modules
 				$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $this->email, $subject_2, $htmlMail_2, true, "", "sendmail");
 				
 				// E-Mail senden per phpMailer (mail())
-				$mailStatus_2 = $mail->Send();
+				$mailStatus_2 = $mail->send();
 			}
 			
 			// Falls Versand per SMTP erfolglos, per mail() probieren
@@ -1959,7 +1960,7 @@ class Orderfm extends Modules
 				$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $this->email, $subject_2, $htmlMail_2, true);
 				
 				// E-Mail senden per phpMailer (mail())
-				$mailStatus_2 = $mail->Send();
+				$mailStatus_2 = $mail->send();
 			}
 			
 			

@@ -85,7 +85,7 @@ class HeadIncludes extends Admin
 										  $this->getEditorStyleFormats() . ','."\r\n".
 										  'visualblocks_default_state: true,'."\r\n".
 										  'end_container_on_empty_block: false,'."\r\n".
-										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*]",'."\r\n".
+										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*],a[rel|rev|charset|hreflang|tabindex|accesskey|type|name|href|target|title|class|onfocus|onblur|onclick]",'."\r\n".
 										  'valid_children : "span.cc-iconcontainer[span[role=\'icon\']]",'."\r\n".
 										  'textcolor_map: cc.customPalette,'."\r\n".
 										  'font_formats: cc.themeFonts,'."\r\n".
@@ -233,7 +233,8 @@ class HeadIncludes extends Admin
 										  'convert_urls: false,'."\r\n".
 										  'remove_script_host: false,'."\r\n".
 										  'convert_newlines_to_brs: true,'."\r\n".
-										  #'force_br_newlines: true,'."\r\n".
+										  'forced_root_block : false,'."\r\n".
+										  'force_br_newlines: true,'."\r\n".
 										  #'force_p_newlines: false,'."\r\n".
 										  'language : "' . $this->adminLang . '",'."\r\n".
 										  'theme : "modern",'."\r\n".
@@ -248,7 +249,7 @@ class HeadIncludes extends Admin
 										  'toolbar: "undo redo | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media' . $ownButton . ' | forecolor | iconpicker | codemagic | ' . (!$this->fromFE ? 'fullscreen' : '') . '",'."\r\n".
 										  'insertdatetime_formats: ["%d.%m.%Y", "%H:%M Uhr", "%H:%M:%S", "%m-%d-%Y", "%D", "%H:%M:%S %p"],'."\r\n".
 										  'end_container_on_empty_block: false,'."\r\n".
-										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*]",'."\r\n".
+										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*],a[rel|rev|charset|hreflang|tabindex|accesskey|type|name|href|target|title|class|onfocus|onblur|onclick]",'."\r\n".
 										  'valid_children : "span.cc-iconcontainer[span[role=\'icon\']]",'."\r\n".
 										  'textcolor_map: cc.customPalette,'."\r\n".
 										  'font_formats: cc.themeFonts,'."\r\n".
@@ -301,13 +302,10 @@ class HeadIncludes extends Admin
 													}
 													inst.hide();'."\r\n".
 													'var rawVal = textval;'."\r\n".
-													'if(!$("#" + edId.id).hasClass("galleryEditor")){
-														rawVal = textval.replace(/<p>&nbsp;<\/p>/g, "\n").replace(/<br[ ]?[\/]?>/g, "\n").replace(/></g, "\n").replace(/<\/?p+>/gi, "");'."\r\n".
-													'}'."\r\n".
 													'textar.val(rawVal);'."\r\n".
-													#'if($("#" + edId.id).hasClass("galleryEditor")){
-													#	inst.show();
-													#}'."\r\n".
+													'if($("#" + edId.id).hasClass("galleryEditor")){
+														inst.show();
+													}'."\r\n".
 													'cc.conciseChanges = false;'."\r\n".
 												'}else{'."\r\n".
 												'cc.openEditors++;}'."\r\n".
@@ -352,6 +350,7 @@ class HeadIncludes extends Admin
 											'img_root : "'.PROJECT_HTTP_ROOT.'/'.IMAGE_DIR.'"'."\r\n".
 										  '},'."\r\n".
 										'templates : ['."\r\n".
+											$this->getNewsletterTemplates() .
 											'{'."\r\n".
 											  'title : "Einfacher Newsletter",'."\r\n".
 											  'url : "' . SYSTEM_TEMPLATE_DIR . '/tinymce_tpls/newsletter.htm?'.time().'",'."\r\n".
@@ -391,7 +390,7 @@ class HeadIncludes extends Admin
 										  'fullpage_extended_meta : \'<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- So that mobile will display zoomed in -->\n<meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- enable media queries for windows phone 8 -->\n<meta name="format-detection" content="telephone=no"> <!-- disable auto telephone linking in iOS -->\n\','."\r\n".
 										  'fullpage_extended_link : "",'."\r\n".
 										  'plugins : ["template advlist autolink link image lists charmap print preview hr anchor pagebreak","searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking","save table contextmenu directionality template paste textcolor code","imagetools"],'."\r\n".
-										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*]",'."\r\n".
+										  'extended_valid_elements: "span[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],div[id|class|style|title|aria-hidden|role|itemprop|itemscope|itemtype|data-*],meta[*],style[*],a[rel|rev|charset|hreflang|tabindex|accesskey|type|name|href|target|title|class|onfocus|onblur|onclick]",'."\r\n".
 										  'valid_children: "+html[head],+body[meta|style],+head[meta|style],+style[*:*]",'."\r\n".
 										  'toolbar: "template undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview fullscreen | forecolor | code | insertName",'."\r\n".
 										  'insertdatetime_formats: ["%d.%m.%Y", "%H:%M Uhr", "%H:%M:%S", "%m-%d-%Y", "%D", "%H:%M:%S %p"],'."\r\n".
@@ -655,6 +654,27 @@ class HeadIncludes extends Admin
 		}
 		
 		return $cCss;
+	
+	}
+
+	
+	public function getNewsletterTemplates()
+	{
+	
+		$output	= "";
+	
+		foreach (glob(str_replace(SYSTEM_HTTP_ROOT, SYSTEM_DOC_ROOT, SYSTEM_TEMPLATE_DIR . '/tinymce_tpls/newsletter-*.htm')) as $filename) {
+		
+			$date	= str_replace(array("newsletter-", ".htm"), "", basename($filename));
+			$output	.=	'{'."\r\n".
+						  'title : "Newsletter ' . $date . '",'."\r\n".
+						  'url : "' . str_replace(SYSTEM_DOC_ROOT, SYSTEM_HTTP_ROOT, $filename) . '?'.time().'",'."\r\n".
+						  'description : "Newsletter Template - ' . $date . '"'."\r\n".
+						'},'."\r\n";
+
+		}
+		
+		return $output;
 	
 	}
 

@@ -47,31 +47,41 @@ class FormElement extends ElementFactory implements Elements
 		#####################################
 	
 		// Formularkonfiguration
-		$formCon = explode("<>", $this->conValue);
+		if(substr_count($this->conValue, "<>") > 10)
+			$formCon	= explode("<>", $this->conValue); // Legacy decode
+		else
+			$formCon	= (array)json_decode($this->conValue);
+
 		
 		// Falls keine DB-Tabelle angegeben ist Meldung ausgeben
-		if(!isset($formCon[0]) || $formCon[0] == "")
+		if(!isset($formCon["formtab"]) || $formCon["formtab"] == "")
 			return $this->getContentElementWrapper($this->conAttributes, "No form data table specified."); // kein db-Tabellenname
 		
 		// Prüft ob Tabelle vorhanden ist
-		if(!$this->DB->tableExists(DB_TABLE_PREFIX . 'form_' . $formCon[0]))
-			return $this->getContentElementWrapper($this->conAttributes, "Form table &quot;form_" . $formCon[0] . "&quot; not found."); // kein db-Tabellenname
-		
-
-		$this->cssFiles[] = STYLES_DIR . "forms.css"; // css-Datei einbinden
-
-		// Ggf. Formvalidator
-		if(!empty($formCon[14]))
-			$this->scriptFiles["formvalidator"]	= "extLibs/jquery/form-validator/jquery.form-validator.min.js";
+		if(!$this->DB->tableExists(DB_TABLE_PREFIX . 'form_' . $formCon["formtab"]))
+			return $this->getContentElementWrapper($this->conAttributes, "Form table &quot;form_" . $formCon["formtab"] . "&quot; not found."); // kein db-Tabellenname
 		
 		
 		// Präfix form_ für DB-Tabellennamen einfügen
-		$formTable			= 'form_' . $formCon[0];
-		$formTableDB		= $this->DB->escapeString($formCon[0]);
+		$formTable			= 'form_' . $formCon["formtab"];
+		$formTableDB		= $this->DB->escapeString($formCon["formtab"]);
 		$formTitle			= "";
 		$queryFormFields	= array();
 		$configArray		= array();
 		$formPollAccess		= true;
+
+		// Css file
+		$this->cssFiles[]	= STYLES_DIR . "forms.css";
+
+		// Ggf. Formvalidator
+		if(!empty($formCon["validator"])) {
+			$this->scriptFiles["formvalidator"]	= "extLibs/jquery/form-validator/jquery.form-validator.min.js";
+			$this->scriptCode[]					= $this->getFormValidatorScriptCode($formTable, !empty($formCon["valonblur"]), !empty($formCon["ajaxify"]));
+		}
+		elseif(!empty($formCon["ajaxify"])) {
+			$this->scriptCode[]					= $this->getAjaxFormScriptCode($formTable);			
+		}
+
 		
 		// db-Query nach Feldern des Formulars, falls im Backend angelegt
 		$queryFormTable = $this->DB->query( "SELECT `id`, `title_".$this->lang."`, `poll` 
@@ -108,57 +118,57 @@ class FormElement extends ElementFactory implements Elements
 		if(is_array($queryFormFields)) {
 			
 			if(count($queryFormFields) == 0
-			&& !file_exists(PROJECT_DOC_ROOT."/inc/classes/Forms/config.autoForm.".$formCon[0].".php")
+			&& !file_exists(PROJECT_DOC_ROOT."/inc/classes/Forms/config.autoForm.".$formCon["formtab"].".php")
 			)
 				return $this->getContentElementWrapper($this->conAttributes, '<p class="notice error">{s_error:noformconf}</p>'); // kein db-Tabellenname
 		
 			$formTitle = count($queryFormFields) > 0 ? $queryFormTable[0]["title_".$this->lang] : ''; // Formulartitel
 		}
 			
-		if(!isset($formCon[2]) || $formCon[2] == "") // recipients/Quelle der Haupt-E-Mail
-			$formCon[2] = array();
+		if(!isset($formCon["mailsource"]) || $formCon["mailsource"] == "") // recipients/Quelle der Haupt-E-Mail
+			$formCon["mailsource"] = array();
 		else
-			$formCon[2] = explode(",", $formCon[2]);
-		if(!isset($formCon[3]) || $formCon[3] == "") // E-Mail nur an Besitzer
-			$formCon[3] = 0;
-		elseif($formCon[3] == 1)
-			$formCon[1] = 1; // Formmailer setzen
-		if(!isset($formCon[4]) || $formCon[4] == "") // recipients (nur Besitzer)
-			$formCon[4] = array();
+			$formCon["mailsource"] = explode(",", $formCon["mailsource"]);
+		if(!isset($formCon["mailowner"]) || $formCon["mailowner"] == "") // E-Mail nur an Besitzer
+			$formCon["mailowner"] = 0;
+		elseif($formCon["mailowner"] == 1)
+			$formCon["mailform"] = 1; // Formmailer setzen
+		if(!isset($formCon["ownermail"]) || $formCon["ownermail"] == "") // recipients (nur Besitzer)
+			$formCon["ownermail"] = array();
 		else
-			$formCon[2] = array_merge($formCon[2], explode(",", $formCon[4])); // E-Mails über [2] mitgeben
-		if(!isset($formCon[5]) || $formCon[5] == "") // recipientsCC
-			$formCon[5] = array();
+			$formCon["mailsource"] = array_merge($formCon["mailsource"], explode(",", $formCon["ownermail"])); // E-Mails über ["mailsource"] mitgeben
+		if(!isset($formCon["cc"]) || $formCon["cc"] == "") // recipientsCC
+			$formCon["cc"] = array();
 		else
-			$formCon[5] = explode(",", $formCon[5]);
-		if(!isset($formCon[6]) || $formCon[6] == "") // recipientsBCC
-			$formCon[6] = array();
+			$formCon["cc"] = explode(",", $formCon["cc"]);
+		if(!isset($formCon["bcc"]) || $formCon["bcc"] == "") // recipientsBCC
+			$formCon["bcc"] = array();
 		else
-			$formCon[6] = explode(",", $formCon[6]);
-		if(!isset($formCon[7]) || $formCon[7] == "") // subject
-			$formCon[7] = "none";
-		if(isset($formCon[8]) && $formCon[8] == 1) // pdf generieren
-			$formCon[8] = true;
+			$formCon["bcc"] = explode(",", $formCon["bcc"]);
+		if(!isset($formCon["subj"]) || $formCon["subj"] == "") // subject
+			$formCon["subj"] = "none";
+		if(isset($formCon["pdf"]) && $formCon["pdf"] == 1) // pdf generieren
+			$formCon["pdf"] = true;
 		else
-			$formCon[8] = false;
-		if(!isset($formCon[9])) // Ordner für pdf Dateien
-			$formCon[9] = "";
-		if(empty($formCon[10])) // pdf an Browser senden
-			$formCon[10] = false;
+			$formCon["pdf"] = false;
+		if(!isset($formCon["pdffolder"])) // Ordner für pdf Dateien
+			$formCon["pdffolder"] = "";
+		if(empty($formCon["browserpdf"])) // pdf an Browser senden
+			$formCon["browserpdf"] = false;
 		else
-			$formCon[10] = true;
-		if(empty($formCon[11])) // pdf an E-Mail anhängen
-			$formCon[11] = false;
+			$formCon["browserpdf"] = true;
+		if(empty($formCon["mailpdf"])) // pdf an E-Mail anhängen
+			$formCon["mailpdf"] = false;
 		else
-			$formCon[11] = true;
-		if(empty($formCon[12])) // pdf ist benutzerspezifisch
-			$formCon[12] = false;
+			$formCon["mailpdf"] = true;
+		if(empty($formCon["userpdf"])) // pdf ist benutzerspezifisch
+			$formCon["userpdf"] = false;
 		else
-			$formCon[12] = true;
-		if(empty($formCon[13])) // keine Speicherung in DB
-			$formCon[13] = false;
+			$formCon["userpdf"] = true;
+		if(empty($formCon["nodb"])) // keine Speicherung in DB
+			$formCon["nodb"] = false;
 		else
-			$formCon[13] = true;
+			$formCon["nodb"] = true;
 		
 		#var_dump($queryFormFields);	
 
@@ -167,11 +177,11 @@ class FormElement extends ElementFactory implements Elements
 		require_once PROJECT_DOC_ROOT."/inc/classes/Forms/class.FormGenerator.php";
 		
 									
-		if(!isset($formCon[1]) || $formCon[1] == "" || $formCon[1] == 0) // Formmailer
-			$formCon[1] = false;
+		if(!isset($formCon["mailform"]) || $formCon["mailform"] == "" || $formCon["mailform"] == 0) // Formmailer
+			$formCon["mailform"] = false;
 		else { // Formular per E-Mail
 		
-			$formCon[1] = true;
+			$formCon["mailform"] = true;
 			
 			// FormMailerdatei einbinden
 			require_once PROJECT_DOC_ROOT."/inc/classes/Forms/class.FormMailer.php";
@@ -197,21 +207,21 @@ class FormElement extends ElementFactory implements Elements
 		}
 		else
 			// Formular-Konfigurationsdatei einbinden
-			require(PROJECT_DOC_ROOT."/inc/classes/Forms/config.autoForm.".$formCon[0].".php");
+			require(PROJECT_DOC_ROOT."/inc/classes/Forms/config.autoForm.".$formCon["formtab"].".php");
 
 		// Form parameter
 		$o_myForm->formTitle		= ($formTitle != "" ? $formTitle : str_replace("form_", "", $formTable)); //Titel der Tabelle speichern
-		$o_myForm->formMailer		= $formCon[1]; //FormMailer
-		$o_myForm->recipients		= $formCon[2]; //E-Mailadresse bzw. Art der Bestimmung des E-Mailempfängers
-		$o_myForm->recipientsCC		= $formCon[5]; //E-Mailadresse(n) Kopie-Empfänger
-		$o_myForm->recipientsBCC	= $formCon[6]; //E-Mailadresse(n) Blindkopie-Empfänger
-		$o_myForm->mailSubject		= $formCon[7]; //E-Mail-Betreff
-		$o_myForm->makePDF			= $formCon[8]; //PDF erstellen
-		$o_myForm->pdfFolder		= $formCon[9]; //PDF Ordner
-		$o_myForm->browserPDF		= $formCon[10]; //PDF an Browser senden
-		$o_myForm->mailPDF			= $formCon[11]; //PDF per E-Mail senden
-		$o_myForm->userPDF			= $formCon[12]; //PDF in Ordner _user speichern
-		$o_myForm->noDbStorage		= $formCon[13]; //Formulardaten nicht in DB speichern
+		$o_myForm->formMailer		= $formCon["mailform"]; //FormMailer
+		$o_myForm->recipients		= $formCon["mailsource"]; //E-Mailadresse bzw. Art der Bestimmung des E-Mailempfängers
+		$o_myForm->recipientsCC		= $formCon["cc"]; //E-Mailadresse(n) Kopie-Empfänger
+		$o_myForm->recipientsBCC	= $formCon["bcc"]; //E-Mailadresse(n) Blindkopie-Empfänger
+		$o_myForm->mailSubject		= $formCon["subj"]; //E-Mail-Betreff
+		$o_myForm->makePDF			= $formCon["pdf"]; //PDF erstellen
+		$o_myForm->pdfFolder		= $formCon["pdffolder"]; //PDF Ordner
+		$o_myForm->browserPDF		= $formCon["browserpdf"]; //PDF an Browser senden
+		$o_myForm->mailPDF			= $formCon["mailpdf"]; //PDF per E-Mail senden
+		$o_myForm->userPDF			= $formCon["userpdf"]; //PDF in Ordner _user speichern
+		$o_myForm->noDbStorage		= $formCon["nodb"]; //Formulardaten nicht in DB speichern
 
 		// Formular generieren
 		$output	= $o_myForm->printForm($configArray);
@@ -230,49 +240,75 @@ class FormElement extends ElementFactory implements Elements
 		// Ggf. Attribute (Styles) Wrapper-div hinzufügen
 		if($this->conAttributes['id'] != "" || $this->conAttributes['class'] != "" || $this->conAttributes['style'] != "")
 			$output	= $this->getContentElementWrapper($this->conAttributes, $output);
-		
-		// Form validator script
-		if(!empty($formCon[14]))
-			$output	.= $this->getScriptTag($formTable);
 
 		return $output;
 	
 	}	
 	
 
-	// getScriptTag
-	public function getScriptTag($formTable)
+	// getFormValidatorScriptCode
+	public function getFormValidatorScriptCode($formTable, $validateOnBlur = false, $ajaxify = false)
 	{
 
 		$formID		= str_replace("_", "-", $formTable);
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . "\r\n" .
-				'head.ready("formvalidator", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
-						'$.validate({
-							form : "#' . $formID . ':not(.cc-form-multistep)",
-							lang : "' . $this->lang . '",
-							validateOnBlur : false,
-							//errorMessagePosition : "top",
-							//errorMessagePosition : $("#' . $formID . ' .formErrorBox"),
-							scrollToTopOnError : false,
-							borderColorOnError : "",
-							onError : function($form) {
-								/*
-								if($form.closest(".form-minimal").length){
-									$($form).find(".formErrorBox").addClass("' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '").hide();
-								}else{
-									$($form).find(".formErrorBox").addClass("' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '").hide().fadeIn(800);
-								}
-								*/
-							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+		$output	=	'head.ready("jquery", function(){' . PHP_EOL .
+					'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . PHP_EOL .
+					'head.ready("formvalidator", function(){' . PHP_EOL .
+						'$(document).ready(function(){' . PHP_EOL .
+							'$.validate({
+								form : "#' . $formID . ':not(.cc-form-multistep)",
+								lang : "' . $this->lang . '",
+								validateOnBlur : ' . ($validateOnBlur ? 'true' : 'false') . ',
+								//errorMessagePosition : "top",
+								//errorMessagePosition : $("#' . $formID . ' .formErrorBox"),
+								scrollToTopOnError : false,
+								borderColorOnError : "",
+								onError : function($form) {
+									/*
+									if($form.closest(".form-minimal").length){
+										$($form).find(".formErrorBox").addClass("' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '").hide();
+									}else{
+										$($form).find(".formErrorBox").addClass("' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '").hide().fadeIn(800);
+									}
+									*/
+								},
+								onSuccess : function($form) {' . PHP_EOL;
+									
+		if($ajaxify) {
+			$output	.=	$this->getAjaxFormScriptCode($formID, "true") .
+						'return false;' . PHP_EOL;
+		}
+		else {
+			$output	.=	'$form.find(\'button[type="submit"]\').not(".disabled").addClass("disabled").append(\'&nbsp;&nbsp;<span class="icons icon-refresh icon-spin"></span>\');' . PHP_EOL;
+		}
+		
+		$output	.= 				'}
+							});' . PHP_EOL .
+						'});' . PHP_EOL .
+					'});' . PHP_EOL .
+					'});' . PHP_EOL;
+	
+		return $output;
+	
+	}
+	
+
+	// getAjaxFormScriptCode
+	public function getAjaxFormScriptCode($formTable, $validation = "false")
+	{
+
+		$formID		= str_replace("_", "-", $formTable);
+
+		$output	=	'$(document).ready(function(){
+						head.ready("ccInitScript", function(){
+							head.load({ajaxifyform: "' . PROJECT_HTTP_ROOT . '/access/js/ajaxifyForm.js"}, function(){		
+								cc.ajaxifyForm(\'form[id="' . $formID . '"]\', "' . $validation . '", "' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '");
+							});		
+						});
+					});' . PHP_EOL;
+	
+		return $output;
 	
 	}
 	

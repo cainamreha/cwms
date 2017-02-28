@@ -133,6 +133,18 @@ class CformConfigElement extends ConfigElementFactory implements ConfigElements
 				$this->params["leg"] = 1;
 			else
 				$this->params["leg"] = 0;
+			if(isset($this->a_POST[$this->conPrefix . '_formvalidator']) && $this->a_POST[$this->conPrefix . '_formvalidator'] == "on")
+				$this->params["validator"] = 1;
+			else
+				$this->params["validator"] = 0;
+			if(isset($this->a_POST[$this->conPrefix . '_validateonblur']) && $this->a_POST[$this->conPrefix . '_validateonblur'] == "on")
+				$this->params["valonblur"] = 1;
+			else
+				$this->params["valonblur"] = 0;
+			if(isset($this->a_POST[$this->conPrefix . '_ajaxify']) && $this->a_POST[$this->conPrefix . '_ajaxify'] == "on")
+				$this->params["ajaxify"] = 1;
+			else
+				$this->params["ajaxify"] = 0;
 		}
 	
 	}
@@ -143,7 +155,7 @@ class CformConfigElement extends ConfigElementFactory implements ConfigElements
 	{
 
 		// Updatestring
-		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params)) . "',";
+		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params, JSON_UNESCAPED_UNICODE)) . "',";
 
 	}
 	
@@ -168,6 +180,9 @@ class CformConfigElement extends ConfigElementFactory implements ConfigElements
 		if(empty($this->params["form"])) $this->params["form"] = "block";
 		if(empty($this->params["lab"])) $this->params["lab"] = 0;
 		if(!isset($this->params["leg"])) $this->params["leg"] = 1;
+		if(!isset($this->params["validator"])) $this->params["validator"] = 1;
+		if(!isset($this->params["valonblur"])) $this->params["valonblur"] = 0;
+		if(!isset($this->params["ajaxify"])) $this->params["ajaxify"] = 0;
 	
 	}
 	
@@ -266,9 +281,34 @@ class CformConfigElement extends ConfigElementFactory implements ConfigElements
 					'<label class="markBox"><input type="checkbox" name="' . $this->conPrefix . '_legend" id="' . $this->conPrefix . '_legend" ' . ($this->params["leg"] == 1 ? ' checked="checked"' : '') . ' /></label><label class=" inline-label" for="' . $this->conPrefix . '_legend">' . PHP_EOL .
 					'{s_label:formtitle}/{s_form:legend}</label>' . PHP_EOL;
 
-		$output	.=	'<input type="hidden" name="' . $this->conPrefix . '" value="true" />' . PHP_EOL .
-					'<br class="clearfloat" />' . PHP_EOL;
+		$output	.=	'<br class="clearfloat" />' . PHP_EOL;
 		
+		$output .=	'</fieldset>' . PHP_EOL;
+
+		// Validator
+		$output .=	'<fieldset data-tab="Form validation / submission">' . PHP_EOL;
+		$output .=	'<legend>Form validation / submission</legend>' . PHP_EOL;
+		
+		$output .=	'<div class="leftBox"><br />' . PHP_EOL .
+					'<label class="markBox"><input type="checkbox" name="' . $this->conPrefix . '_formvalidator" id="' . $this->conPrefix . '_formvalidator" ' . ($this->params["validator"] == 1 ? ' checked="checked"' : '') . ' /></label><label class=" inline-label" for="' . $this->conPrefix . '_formvalidator">' . PHP_EOL .
+					'Formvalidator (JavaScript)</label>' . PHP_EOL .
+					'</div>' . PHP_EOL;
+
+		// Validate on blur
+		$output	.=	'<div class="rightBox">' . PHP_EOL .
+					'<br /><label class="markBox"><input type="checkbox" name="' . $this->conPrefix . '_validateonblur" id="' . $this->conPrefix . '_validateonblur" ' . ($this->params["valonblur"] == 1 ? ' checked="checked"' : '') . ' /></label><label class="inline-label" for="' . $this->conPrefix . '_validateonblur">' . PHP_EOL .
+					'Validate on blur</label>' . PHP_EOL .
+					'</div>' . PHP_EOL;
+		
+		// Ajax submission
+		$output .=	'<div class="leftBox"><br />' . PHP_EOL .
+					'<label class="markBox"><input type="checkbox" name="' . $this->conPrefix . '_ajaxify" id="' . $this->conPrefix . '_ajaxify" ' . ($this->params["ajaxify"] == 1 ? ' checked="checked"' : '') . ' /></label><label class=" inline-label" for="' . $this->conPrefix . '_ajaxify">' . PHP_EOL .
+					'Ajax form submission</label>' . PHP_EOL .
+					'</div>' . PHP_EOL;
+
+		$output	.=	'<input type="hidden" name="' . $this->conPrefix . '" value="true" />' . PHP_EOL;
+
+		$output	.=	'<br class="clearfloat"><br />' . PHP_EOL;		
 		$output .=	'</fieldset>' . PHP_EOL;
 		
 		// Script

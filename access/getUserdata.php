@@ -50,7 +50,8 @@ if(strpos($_GET['userfile'], "img/avatar_") === 0) {
 	// Dateiinhalt auslesen und anzeigen
 	header("Content-type: image/" . ($fileExt == "png" ? "png" : "jpeg"));
 	header('Content-Disposition: inline;');
-	readfile($userFile);
+	if(file_exists($userFile))
+		readfile($userFile);
 	exit;
 }
 

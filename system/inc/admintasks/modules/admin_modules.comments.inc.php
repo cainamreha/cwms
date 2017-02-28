@@ -82,19 +82,19 @@ class Admin_ModulesComments extends Admin_Modules implements AdminTask
 		}
 
 
-		$this->adminHeader		=	'{s_text:admincomments}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:admincomments}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 							
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
 		
-		$this->adminContent    .=	'<div class="adminArea comments">' . "\r\n";
+		$this->adminContent    .=	'<div class="adminArea comments">' . PHP_EOL;
 		
 		
 		if(isset($this->notice) && $this->notice != "")
-			$this->adminContent .='<p class="notice success">' . $this->notice . '</p>' . "\r\n";
+			$this->adminContent .='<p class="notice success">' . $this->notice . '</p>' . PHP_EOL;
 			
-		$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_option:comments}</h2>' . "\r\n";
+		$this->adminContent .=	'<h2 class="toggle cc-section-heading cc-h2">{s_option:comments}</h2>' . PHP_EOL;
 
 			
 		// Zunächst das entsprechende Modul einbinden (Search-Klasse)
@@ -110,7 +110,7 @@ class Admin_ModulesComments extends Admin_Modules implements AdminTask
 		$comments = new Comments($this->DB, $this->o_lng, $comTable, "", $this->g_Session['group']);
 
 		$this->adminContent .=	$comments->getComments($comTable, "all", 10) .
-								'</div>' . "\r\n";
+								'</div>' . PHP_EOL;
 
 								
 		$this->adminContent	.= $this->getBackButtons(parent::$type);

@@ -92,17 +92,17 @@ class Admin_ModulesGbook extends Admin_Modules implements AdminTask
 		}
 
 
-		$this->adminHeader		=	'{s_text:admingbook}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:admingbook}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 							
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
 
-		$this->adminContent    .=	'<div class="adminArea gbook">' . "\r\n";
+		$this->adminContent    .=	'<div class="adminArea gbook">' . PHP_EOL;
 
 
 		if(isset($this->notice) && $this->notice != "")
-			$this->adminContent .='<p class="notice success">' . $this->notice . '</p>' . "\r\n";
+			$this->adminContent .='<p class="notice success">' . $this->notice . '</p>' . PHP_EOL;
 			
 			
 		// Zunächst das entsprechende Modul einbinden (Search-Klasse)
@@ -110,10 +110,10 @@ class Admin_ModulesGbook extends Admin_Modules implements AdminTask
 
 		$guestbook = new Guestbook($this->DB, $this->o_lng, $this->loggedUserGroup, "admin");
 
-		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:gbentry}</h2>' . "\r\n" . 
-								'<div class="form">' . "\r\n" .
+		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_header:gbentry}</h2>' . PHP_EOL . 
+								'<div class="form">' . PHP_EOL .
 								$guestbook->getGuestbook($this->loggedUserGroup, 10) .
-								'</div></div>' . "\r\n";
+								'</div></div>' . PHP_EOL;
 	
 
 		$this->adminContent	.= $this->getBackButtons(parent::$type);

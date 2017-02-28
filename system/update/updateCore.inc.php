@@ -20,12 +20,12 @@ require_once PROJECT_DOC_ROOT."/inc/classes/Update/class.LiveUpdate.php"; // Kla
 class ConciseCoreUpdater extends LiveUpdate
 {
 
-	protected $DB				= null;
 	private $updateVersion		= "";
 	private $updateDir			= "";
 	private $langDir			= "";
 	public $logResults			= true;
 	private $logDir				= "";
+	private $existingLangs		= array();
 	public $successUpdScript	= array();
 	public $errorUpdScript		= array();
 	public $errorLang			= array();
@@ -34,10 +34,11 @@ class ConciseCoreUpdater extends LiveUpdate
 	/**
 	 * Constructor
 	 */
-	public function __construct($DB, $version)
+	public function __construct($DB, $o_lng, $version)
 	{
 	
 		$this->DB				= $DB;
+		$this->o_lng			= $o_lng;
 		$this->updateVersion	= $version;
 		$this->updateDir		= SYSTEM_DOC_ROOT . '/update';
 		$this->langDir 			= $this->updateDir . '/lang';
@@ -48,6 +49,8 @@ class ConciseCoreUpdater extends LiveUpdate
 
 		if($this->updateVersion == "")
 			$this->updateVersion	= "unknown";
+		
+		$this->existingLangs	= Language::getExistingLangs();
 	
 	}
 
@@ -106,6 +109,18 @@ class ConciseCoreUpdater extends LiveUpdate
 			$resArr[] 	= $this->DB->query("ALTER TABLE `" . DB_TABLE_PREFIX . "log_bots` ADD `referer` varchar(512) NOT NULL AFTER `realIP`");
 		}
 		
+		// version 2.8.3
+		if(version_compare(CWMS_VERSION, "2.8.3", '<')) {
+			// alter table forms
+			foreach($this->o_lng->installedLangs as $eLang) {
+				$eLang		= $this->DB->escapeString($eLang);
+				$resArr[] 	= $this->DB->query("ALTER TABLE `" . DB_TABLE_PREFIX . "forms` CHANGE `notice_success_" . $eLang . "` `notice_success_" . $eLang . "` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;");
+				$resArr[] 	= $this->DB->query("ALTER TABLE `" . DB_TABLE_PREFIX . "forms` CHANGE `notice_error_" . $eLang . "` `notice_error_" . $eLang . "` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;");
+				$resArr[] 	= $this->DB->query("ALTER TABLE `" . DB_TABLE_PREFIX . "forms` CHANGE `notice_field_" . $eLang . "` `notice_field_" . $eLang . "` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;");
+				$resArr[] 	= $this->DB->query("ALTER TABLE `" . DB_TABLE_PREFIX . "forms` CHANGE `add_labels_" . $eLang . "` `add_labels_" . $eLang . "` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;");
+			}
+		}
+		
 		if(empty($resArr))
 			return false;
 		
@@ -140,11 +155,10 @@ class ConciseCoreUpdater extends LiveUpdate
 	public function runLangUpdate()
 	{	
 	
-		$existingLangs	= Language::getExistingLangs();
 		$langUpdCnt		= 0;
 		
 		// Lang changes
-		foreach($existingLangs as $eLang) {
+		foreach($this->existingLangs as $eLang) {
 		
 			$langUpdFile = $this->langDir . '/staticText_' . $eLang . '.ini';
 			
@@ -264,9 +278,9 @@ class ConciseCoreUpdater extends LiveUpdate
 		// version 2.7.3
 		//**************
 		if(!defined('SMALL_IMG_SIZE'))
-			$settings = preg_replace("/define\('DEF_PLAYER_WIDTH'/", "define('SMALL_IMG_SIZE',768);						// Höhe von small images\ndefine('DEF_PLAYER_WIDTH'", $settings);
+			$settings = preg_replace("/define\('DEF_PLAYER_WIDTH'/", "define('SMALL_IMG_SIZE',768);						// Breite von small images\ndefine('DEF_PLAYER_WIDTH'", $settings);
 		if(!defined('MEDIUM_IMG_SIZE'))
-			$settings = preg_replace("/define\('DEF_PLAYER_WIDTH'/", "define('MEDIUM_IMG_SIZE',1280);						// Höhe von medium images\n\ndefine('DEF_PLAYER_WIDTH'", $settings);
+			$settings = preg_replace("/define\('DEF_PLAYER_WIDTH'/", "define('MEDIUM_IMG_SIZE',1280);						// Breite von medium images\n\ndefine('DEF_PLAYER_WIDTH'", $settings);
 		
 		
 		//**************
@@ -289,6 +303,16 @@ class ConciseCoreUpdater extends LiveUpdate
 		//**************
 		if(!defined('APPLE_TOUCH_ICON'))
 			$settings = preg_replace("/define\('CC_SITE_LOGO'/", "define('APPLE_TOUCH_ICON',\"apple-touch-icon-precomposed.png\");	// Apple touch icon\ndefine('CC_SITE_LOGO'", $settings);
+		
+		
+		//**************
+		// version 2.8.3
+		//**************
+		if(!defined('HTTPS_PROTOCOL'))
+			$settings = preg_replace("/define\('WEBSITE_LIVE'/", 'define(\'HTTPS_PROTOCOL\',!empty($_SERVER[\'HTTPS\']) && $_SERVER[\'HTTPS\']!="off");	// Protokoll der Verbindung (HTTP oder HTTPS, falls true)' . "\ndefine('WEBSITE_LIVE'", $settings);
+		
+		if(!defined('LARGE_IMG_SIZE'))
+			$settings = preg_replace("/define\('DEF_PLAYER_WIDTH'/", "define('LARGE_IMG_SIZE',1400);						// Breite von large images\n\ndefine('DEF_PLAYER_WIDTH'", $settings);
 		
 		
 		// settings.php speichern
@@ -338,6 +362,6 @@ else
 if(!isset($update))
 	$update			= 'all';
 
-$o_CoreUpdater = new ConciseCoreUpdater($DB, $updateVersion);
+$o_CoreUpdater = new ConciseCoreUpdater($DB, $o_lng, $updateVersion);
 $o_CoreUpdater->runCWMSUpdater($update);
 */

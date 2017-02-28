@@ -183,34 +183,36 @@ class ListMedia extends Admin
 			$subFolder	= "/" . $GLOBALS['_GET']['gal'] . "/thumbs";
 		else
 			$subFolder	= "";
+
+		parent::$task="modules";
+		parent::$type="gallery";
+		$this->headIncludeFiles['moduleeditor'] = true;
+		// Head-Definitionen (headExt)
+		$this->getAdminHeadIncludes();
 		
-				parent::$task="modules";
-				parent::$type="gallery";
-				$this->headIncludeFiles['moduleeditor'] = true;
-				// Head-Definitionen (headExt)
-				$this->getAdminHeadIncludes();
-				
-				// Head-Dateien zusammenführen
-				$this->setHeadIncludes();
+		// Head-Dateien zusammenführen
+		$this->setHeadIncludes();
 		
 		$o_media	= new Media($this->DB, $this->o_lng, $this);
-		echo $o_media->doAction($this->action, $type, $subFolder, $i);
+		$output		= $o_media->doAction($this->action, $type, $subFolder, $i);
 		
 		
 		// if gallery edit add scipts
 		if($this->action == "edit") {
 		
-			#echo '<script>' . "\r\n";
+			$output	.= '<script>' . "\r\n";
 			
-			#foreach($this->scriptFiles as $key => $val) {
-			#	echo 'head.load({' . $key . ': "' . PROJECT_HTTP_ROOT . '/' . $val . '"});' . "\r\n";			
-			#}
+			foreach($this->scriptFiles as $key => $val) {
+				$output	.= 'head.load({' . $key . ': "' . PROJECT_HTTP_ROOT . '/' . $val . '"});' . "\r\n";			
+			}
 			
-			#echo implode("\r", $this->scriptCode);
-			#echo '$.myTinyMCEModules();' . PHP_EOL;
+			$output	.= implode(PHP_EOL, $this->scriptCode);
+			$output	.= 'head.ready("editor", function(){ $.myTinyMCEModules(); });' . PHP_EOL;
 			
-			#echo '</script>' . "\r\n";
+			$output	.= '</script>' . "\r\n";
 		}
+		
+		echo $output;
 		
 		exit;
 		die();

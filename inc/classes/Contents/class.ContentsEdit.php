@@ -455,7 +455,11 @@ class ContentsEdit extends Contents
 	// getFeEditPageMenu
 	protected function getFeEditPageMenu()
 	{
-					
+		
+		// Theme select js code
+		$this->scriptCode[]	= $this->getTplSelectScriptCode();
+
+		// Dropdown menu
 		$output =	'<div class="dropdown {t_class:btngroup} {t_class:btngroupxs}">' . PHP_EOL;
 	
 		// Button link edit page
@@ -508,7 +512,6 @@ class ContentsEdit extends Contents
 		$output	.=	'<ul id="cc-layoutSelectionBox" class="imagePicker {t_class:ddmenu}">' . PHP_EOL .
 					'</ul>' . PHP_EOL;							
 		
-		$output	.=	$this->getTplSelectScriptTag();
 		$output	.=	'</form>' . PHP_EOL;
 		
 		$output	.=	'</li>' . PHP_EOL;
@@ -523,12 +526,11 @@ class ContentsEdit extends Contents
 	}
 	
 
-	// getTplSelectScriptTag
-	protected function getTplSelectScriptTag()
+	// getTplSelectScriptCode
+	protected function getTplSelectScriptCode()
 	{
 
-		return	'<script>' . PHP_EOL .
-				'head.ready("jquery", function(){' . PHP_EOL .
+		return	'head.ready("jquery", function(){' . PHP_EOL .
 				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . PHP_EOL .
 				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . PHP_EOL .
 				'head.ready("imagepicker", function(){' . PHP_EOL .
@@ -564,8 +566,7 @@ class ContentsEdit extends Contents
 						});' . PHP_EOL .
 					'});' . PHP_EOL .
 				'});' . PHP_EOL .
-				'});' . PHP_EOL .
-				'</script>' . PHP_EOL;
+				'});' . PHP_EOL;
 	
 	}
 	

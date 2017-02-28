@@ -37,7 +37,7 @@ class Admin_Settings extends Admin implements AdminTask
 		
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:adminsettings}' . PHP_EOL . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -1129,7 +1129,7 @@ class Admin_Settings extends Admin implements AdminTask
 
 
 
-		$this->adminContent .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL .
+		$this->adminContent .=	parent::getTokenInput() .
 								'</form>' . PHP_EOL .
 								'</div>' . PHP_EOL .
 								'<p>&nbsp;</p>' . PHP_EOL;

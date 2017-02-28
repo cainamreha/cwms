@@ -48,14 +48,12 @@ class RegisterElement extends ElementFactory implements Elements
 		
 		// Formvalidator
 		$this->scriptFiles["formvalidator"]	= "extLibs/jquery/form-validator/jquery.form-validator.min.js";		
+		$this->scriptCode[]					= $this->getRegScriptCode();
 		
 		// Registrierungsformular ausgeben
 		$o_user				= new User($this->DB, $this->o_lng);
 		$o_user->formAction	= parent::$currentURL;
 		$output				= $o_user->getRegPage($this->conValue);
-		
-		// Form validator script
-		$output	.= $this->getScriptTag();
 		
 		// Ggf. Attribute (Styles) Wrapper-div hinzufügen
 		if($this->conAttributes['id'] != "" || $this->conAttributes['class'] != "" || $this->conAttributes['style'] != "")
@@ -66,15 +64,14 @@ class RegisterElement extends ElementFactory implements Elements
 	}	
 	
 
-	// getScriptTag
-	public function getScriptTag()
+	// getRegScriptCode
+	public function getRegScriptCode()
 	{
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . "\r\n" .
-				'head.ready("formvalidator", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
+		return	'head.ready("jquery", function(){' . PHP_EOL .
+				'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . PHP_EOL .
+				'head.ready("formvalidator", function(){' . PHP_EOL .
+					'$(document).ready(function(){' . PHP_EOL .
 						'$.validate({
 							form : "#regform",
 							lang : "' . $this->lang . '",
@@ -84,12 +81,14 @@ class RegisterElement extends ElementFactory implements Elements
 							borderColorOnError : "",
 							onError : function($form) {
 								$("#regform .formErrorBox").addClass("' . ContentsEngine::replaceStyleDefs("{t_class:alert} {t_class:error}") . '").hide().fadeIn(800);
+							},
+							onSuccess : function($form) {
+								$form.find(\'button[type="submit"]\').not(".disabled").addClass("disabled").append(\'&nbsp;&nbsp;<span class="icons icon-refresh icon-spin"></span>\');
 							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL;
 	
 	}
 	

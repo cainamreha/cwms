@@ -1,11 +1,17 @@
 <?php
 namespace Concise;
 
+use Symfony\Component\EventDispatcher\Event;
+use Concise\Events\ExtendMainEvent;
+
 
 
 ###################################################
 ##############  Templates-Bereich  ################
 ###################################################
+
+// Event-Klassen einbinden
+require_once SYSTEM_DOC_ROOT."/inc/admintasks/main/events/event.ExtendMain.php";
 
 // Templates verwalten 
 
@@ -28,6 +34,12 @@ class Admin_Main extends Admin implements AdminTask
 		parent::__construct($DB, $o_lng);
 		
 		parent::$task = $task;
+		
+		// Events listeners registrieren
+		$this->addEventListeners("adminmain");
+		
+		// ExtendMainEvent
+		$this->o_extendMainEvent					= new ExtendMainEvent($this->DB, $this->o_lng);
 
 	}
 	
@@ -72,6 +84,12 @@ class Admin_Main extends Admin implements AdminTask
 	
 		// Menüboard
 		$this->adminContent .=	$this->getAdminMenu(1); // Menü
+		
+		
+		// dispatch event get_goeditcat_fields
+		$this->o_dispatcher->dispatch('global.get_main_contents', $this->o_extendMainEvent);
+			
+		$this->adminContent    .=	$this->o_extendMainEvent->getOutput(true);
 	
 	
 		// Script code
@@ -621,7 +639,7 @@ class Admin_Main extends Admin implements AdminTask
 		$output	.=	parent::getButtonLink($btnDefs);
 		
 		$output	.=	'</div>' . PHP_EOL . 
-					'</div><!-- Ende headerBox -->' . PHP_EOL;
+					$this->closeTag("#headerBox");
 		
 		return $output;
 		

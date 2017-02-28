@@ -98,7 +98,7 @@ class SearchConfigElement extends ConfigElementFactory implements ConfigElements
 	{
 
 		// Updatestring
-		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params)) . "',";
+		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params, JSON_UNESCAPED_UNICODE)) . "',";
 
 	}
 	

@@ -89,7 +89,7 @@ class GallerymenuConfigElement extends ConfigElementFactory implements ConfigEle
 	{
 
 		// Updatestring
-		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params)) . "',";
+		$this->dbUpdateStr = "'" . $this->DB->escapeString(json_encode($this->params, JSON_UNESCAPED_UNICODE)) . "',";
 
 	}
 	

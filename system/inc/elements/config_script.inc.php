@@ -89,7 +89,7 @@ class ScriptConfigElement extends ConfigElementFactory implements ConfigElements
 	{
 
 		// db-Updatestring
-		$params		= json_encode($this->params);
+		$params		= json_encode($this->params, JSON_UNESCAPED_UNICODE);
 
 		$this->dbUpdateStr = "'" . $this->DB->escapeString($params) . "',";
 

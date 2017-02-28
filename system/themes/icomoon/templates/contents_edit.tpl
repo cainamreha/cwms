@@ -2,7 +2,7 @@
 		<div id="ee-area-{e_area}-conID-{e_connr}" class="editDiv{e_empty}">
 			<div class="innerEditDiv cc-element-init{e_empty}{e_hidden}" data-type="{e_contype}" data-columns="{e_cols}" data-maxcols="{e_maxcols}" data-row="{e_row}" data-lang="{s_label:colno}" data-script="{system_root}/access/editElements.php?page=admin&action=fe-resize&area={e_conarea}&connr={e_connr}&id={e_id}&red={e_red}&cols=" data-menu="context" data-target="contextmenu-fe-{e_area}-{e_connr}">
 				<div class="conTypeDiv">
-                    <span class="conType cc-admin-icons cc-icon-{e_contype} contype-plugins conicon-{e_contype}" style="background-image:url({e_coniconpath}/conicon_{e_contype}.png)" title="{e_contype}">&nbsp;</span>				
+                    <span class="conType cc-admin-icons cc-icon-{e_contype} contype-plugins conicon-{e_contype}" title="{e_contype}">&nbsp;</span>				
                 </div>
                 <div class="editDivFrame {e_contype}" data-type="{e_contype}" title="{e_area}#{e_connr} &#9658; <strong>{e_contype}{e_subtype}</strong>"></div>
 				<div class="editButtons editButtons-panel" data-id="contextmenu-fe-{e_area}-{e_connr}">

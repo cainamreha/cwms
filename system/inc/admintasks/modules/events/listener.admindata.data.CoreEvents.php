@@ -227,8 +227,8 @@ class DataCoreEventsListener extends Admin_ModulesData
 		)
 			$output		 .=	'<span class="dataDate">' . $this->getEditableDate($event->dataEntry['date'], $event->dataEntry['id'], $event->o_lng->adminLang) . '</span>' . PHP_EOL;
 		else
-			$output		 .=	'<span class="dataDate" title="{s_date:created}">' . Modules::getLocalDateString($event->dataDate . ' ' . $event->dataTime, $event->o_lng->adminLang, true) . '</span>' . "\r\n";
-	
+			$output		 .=	'<span class="dataDate" title="{s_date:created}">' . Modules::getLocalDateString($event->dataEntry['date'] . ' ' . $event->dataEntry['time'], $event->o_lng->adminLang, true) . '</span>' . "\r\n";
+		
 		return $event->addOutput($output);
 		
 	}

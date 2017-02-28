@@ -83,6 +83,7 @@ class FormMailer
 			
 	}	
 	
+	
 	/**
 	 * assembleRecipients
 	 * 
@@ -120,6 +121,7 @@ class FormMailer
 	
 	}
 	
+	
 	/**
 	 * Ruft den Check auf.
 	 * 
@@ -136,71 +138,74 @@ class FormMailer
 		if($this->error === true)
 			return false;
 		
-		//E-Mailauthor
-		$from			= AUTO_MAIL_AUTHOR;
-		$replyTo		= AUTO_MAIL_EMAIL;
 		
-		//E-Mailempfänger-Adressen extrahieren
-		$recipients		= htmlspecialchars(implode(',', $this->recipients));
-		$recipientsCC	= htmlspecialchars(implode(',', $this->recipientsCC));
-		$recipientsBCC	= htmlspecialchars(implode(',', $this->recipientsBCC));
+		// Klasse phpMailer einbinden
+		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+		require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 		
-		$subject		= $this->subject; //Subject
+		// Instanz von PHPMailer bilden
+		$mail = new \PHPMailer();
+		
 		$htmlMail		= $this->getMailHTML($formTitle); //Message
 		$htmlMailCC		= $this->mailHTMLCC; //Message Cc
 		$htmlMailBCC	= $this->mailHTMLBCC; //Message Bcc
 
+		if(strpos($this->subject, "{domain}") !== false) {
+			$domain			= str_replace(array("http://", "https://", "www."), "", PROJECT_HTTP_ROOT);
+			$this->subject	= str_replace("{domain}", $domain, $this->subject);
+		}
+		
+		
+		//E-Mail-Empfänger-Adressen
+		if(!empty($this->recipientsCC)) {
+			foreach($this->recipientsCC as $ccAdd) {
+				$mail->addCC($ccAdd);
+			}
+		}
+		if(!empty($this->recipientsBCC)) {
+			foreach($this->recipientsBCC as $bccAdd) {
+				$mail->addBCC($bccAdd);
+			}
+		}
 
 		// Falls die pdf-Datei per E-Mail versandt werden soll
 		if($mailPDF) {
-									
-			// Header-Daten setzen
-			$boundary = md5(uniqid(time()));
-
-			$header	=	"MIME-Version: 1.0\n" .
-						'X-Mailer: PHP/' . phpversion() . "\r\n" .
-						'From: ' . $from . ' <' . $replyTo . '>' . "\r\n" .
-						'Reply-To:' . $replyTo . "\r\n" .
-						'Cc: ' . $recipientsCC . "\r\n" .
-						'Bcc: ' . $recipientsBCC . "\r\n" .
-						"Content-Type: multipart/mixed; boundary=$boundary\n\n".
-						"This is a multi-part message in MIME format\n".
-						"--$boundary\n".
-						'Content-type: text/html; charset=utf-8' . "\r\n" .
-						'Content-Transfer-Encoding: 8bit' . "\r\n\n" .
-						$htmlMail .
-						"\n--$boundary".
-						"\nContent-Type: application/octetstream; name=" . $pdfName . "\n".
-						"Content-Transfer-Encoding: base64\n".
-						"Content-Disposition: attachment; filename=" . $pdfName . "\n\n".
-						$pdfMailAttach.
-						"\n--$boundary--";
-						
-			$htmlMail = ""; // Inhalte entfernen, da schon in Header
-		}
-
-
-		// Falls noch kein Header für pdf-Mail gesetzt wurde, Header setzen
-		if(!isset($header)) {
-				
-			$header		 = 'MIME-Version: 1.0' . "\n";
-			$header		.= 'X-Mailer: PHP/' . phpversion() . "\n";
-			$header		.= 'Content-type: text/html; charset=utf-8' . "\n";
-			$header		.= 'Content-Transfer-Encoding: 8bit' . "\n";
+		
+			$mail->addStringAttachment($pdfMailAttach, $pdfName);
 			
-			// zusätzlicher Header
-			$header		.= 'From: ' . $from . ' <' . $replyTo . '>' . "\n";
-			$header		.= 'Reply-To:' . $replyTo . "\n";
-			$header		.= 'Cc: ' . $recipientsCC . "\n";
-			$header		.= 'Bcc: ' . $recipientsBCC . "\n";
 		}
+
 		
-		// E-Mail senden
-		$mail		= @mail($recipients, $subject, $htmlMail, $header);
+		// E-Mail-Parameter für SMTP
+		$mail->setMailParameters(SMTP_MAIL, AUTO_MAIL_AUTHOR, $this->recipients, $this->subject, $htmlMail, true, "", "smtp");
 		
+		// E-Mail senden per phpMailer (SMTP)
+		$mailStatus = $mail->send();
+		
+		// Falls Versand per SMTP erfolglos, per Sendmail probieren
+		if($mailStatus !== true) {
+			
+			// E-Mail-Parameter für php Sendmail
+			$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $this->recipients, $this->subject, $htmlMail, true, "", "sendmail");
+			
+			// Absenderadresse der Email auf FROM: setzen
+			#$mail->Sender = $email;		
+			
+			// E-Mail senden per phpMailer (Sendmail)
+			$mailStatus = $mail->send();
+		}
+		// Falls Versand per Sendmail erfolglos, per mail() probieren
+		if($mailStatus !== true) {
+			
+			// E-Mail-Parameter für php mail()
+			$mail->setMailParameters(AUTO_MAIL_EMAIL, AUTO_MAIL_AUTHOR, $this->recipients, $this->subject, $htmlMail, true);
+			
+			// E-Mail senden per phpMailer (mail())
+			$mailStatus = $mail->send();
+		}
 		
 		// Falls kein Fehler vorliegt ein Cookie setzen sowie die Variable $mes auf sent gesetzt
-		if ($mail === true) {
+		if ($mailStatus === true) {
 			
 			@setcookie("spam_protection", "spam_protection", time()+300);
 			return true;
@@ -211,6 +216,7 @@ class FormMailer
 		}
 		
 	}	
+
 	
 	/**
 	 * Generiert den HTML-Code für die E-Mail

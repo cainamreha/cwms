@@ -242,18 +242,17 @@ class VideoElement extends ElementFactory implements Elements
 					</div>';
 		
 		// Script stop on close modal
-		$output	.= '<script>
-						head.ready(function(){
-						$(document).ready(function(){
-							$("#' . $this->modalID . '").on("hide.bs.modal",function(e){
-								var modEle = $("#' . $this->modalID . '").find("video");
-								if(modEle.length){
-									modEle[0].pause();
-								}
-							});
-						});
-						});
-					</script>';
+		$this->scriptCode[]	= 'head.ready(function(){
+								$(document).ready(function(){
+									$("#' . $this->modalID . '").appendTo("body");
+									$("#' . $this->modalID . '").on("hide.bs.modal",function(e){
+										var modEle = $("#' . $this->modalID . '").find("video");
+										if(modEle.length){
+											modEle[0].pause();
+										}
+									});
+								});
+								});';
 		return $output;
 	
 	}

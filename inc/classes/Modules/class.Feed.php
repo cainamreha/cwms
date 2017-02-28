@@ -289,7 +289,8 @@ class Feed
 				$this->feed .=  '<item>';
 				$this->feed .=  '<title>'.$dataHeader.'</title>';
 				$this->feed .=  '<link>' . $this->targetUrl . '/' . $dataPath . '</link>';
-				$this->feed .=  '<description><![CDATA[' . $dataTeaser . ']]></description>';
+				#$this->feed .=  '<description><![CDATA[' . $dataTeaser . ']]></description>';
+				$this->feed .=  '<description>' . strip_tags($dataTeaser) . '</description>'; // works in keosu app rss feed
 				$this->feed .=  '<pubDate>'.date(DATE_RSS, $dataDate).'</pubDate>';
 				$this->feed .=  '</item>';
 			}

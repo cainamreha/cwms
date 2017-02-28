@@ -44,7 +44,7 @@ class Admin_Langs extends Admin implements AdminTask
 		
 		// Enthält Headerbox
 		$this->adminHeader		=	'{s_text:adminlangs}' . 
-									'</div><!-- Ende headerBox -->' . PHP_EOL;
+									$this->closeTag("#headerBox");
 								
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -521,10 +521,10 @@ class Admin_Langs extends Admin implements AdminTask
 						
 						// Tabelle forms und form_definitioins updaten
 						$formsField =	"ADD `title_" . $natCode . "` VARCHAR(200) NOT NULL," . 
-										"ADD `notice_success_" . $natCode . "` VARCHAR(300) NOT NULL," . 
-										"ADD `notice_error_" . $natCode . "` VARCHAR(300) NOT NULL," . 
-										"ADD `notice_field_" . $natCode . "` VARCHAR(200) NOT NULL," . 
-										"ADD `add_labels_" . $natCode . "` VARCHAR(2048) NOT NULL";
+										"ADD `notice_success_" . $natCode . "` TEXT NULL," . 
+										"ADD `notice_error_" . $natCode . "` TEXT NULL," . 
+										"ADD `notice_field_" . $natCode . "` TEXT NULL," . 
+										"ADD `add_labels_" . $natCode . "` TEXT NULL";
 
 						$formsDefField =	"ADD `label_" . $natCode . "` VARCHAR(300) NULL," . 
 											"ADD `value_" . $natCode . "` TEXT NULL," . 
@@ -722,7 +722,7 @@ class Admin_Langs extends Admin implements AdminTask
 			$this->adminContent .=	parent::getButton($btnDefs);
 			
 			$this->adminContent .=	'<input name="new_ln" type="hidden" value="{s_button:takelang}" />' . PHP_EOL . 
-									'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL . 
+									parent::getTokenInput() . 
 									'</li>' .
 									'</ul>' .
 									'</form>' .
@@ -1042,10 +1042,10 @@ class Admin_Langs extends Admin implements AdminTask
 							
 								// Tabelle forms und form_definitioins updaten
 								$formsField =	"CHANGE `title_" . $natCodeOld . "` `title_" . $natCode . "` VARCHAR(200) NOT NULL," . 
-												"CHANGE `notice_success_" . $natCodeOld . "` `notice_success_" . $natCode . "` VARCHAR(300) NOT NULL," . 
-												"CHANGE `notice_error_" . $natCodeOld . "` `notice_error_" . $natCode . "` VARCHAR(300) NOT NULL," . 
-												"CHANGE `notice_field_" . $natCodeOld . "` `notice_field_" . $natCode . "` VARCHAR(200) NOT NULL," . 
-												"CHANGE `add_labels_" . $natCodeOld . "` `add_labels_" . $natCode . "` VARCHAR(2048) NOT NULL";
+												"CHANGE `notice_success_" . $natCodeOld . "` `notice_success_" . $natCode . "` TEXT NULL," . 
+												"CHANGE `notice_error_" . $natCodeOld . "` `notice_error_" . $natCode . "` TEXT NULL," . 
+												"CHANGE `notice_field_" . $natCodeOld . "` `notice_field_" . $natCode . "` TEXT NULL," . 
+												"CHANGE `add_labels_" . $natCodeOld . "` `add_labels_" . $natCode . "` TEXT NULL";
 		
 								$formsDefField =	"CHANGE `label_" . $natCodeOld . "` `label_" . $natCode . "` VARCHAR(300) NULL," . 
 													"CHANGE `value_" . $natCodeOld . "` `value_" . $natCode . "` TEXT NULL," . 
@@ -1269,7 +1269,7 @@ class Admin_Langs extends Admin implements AdminTask
 			$this->adminContent .=	'<div class="adminBox">' . PHP_EOL .
 									'<form action="' . $formAction . '" name="adminfm" id="adminfm1" method="post" enctype="multipart/form-data">' . PHP_EOL .
 									'<input name="edit_ln" type="hidden" value="' . htmlspecialchars($GLOBALS['_POST']['edit_ln']) . '" />' . PHP_EOL .
-									'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL .
+									parent::getTokenInput() .
 									'<ul class="adminSection">' . PHP_EOL;
 			
 			$this->adminContent .=	'<li><label>{s_label:lang} / {s_label:langN}</label>' . PHP_EOL;
@@ -1366,7 +1366,7 @@ class Admin_Langs extends Admin implements AdminTask
 		
 			$this->adminContent .=	'<form action="' . $formAction . '" name="adminfm" id="adminfm2" method="post">' . PHP_EOL .
 									'<input name="edit_ln" type="hidden" value="' . htmlspecialchars($GLOBALS['_POST']['edit_ln']) . '" />' . PHP_EOL;
-									#'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL;
+									#parent::getTokenInput();
 			
 			$lineCount	= 0;
 			$groupCount	= 1;
@@ -1732,7 +1732,7 @@ class Admin_Langs extends Admin implements AdminTask
 				$this->adminContent .=	parent::getButton($btnDefs);
 			
 				$this->adminContent .=	'<input name="cancel" type="hidden" value="{s_button:cancel}" />' . PHP_EOL . 
-										'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL . 
+										parent::getTokenInput() . 
 										'</form>' . PHP_EOL .
 										'<form action="' . $formAction . '" id="adminfm" method="post">' . PHP_EOL;
 		
@@ -1749,7 +1749,7 @@ class Admin_Langs extends Admin implements AdminTask
 				$this->adminContent .=	'<input type="hidden" name="step" id="step" value="del" /> ' . PHP_EOL . 
 										'<input type="hidden" name="delete" value="' . $delLang . '" />' . PHP_EOL . 
 										'<input type="hidden" name="del_ln" value="' . $delLang . '" />' . PHP_EOL . 
-										'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL . 
+										parent::getTokenInput() . 
 										'</form>' . PHP_EOL . 
 										'</li>' . PHP_EOL . 
 										'</ul>' . PHP_EOL;
@@ -1796,7 +1796,7 @@ class Admin_Langs extends Admin implements AdminTask
 			
 			$this->adminContent .=	parent::getButton($btnDefs);
 	
-			$this->adminContent .=	'<input type="hidden" name="token" class="token" value="' . parent::$token . '" />' . PHP_EOL . 
+			$this->adminContent .=	parent::getTokenInput() . 
 									'</form>' . PHP_EOL;
 		}
 		
@@ -1850,7 +1850,7 @@ class Admin_Langs extends Admin implements AdminTask
 		$langsList .=	parent::getButton($btnDefs);
 
 		$langsList .=		'<input type="hidden" name="new_ln" value="new_ln" />' . PHP_EOL . 
-							'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+							parent::getTokenInput() . 
 							'</form>' . PHP_EOL .
 							'</span>' . PHP_EOL .
 							'</li></ul>' . PHP_EOL .
@@ -1895,7 +1895,7 @@ class Admin_Langs extends Admin implements AdminTask
 			$langsList .=	parent::getButton($btnDefs);
 								
 			$langsList .=		'<input type="hidden" name="edit_ln" value="' . $lang.'#'.$this->o_lng->existNation[$i].'#'.$this->o_lng->existFlag[$i] . '" />' . PHP_EOL . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+								parent::getTokenInput() . 
 								'</form>' . PHP_EOL; 
 								
 			if(count($this->o_lng->installedLangs) > 1) {			
@@ -1916,7 +1916,7 @@ class Admin_Langs extends Admin implements AdminTask
 				$langsList .=	parent::getButton($btnDefs);
 				
 				$langsList .= 	'<input type="hidden" name="del_ln" value="' . $lang . '" />' . PHP_EOL . 
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . PHP_EOL . 
+								parent::getTokenInput() . 
 								'</form>' . PHP_EOL;
 			}
 			

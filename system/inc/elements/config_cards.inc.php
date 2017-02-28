@@ -30,6 +30,7 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 	private	$cardContent_align		= array(1 => "");
 	private	$cardContent_id			= array(1 => "");
 	private	$cardContent_class		= array(1 => "");
+	private	$cardContent_tt			= array(1 => "");
 	private	$cardFormat				= array(1 => "");
 	private	$cardStyle				= array(1 => "");
 	private	$cardFormatAll			= "";
@@ -106,39 +107,85 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 
 		$this->scriptFiles["concards"] = "system/access/js/cards.min.js";
 
+		// individual card params
 		if(count($this->params) > 1) {
+		
 			
-			$this->cardContent_h			= isset($this->params[0]) ? $this->params[0] : array();
-			$this->cardContent_con			= isset($this->params[1]) ? $this->params[1] : array();
-			$this->cardContent_f			= isset($this->params[2]) ? $this->params[2] : array();
-			$this->cardContent_img			= isset($this->params[3]) ? $this->params[3] : array();
-			$this->cardContent_img_align	= isset($this->params[4]) ? $this->params[4] : array();
-			$this->cardContent_img_link		= isset($this->params[5]) ? $this->params[5] : array();
-			$this->cardContent_col			= isset($this->params[6]) ? $this->params[6] : array();
-			$this->cardStyle				= isset($this->params[7]) ? $this->params[7] : array();
-			$this->cardFormat				= isset($this->params[8]) ? $this->params[8] : array();
-			$this->cardContent_align		= isset($this->params[9]) ? $this->params[9] : array();
-			$this->cardContent_id			= isset($this->params[10]) ? $this->params[10] : array();
-			$this->cardContent_class		= isset($this->params[11]) ? $this->params[11] : array();
+			// #### Legacy #### cwms version < 2.8.3
+			if(!isset($this->params["head"])) {
+				$this->params["head"]	=	$this->cardContent_h			= isset($this->params[0]) ? $this->params[0] : array();
+				$this->params["con"]	=	$this->cardContent_con			= isset($this->params[1]) ? $this->params[1] : array();
+				$this->params["foot"]	=	$this->cardContent_f			= isset($this->params[2]) ? $this->params[2] : array();
+				$this->params["img"]	=	$this->cardContent_img			= isset($this->params[3]) ? $this->params[3] : array();
+				$this->params["ia"]	=	$this->cardContent_img_align	= isset($this->params[4]) ? $this->params[4] : array();
+				$this->params["li"]	=	$this->cardContent_img_link		= isset($this->params[5]) ? $this->params[5] : array();
+				$this->params["col"]	=	$this->cardContent_col		= isset($this->params[6]) ? $this->params[6] : array();
+				$this->params["cs"]	=	$this->cardStyle				= isset($this->params[7]) ? $this->params[7] : array();
+				$this->params["cf"]	=	$this->cardFormat				= isset($this->params[8]) ? $this->params[8] : array();
+				$this->params["al"]	=	$this->cardContent_align		= isset($this->params[9]) ? $this->params[9] : array();
+				$this->params["id"]	=	$this->cardContent_id			= isset($this->params[10]) ? $this->params[10] : array();
+				$this->params["cl"]	=	$this->cardContent_class		= isset($this->params[11]) ? $this->params[11] : array();
+				$this->params["tt"]	=	$this->cardContent_tt			= isset($this->params[12]) ? $this->params[12] : array();
+
+				
+				if(!isset($this->params[13]))
+					$this->cardFormatAll	= "";
+				else
+					$this->cardFormatAll	= $this->params[13];
+				if(!isset($this->params[14]))
+					$this->cardStyleAll		= "";
+				else
+					$this->cardStyleAll		= $this->params[14];
+				if(!isset($this->params[15]))
+					$this->cardDisplayAll	= "";
+				else
+					$this->cardDisplayAll	= $this->params[15];
+				if(!isset($this->params[16]))
+					$this->cardHoverAll		= "";
+				else
+					$this->cardHoverAll		= $this->params[16];
+
+				$this->params["fa"]	=	$this->cardFormatAll;
+				$this->params["sa"]	=	$this->cardStyleAll;
+				$this->params["ovl"]	=	$this->cardDisplayAll;
+				$this->params["hov"]	=	$this->cardHoverAll;
+				
+			}
+			// #### end Legacy #### cwms version < 2.8.3
+		
+			$this->cardContent_h			= isset($this->params["head"]) ? $this->params["head"] : array();
+			$this->cardContent_con			= isset($this->params["con"]) ? $this->params["con"] : array();
+			$this->cardContent_f			= isset($this->params["foot"]) ? $this->params["foot"] : array();
+			$this->cardContent_img			= isset($this->params["img"]) ? $this->params["img"] : array();
+			$this->cardContent_img_align	= isset($this->params["ia"]) ? $this->params["ia"] : array();
+			$this->cardContent_img_link		= isset($this->params["li"]) ? $this->params["li"] : array();
+			$this->cardContent_col			= isset($this->params["col"]) ? $this->params["col"] : array();
+			$this->cardStyle				= isset($this->params["cs"]) ? $this->params["cs"] : array();
+			$this->cardFormat				= isset($this->params["cf"]) ? $this->params["cf"] : array();
+			$this->cardContent_align		= isset($this->params["al"]) ? $this->params["al"] : array();
+			$this->cardContent_id			= isset($this->params["id"]) ? $this->params["id"] : array();
+			$this->cardContent_class		= isset($this->params["cl"]) ? $this->params["cl"] : array();
+			$this->cardContent_tt			= isset($this->params["tt"]) ? $this->params["tt"] : array();
 
 		}
 		
-		if(!isset($this->params[12]))
+		// universal card params
+		if(!isset($this->params["fa"]))
 			$this->cardFormatAll	= "";
 		else
-			$this->cardFormatAll	= $this->params[12];
-		if(!isset($this->params[13]))
+			$this->cardFormatAll	= $this->params["fa"];
+		if(!isset($this->params["sa"]))
 			$this->cardStyleAll		= "";
 		else
-			$this->cardStyleAll		= $this->params[13];
-		if(!isset($this->params[14]))
+			$this->cardStyleAll		= $this->params["sa"];
+		if(!isset($this->params["ovl"]))
 			$this->cardDisplayAll	= "";
 		else
-			$this->cardDisplayAll	= $this->params[14];
-		if(!isset($this->params[15]))
+			$this->cardDisplayAll	= $this->params["ovl"];
+		if(!isset($this->params["hov"]))
 			$this->cardHoverAll		= "";
 		else
-			$this->cardHoverAll		= $this->params[15];
+			$this->cardHoverAll		= $this->params["hov"];
 
 	}
 	
@@ -161,6 +208,7 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 			$this->cardContent_align		= array();
 			$this->cardContent_id			= array();
 			$this->cardContent_class		= array();
+			$this->cardContent_tt			= array();
 
 			$tc	= 1;
 			
@@ -202,6 +250,9 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 			
 				// Card class
 				$this->cardContent_class[$tc]	= $this->a_POST[$this->conPrefix . '_card_class'][$key];
+			
+				// Card tooltip
+				$this->cardContent_tt[$tc]	= $this->a_POST[$this->conPrefix . '_card_tt'][$key];
 				
 				
 				// Pfade durch Platzhalter ersetzen
@@ -220,22 +271,23 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 			$this->cardHoverAll		= $this->a_POST[$this->conPrefix . '_cardHoverAll'];
 		
 			// Reassign vars
-			$this->params[0]	= $this->cardContent_h;
-			$this->params[1]	= $this->cardContent_con;
-			$this->params[2]	= $this->cardContent_f;
-			$this->params[3]	= $this->cardContent_img;
-			$this->params[4]	= $this->cardContent_img_align;
-			$this->params[5]	= $this->cardContent_img_link;
-			$this->params[6]	= $this->cardContent_col;
-			$this->params[7]	= $this->cardStyle;
-			$this->params[8]	= $this->cardFormat;
-			$this->params[9]	= $this->cardContent_align;
-			$this->params[10]	= $this->cardContent_id;
-			$this->params[11]	= $this->cardContent_class;
-			$this->params[12]	= $this->cardFormatAll;
-			$this->params[13]	= $this->cardStyleAll;
-			$this->params[14]	= $this->cardDisplayAll;
-			$this->params[15]	= $this->cardHoverAll;
+			$this->params["head"]	= $this->cardContent_h;
+			$this->params["con"]	= $this->cardContent_con;
+			$this->params["foot"]	= $this->cardContent_f;
+			$this->params["img"]	= $this->cardContent_img;
+			$this->params["ia"]		= $this->cardContent_img_align;
+			$this->params["li"]		= $this->cardContent_img_link;
+			$this->params["col"]	= $this->cardContent_col;
+			$this->params["cs"]		= $this->cardStyle;
+			$this->params["cf"]		= $this->cardFormat;
+			$this->params["al"]		= $this->cardContent_align;
+			$this->params["id"]		= $this->cardContent_id;
+			$this->params["cl"]		= $this->cardContent_class;
+			$this->params["tt"]		= $this->cardContent_tt;
+			$this->params["fa"]		= $this->cardFormatAll;
+			$this->params["sa"]		= $this->cardStyleAll;
+			$this->params["ovl"]	= $this->cardDisplayAll;
+			$this->params["hov"]	= $this->cardHoverAll;
 
 		}
 	
@@ -290,7 +342,7 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 		
 		// db-Updatestring
 		$this->dbUpdateStr  = "'";
-		$this->dbUpdateStr .= $this->DB->escapeString(json_encode($this->params));
+		$this->dbUpdateStr .= $this->DB->escapeString(json_encode($this->params, JSON_UNESCAPED_UNICODE));
 		$this->dbUpdateStr .= "',";
 
 	}
@@ -335,6 +387,15 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 			
 			$output	.=	'Card ' . $key . PHP_EOL .
 						'<span class="editButtons-panel">' . PHP_EOL;
+			
+			// Button copy card
+			$btnDefs	= array(	"type"		=> "button",
+									"class"		=> 'copyCard button-icon-only',
+									"title"		=> '{s_title:copy}',
+									"icon"		=> "copy"
+								);
+				
+			$output .=	parent::getButton($btnDefs);
 			
 			// Button remove card
 			$btnDefs	= array(	"type"		=> "button",
@@ -506,6 +567,12 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 						'<input type="text" name="' . $this->conPrefix . '_card_class[]" value="' . htmlspecialchars($this->cardContent_class[$key]) . '">';
 			$output .=	'</div>' . PHP_EOL;
 			
+			// Card tooltip
+			$output .=	'<div class="leftBox">' . PHP_EOL .
+						'<label>Tooltip</label>' . PHP_EOL . 
+						'<input type="text" name="' . $this->conPrefix . '_card_tt[]" value="' . htmlspecialchars($this->cardContent_tt[$key]) . '">';
+			$output .=	'</div>' . PHP_EOL;
+			
 			$output .=	'<br class="clearfloat" />' . PHP_EOL;
 			
 			$output .=	'</ul>' . PHP_EOL;
@@ -568,7 +635,8 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 					'<label>Body {s_form:format}</label>' . PHP_EOL . 
 					'<select name="' . $this->conPrefix . '_cardDisplayAll" id="' . $this->conPrefix . '_cardDisplayAll" class="selDisplayFormat">' .
 					'<option value="">{s_option:default}</option>' . PHP_EOL .
-					'<option value="ovl"' . ($this->cardDisplayAll == "ovl" ? ' selected="selected"' : '') . '>Overlay</option>' . PHP_EOL .
+					'<option value="1"' . ($this->cardDisplayAll == "1" ? ' selected="selected"' : '') . '>Overlay</option>' . PHP_EOL .
+					'<option value="2"' . ($this->cardDisplayAll == "2" ? ' selected="selected"' : '') . '>Flip card</option>' . PHP_EOL .
 					'</select>' . PHP_EOL .
 					'</div>' . PHP_EOL;
 		
@@ -577,7 +645,7 @@ class CardsConfigElement extends ConfigElementFactory implements ConfigElements
 					'<label>Body {s_form:format} (hover)</label>' . PHP_EOL . 
 					'<select name="' . $this->conPrefix . '_cardHoverAll" id="' . $this->conPrefix . '_cardHoverAll" class="selHoverFormat">' .
 					'<option value="">{s_option:default}</option>' . PHP_EOL .
-					'<option value="hov"' . ($this->cardHoverAll == "hov" ? ' selected="selected"' : '') . '>Hover</option>' . PHP_EOL .
+					'<option value="1"' . ($this->cardHoverAll == "1" ? ' selected="selected"' : '') . '>Hover</option>' . PHP_EOL .
 					'</select>' . PHP_EOL .
 					'</div>' . PHP_EOL;
 

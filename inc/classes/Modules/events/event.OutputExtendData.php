@@ -57,7 +57,7 @@ class OutputExtendDataEvent extends Event
 	public $dbInsertStr1	= "";
 	public $dbInsertStr2	= "";
 	public $dbUpdateStr		= "";
-	public $token			= "";
+	public $tokenInput		= "";
 	public $hint			= "";
 	public $wrongInput		= array();
 	protected $output		= "";

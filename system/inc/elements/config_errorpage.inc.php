@@ -97,7 +97,7 @@ class ErrorpageConfigElement extends ConfigElementFactory implements ConfigEleme
 	{
 	
 		// Pfade durch Platzhalter ersetzen
-		$params		= json_encode($this->params);
+		$params		= json_encode($this->params, JSON_UNESCAPED_UNICODE);
 		
 		$rootPH		= "{#root}";
 		$rootImgPH	= "{#root}/{#root_img}";

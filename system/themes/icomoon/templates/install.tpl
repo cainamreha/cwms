@@ -1,7 +1,7 @@
 		<div id="header">
 			<div id="topBox">
-			</div><!-- Ende #topBox -->
-		</div><!-- Ende #header -->
+			</div><!-- end #topBox -->
+		</div><!-- end #header -->
 		<div id="mainContent">
 			{MAIN}
 			<p class="clearfix">&nbsp;</p>
@@ -17,4 +17,4 @@
 				<a href="http://www.hermani-webrealisierung.de" target="_blank">hermani <strong>webrealisierung</strong></a>
 			</p>
 			{FOOT}
-		</div><!-- Ende #footer -->
+		</div><!-- end #footer -->

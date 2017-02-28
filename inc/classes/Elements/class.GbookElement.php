@@ -47,7 +47,8 @@ class GbookElement extends ElementFactory implements Elements
 		##############################
 		
 		// Formvalidator
-		$this->scriptFiles["formvalidator"]	= "extLibs/jquery/form-validator/jquery.form-validator.min.js";		
+		$this->scriptFiles["formvalidator"]	= "extLibs/jquery/form-validator/jquery.form-validator.min.js";
+		$this->scriptCode[]					= $this->getGbScriptCode();
 		
 		// Zunächst das entsprechende Modul einbinden (Search-Klasse)
 		require_once PROJECT_DOC_ROOT."/inc/classes/Modules/class.Guestbook.php";
@@ -55,9 +56,6 @@ class GbookElement extends ElementFactory implements Elements
 		// Gästebuch-Instanz
 		$o_gBook	= new Guestbook($this->DB, $this->o_lng, $this->group, parent::$currentURLPath); // Formular generieren
 		$output		= $o_gBook->getGuestbook($this->group); // Gästebuch generieren
-		
-		// Form validator script
-		$output	.= $this->getScriptTag();
 
 		$this->mergeHeadCodeArrays($o_gBook);
 		
@@ -69,26 +67,27 @@ class GbookElement extends ElementFactory implements Elements
 	}	
 	
 
-	// getScriptTag
-	public function getScriptTag()
+	// getGbScriptCode
+	public function getGbScriptCode()
 	{
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . "\r\n" .
-				'head.ready("formvalidator", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
+		return	'head.ready("jquery", function(){' . PHP_EOL .
+				'head.load({formvalidator: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/form-validator/jquery.form-validator.min.js"});' . PHP_EOL .
+				'head.ready("formvalidator", function(){' . PHP_EOL .
+					'$(document).ready(function(){' . PHP_EOL .
 						'$.validate({
 							form : "#gbfm",
 							lang : "' . $this->lang . '",
 							validateOnBlur : false,
 							borderColorOnError : "",
-							scrollToTopOnError : false
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+							scrollToTopOnError : false,
+							onSuccess : function($form) {
+								$form.find(\'button[type="submit"]\').not(".disabled").addClass("disabled").append(\'&nbsp;&nbsp;<span class="icons icon-refresh icon-spin"></span>\');
+							}
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL;
 	
 	}
 	

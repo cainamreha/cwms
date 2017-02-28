@@ -495,12 +495,12 @@ class Menu extends ContentsEngine
 							$menuOutput .= '<li class="active ' . $liClass . '">';
 							
 							if($activeItem == "span")
-								$menuOutput .= '<span' . ($replaceTitle != "" ? ' title="' . $menuTitle . '"' : '') . '>' . $title . '</span>' . $separator . '</li>'.PHP_EOL; // Aktuellen Menuepunkt ohne Link ausgeben
+								$menuOutput .= '<span' . ($replaceTitle != "" ? ' title="' . $menuTitle . '"' : '') . '>' . $title . '</span>' . $separator . '</li>' . PHP_EOL; // Aktuellen Menuepunkt ohne Link ausgeben
 							else
-								$menuOutput .= '<a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $alias . PAGE_EXT . $editLang . '"' . ($replaceTitle != "" ? ' class="' . $linkClass . '" title="' . $menuTitle . '"' : '') . $robots . '>' . $title . '</a>' . $separator . '</li>'.PHP_EOL; // Menuepunkte mit Links ausgeben
+								$menuOutput .= '<a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $alias . PAGE_EXT . $editLang . '"' . ($replaceTitle != "" ? ' class="' . $linkClass . '" title="' . $menuTitle . '"' : '') . $robots . '>' . $title . '</a>' . $separator . '</li>' . PHP_EOL; // Menuepunkte mit Links ausgeben
 						}
 						else
-							$menuOutput .= '<li class="' . $liClass . '"><a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $alias . PAGE_EXT . $editLang . '"' . ($replaceTitle != "" ? ' class="' . $linkClass . '" title="' . $menuTitle . '"' : '') . $robots . '>' . $title . '</a>' . $separator . '</li>'.PHP_EOL; // Menuepunkte mit Links ausgeben
+							$menuOutput .= '<li class="' . $liClass . '"><a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $alias . PAGE_EXT . $editLang . '"' . ($replaceTitle != "" ? ' class="' . $linkClass . '" title="' . $menuTitle . '"' : '') . $robots . '>' . $title . '</a>' . $separator . '</li>' . PHP_EOL; // Menuepunkte mit Links ausgeben
 					}
 					
 					while($menuLevel > $mainLevel) { // Solange der aktuelle lft-Wert größer als der alte rgt-Wert +2...
@@ -547,12 +547,14 @@ class Menu extends ContentsEngine
 					
 					
 					while($level >= $i+2) { // Solange der aktuelle lft-Wert größer als oder gleich ist wie der alte rgt-Wert +2...
+						
+						$trimmedMo	= trim($menuOutput);
 	
-						if(substr($menuOutput, strlen($menuOutput)-7, 5) == "</li>") { // Falls schon ein li-Tag am Ende des Menues ist,...
-							$closeList = $this->dropdownClose . '</li>'.PHP_EOL; // ...Liste schließen-Tag einfügen
+						if(substr($trimmedMo, strlen($trimmedMo)-5, 5) == "</li>") { // Falls schon ein li-Tag am Ende des Menues ist,...
+							$closeList = $this->dropdownClose . PHP_EOL . '</li>' . PHP_EOL; // ...Liste schließen-Tag einfügen
 						}
 						else					
-							$closeList = '</li>' . $this->dropdownClose . '</li>'.PHP_EOL; // Sonst Listenpunkt und Liste schließen
+							$closeList = '</li>' . PHP_EOL . $this->dropdownClose . PHP_EOL . '</li>' . PHP_EOL; // Sonst Listenpunkt und Liste schließen
 							
 						$menuOutput .= $closeList; // Schließen-Tags anhängen
 						$level--; // Dekrement
@@ -623,7 +625,7 @@ class Menu extends ContentsEngine
 								if($currentPageId != $pageId)
 									$menuListItem 	= str_replace('class="active ', 'class="', $menuListItem);
 							
-								$menuOutput 			.= $menuListItem . '</li>'.PHP_EOL;
+								$menuOutput 			.= $menuListItem . '</li>' . PHP_EOL;
 																
 								$nextGroupBaseItemExt = next($groupBaseItemExt);
 								
@@ -641,12 +643,12 @@ class Menu extends ContentsEngine
 								$this->parentObj->catTable = "articles_categories";
 								$this->parentObj->urlCatPath = "";
 								$menuOutput .= '<ul>' . str_replace(" class=\"dataMenu\"", "", ModulesData::getDataMenu("articles", "catmenu", "2", "", "", "", "ORDER BY `sort_id`",PROJECT_HTTP_ROOT."/Produkte"));
-								$menuOutput .= '</li>'.PHP_EOL;
+								$menuOutput .= '</li>' . PHP_EOL;
 							}
 							################  Einfügen von Artikelkategorien  ################
 							*/
 							
-							$menuOutput .= "</li>".PHP_EOL;
+							$menuOutput .= '</li>' . PHP_EOL;
 						}
 						
 					} // Ende if Berechtigung
@@ -657,7 +659,7 @@ class Menu extends ContentsEngine
 			
 			while($menuLevel > $mainLevel) { // Solange der aktuelle lft-Wert größer als oder gleich ist wie der alte rgt-Wert +2...
 
-				$closeList = $this->dropdownClose . '</li>'.PHP_EOL; // ...Liste schließen-Tag einfügen
+				$closeList = $this->dropdownClose . '</li>' . PHP_EOL; // ...Liste schließen-Tag einfügen
 					
 				$menuOutput .= $closeList; // Schließen-Tags anhängen
 				$menuLevel--; // Dekrement
@@ -666,7 +668,7 @@ class Menu extends ContentsEngine
 			
 			// Falls kein Listenpunkt vorhanden, leeren Punkt erzeugen
 			if(strpos($menuOutput, "<li") === false)
-				$menuOutput .= "<li>&nbsp;</li>".PHP_EOL;
+				$menuOutput .= '<li>&nbsp;</li>' . PHP_EOL;
 			
 			
 			$menuOutput .= $this->navbarClose;
@@ -904,11 +906,13 @@ class Menu extends ContentsEngine
 						
 						while($j >= $oldRgt+2) { // Solange der aktuelle lft-Wert größer als oder gleich ist wie der alte rgt-Wert +2...
 						
-							if(substr($menuOutput, strlen($menuOutput)-7, 5) == "</li>") { // Falls schon ein li-Tag am Ende des Menues ist,...
-								$closeList = $this->dropdownClose . '</li>'.PHP_EOL; // ...Liste schließen-Tag einfügen
+							$trimmedMo	= trim($menuOutput);
+							
+							if(substr($trimmedMo, strlen($trimmedMo)-5, 5) == "</li>") { // Falls schon ein li-Tag am Ende des Menues ist,...
+								$closeList = $this->dropdownClose . PHP_EOL . '</li>' . PHP_EOL; // ...Liste schließen-Tag einfügen
 							}
 							else					
-								$closeList = '</li>' . $this->dropdownClose . '</li>'.PHP_EOL; // Sonst Listenpunkt und Liste schließen
+								$closeList = '</li>' . PHP_EOL . $this->dropdownClose . PHP_EOL . '</li>' . PHP_EOL; // Sonst Listenpunkt und Liste schließen
 								
 							$menuOutput .= $closeList; // Schließen-Tags anhängen
 							$j--; // Dekrement
@@ -964,7 +968,7 @@ class Menu extends ContentsEngine
 								$menuListLead	= str_replace('>' . $title . '<', '>' . $title . $currGroupBaseItemExt . '<', $menuListLead);
 								if($currentPageId != $pageId)
 									$menuListLead 	= str_replace('class="active ', 'class="', $menuListLead);
-								$menuOutput 		.= $menuListLead . '</li>'.PHP_EOL;
+								$menuOutput 		.= $menuListLead . '</li>' . PHP_EOL;
 								
 								$nextGroupBaseItemExt = next($groupBaseItemExt);
 								
@@ -975,9 +979,9 @@ class Menu extends ContentsEngine
 							$menuLevel++;
 						
 						}
-						elseif(!$hasChild && substr($menuOutput, strlen($menuOutput)-7, 5) != "</li>") {
+						elseif(!$hasChild && substr(trim($menuOutput), strlen(trim($menuOutput))-5, 5) != "</li>") {
 							$menuOutput .= $menuListItem;
-							$menuOutput .= '</li>'.PHP_EOL;
+							$menuOutput .= '</li>' . PHP_EOL;
 						}
 						else
 							$menuOutput .= $menuListItem;
@@ -987,12 +991,12 @@ class Menu extends ContentsEngine
 				
 				} // Ende foreach
 				
-				if(substr($menuOutput, strlen($menuOutput)-7, 5) != "</li>") // Falls schon ein li-Tag am Ende des Menues ist,...
-					$menuOutput .= "</li>".PHP_EOL;
+				if(substr(trim($menuOutput), strlen(trim($menuOutput))-5, 5) != "</li>") // Falls schon ein li-Tag am Ende des Menues ist,...
+					$menuOutput .= '</li>' . PHP_EOL;
 				
 				while($menuLevel > 2) { // Solange der aktuelle lft-Wert größer als oder gleich ist wie der alte rgt-Wert +2...
 	
-					$closeList = $this->dropdownClose . '</li>'.PHP_EOL; // ...Liste schließen-Tag einfügen
+					$closeList = $this->dropdownClose . '</li>' . PHP_EOL; // ...Liste schließen-Tag einfügen
 						
 					$menuOutput .= $closeList; // Schließen-Tags anhängen
 					$menuLevel--; // Dekrement
@@ -1079,12 +1083,12 @@ class Menu extends ContentsEngine
 			if($currentPageId == $pageId) {
 				$menuOutput .= '<li class="active">';
 				if($activeItem == "span" && count(parent::$dataBCPath) === 0)
-					$menuOutput .= '<span>' . $title . "</span></li>".PHP_EOL; // Aktuellen Menuepunkt ohne Link ausgeben
+					$menuOutput .= '<span>' . $title . '</span></li>' . PHP_EOL; // Aktuellen Menuepunkt ohne Link ausgeben
 				else
-					$menuOutput .= '<a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $parentAliases . $alias . PAGE_EXT . '"' . $robots. '>' . $title . '</a>' . (count(parent::$dataBCPath) > 0 ? $separator . ' ' : '') . '</li>'.PHP_EOL; // Elternmenüpunkte mit Links ausgeben
+					$menuOutput .= '<a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $parentAliases . $alias . PAGE_EXT . '"' . $robots. '>' . $title . '</a>' . (count(parent::$dataBCPath) > 0 ? $separator . ' ' : '') . '</li>' . PHP_EOL; // Elternmenüpunkte mit Links ausgeben
 			}
 			else {
-				$menuOutput .= '<li><a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $parentAliases . $alias . PAGE_EXT . '"' . $robots. '>' . $title . '</a> ' . $separator . ' </li>'.PHP_EOL; // Elternmenüpunkte mit Links ausgeben
+				$menuOutput .= '<li><a href="' . PROJECT_HTTP_ROOT . '/' . $this->langUrlPrefix . $parentAliases . $alias . PAGE_EXT . '"' . $robots. '>' . $title . '</a> ' . $separator . ' </li>' . PHP_EOL; // Elternmenüpunkte mit Links ausgeben
 				
 				// Append parent alias
 				if(CC_USE_FULL_PAGEURL)

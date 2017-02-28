@@ -117,7 +117,7 @@ class TabsConfigElement extends ConfigElementFactory implements ConfigElements
 
 		// db-Updatestring
 		$this->dbUpdateStr  = "'";
-		$this->dbUpdateStr .= $this->DB->escapeString(json_encode($this->tabContent_h) . '<|>' . json_encode($this->tabContent_con) . '<|>' . $this->tabFormat . '<|>' . $this->tabStyle);
+		$this->dbUpdateStr .= $this->DB->escapeString(json_encode($this->tabContent_h, JSON_UNESCAPED_UNICODE) . '<|>' . json_encode($this->tabContent_con, JSON_UNESCAPED_UNICODE) . '<|>' . $this->tabFormat . '<|>' . $this->tabStyle);
 		$this->dbUpdateStr .= "',";
 
 	}

@@ -390,7 +390,7 @@ class Login extends ContentsEngine
 						'</li>' . "\n" . 
 						$formExtRem .
 						'<li class="{t_class:formrow} submitPanel">' . "\n" . 
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n";
+						parent::getTokenInput();
 		
 		// Button submit
 		$btnDefs	= array(	"type"		=> "submit",
@@ -907,6 +907,7 @@ class Login extends ContentsEngine
 					
 					// Klasse phpMailer einbinden
 					require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.phpMailer.php');
+					require_once(PROJECT_DOC_ROOT . '/inc/classes/phpMailer/class.smtp.php');
 					
 					// Instanz von PHPMailer bilden
 					$mail = new \PHPMailer();
@@ -1025,7 +1026,7 @@ class Login extends ContentsEngine
 			
 		$regForm .=	parent::getButton($btnDefs);
 		
-		$regForm .=		'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" . 
+		$regForm .=		parent::getTokenInput() . 
 						'</li>' . "\n" . 
 						'</ul>' . "\n" . 
 						'</fieldset>' . "\n" . 

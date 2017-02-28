@@ -30,8 +30,8 @@ class Admin_Sort extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:adminsort}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminsort}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -72,8 +72,8 @@ class Admin_Sort extends Admin implements AdminTask
 		}
 
 
-		$this->adminContent .=	'<div class="adminArea sortPages">' . "\r\n" .					
-								'<h2 class="cc-section-heading cc-h2">{s_nav:adminsort}</h2>' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea sortPages">' . PHP_EOL .					
+								'<h2 class="cc-section-heading cc-h2">{s_nav:adminsort}</h2>' . PHP_EOL;
 		
 		
 		
@@ -82,26 +82,26 @@ class Admin_Sort extends Admin implements AdminTask
 
 
 		
-		$this->adminContent .=	'<h3 class="cc-h3">{s_header:mainmenu}</h3>' . "\r\n" .
+		$this->adminContent .=	'<h3 class="cc-h3">{s_header:mainmenu}</h3>' . PHP_EOL .
 							$this->listPages("sort");
 		
-		$this->adminContent .=	'<h3 class="cc-h3">{s_header:topmenu}</h3>' . "\r\n" .
+		$this->adminContent .=	'<h3 class="cc-h3">{s_header:topmenu}</h3>' . PHP_EOL .
 							$this->listPages("sort", 2);
 		
-		$this->adminContent .=	'<h3 class="cc-h3">{s_header:footmenu}</h3>' . "\r\n" .
+		$this->adminContent .=	'<h3 class="cc-h3">{s_header:footmenu}</h3>' . PHP_EOL .
 							$this->listPages("sort", 3);
 							
-		$this->adminContent .=	'<h3 class="cc-h3">{s_header:nonmenu}</h3>' . "\r\n" .
+		$this->adminContent .=	'<h3 class="cc-h3">{s_header:nonmenu}</h3>' . PHP_EOL .
 							$this->listPages("sort", 0);
 		
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 		
 		// Zurückbuttons
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" . 
-								'<p>&nbsp;</p>' . "\r\n" . 
-								'<p>&nbsp;</p>' . "\r\n" . 
-								'<ul>' . "\r\n" .
-								'<li class="submit back">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL . 
+								'<p>&nbsp;</p>' . PHP_EOL . 
+								'<p>&nbsp;</p>' . PHP_EOL . 
+								'<ul>' . PHP_EOL .
+								'<li class="submit back">' . PHP_EOL;
 		// Button back (new)
 		$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=new',
 								"text"		=> "{s_button:adminnew}",
@@ -119,18 +119,18 @@ class Admin_Sort extends Admin implements AdminTask
 		
 		$this->adminContent	.=	parent::getButtonLink($btnDefs);
 								
-		$this->adminContent	.=	'</li>' . "\r\n" . 
-								'<li class="submit back">' . "\r\n";
+		$this->adminContent	.=	'</li>' . PHP_EOL . 
+								'<li class="submit back">' . PHP_EOL;
 		
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 				
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" . 
-								'</ul>' . "\r\n" . 
-								'<p>&nbsp;</p>' . "\r\n" . 
-								'<p>&nbsp;</p>' . "\r\n" . 
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL . 
+								'</ul>' . PHP_EOL . 
+								'<p>&nbsp;</p>' . PHP_EOL . 
+								'<p>&nbsp;</p>' . PHP_EOL . 
+								'</div>' . PHP_EOL;
 	
 				
 		// Contextmenü-Script

@@ -76,6 +76,8 @@ class RegpageConfigElement extends ConfigElementFactory implements ConfigElement
 			$this->params["regthank"] = $this->a_POST[$this->conPrefix . '_regthank'];
 		if(isset($this->a_POST[$this->conPrefix . '_regmessage']))
 			$this->params["regmessage"] = $this->a_POST[$this->conPrefix . '_regmessage'];
+		if(isset($this->a_POST[$this->conPrefix . '_regtextoptin']))
+			$this->params["regtextoptin"] = $this->a_POST[$this->conPrefix . '_regtextoptin'];
 		if(isset($this->a_POST[$this->conPrefix . '_regtextnewsl']))
 			$this->params["regtextnewsl"] = $this->a_POST[$this->conPrefix . '_regtextnewsl'];
 		if(isset($this->a_POST[$this->conPrefix . '_regtextguest']))
@@ -97,7 +99,7 @@ class RegpageConfigElement extends ConfigElementFactory implements ConfigElement
 	{
 	
 		// Pfade durch Platzhalter ersetzen (erfolgt zwar auch durch Javascript in HeadExt, aber nicht schnell genug (Image-Ladeproblem))
-		$params		= json_encode($this->params);
+		$params		= json_encode($this->params, JSON_UNESCAPED_UNICODE);
 		
 		$rootPH		= "{#root}";
 		$rootImgPH	= "{#root}/{#root_img}";
@@ -118,6 +120,7 @@ class RegpageConfigElement extends ConfigElementFactory implements ConfigElement
 		if(empty($this->params["regsubject"])) $this->params["regsubject"]		= "";
 		if(empty($this->params["regthank"])) $this->params["regthank"]			= "";
 		if(empty($this->params["regmessage"])) $this->params["regmessage"]		= "";
+		if(empty($this->params["regtextoptin"])) $this->params["regtextoptin"]	= "";
 		if(empty($this->params["regtextnewsl"])) $this->params["regtextnewsl"]	= "";
 		if(empty($this->params["regtextguest"])) $this->params["regtextguest"]	= "";
 		if(empty($this->params["regtextshop"])) $this->params["regtextshop"]	= "";
@@ -148,6 +151,10 @@ class RegpageConfigElement extends ConfigElementFactory implements ConfigElement
 		$output	.=	'<label>{s_label:text}: regmessage<span class="toggleEditor" data-target="textCon' . $this->textAreaCount . '_regmessage">Editor</span><span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
 					'<textarea name="' . $this->conPrefix . '_regmessage" id="textCon' . $this->textAreaCount . '_regmessage" class="cc-editor-add textEditor smallEditor teaser">' . $this->params["regmessage"] . '</textarea>' . "\r\n";
 
+		// Text regtextoptin
+		$output	.=	'<label>{s_label:text}: regtextoptin<span class="toggleEditor" data-target="textCon' . $this->textAreaCount . '_regtextoptin">Editor</span><span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
+					'<textarea name="' . $this->conPrefix . '_regtextoptin" id="textCon' . $this->textAreaCount . '_regtextoptin" class="cc-editor-add textEditor smallEditor teaser">' . $this->params["regtextoptin"] . '</textarea>' . "\r\n";
+
 		// Text regtextnewsl
 		$output	.=	'<label>{s_label:text}: regtextnewsl<span class="toggleEditor" data-target="textCon' . $this->textAreaCount . '_regtextnewsl">Editor</span><span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
 					'<textarea name="' . $this->conPrefix . '_regtextnewsl" id="textCon' . $this->textAreaCount . '_regtextnewsl" class="cc-editor-add textEditor smallEditor teaser">' . $this->params["regtextnewsl"] . '</textarea>' . "\r\n";
@@ -158,7 +165,7 @@ class RegpageConfigElement extends ConfigElementFactory implements ConfigElement
 
 		// Text regtextshop
 		$output	.=	'<label>{s_label:text}: regtextshop<span class="toggleEditor" data-target="textCon' . $this->textAreaCount . '_regtextshop">Editor</span><span class="editLangFlag">' . $this->editLangFlag . '</span></label>' . "\r\n" .
-					'<textarea name="' . $this->conPrefix . '_regtextshop" id="textCon' . $this->textAreaCount . '_regtextshop" class="cc-editor-add textEditor smallEditor teaser">' . $this->params["regtextshop"] . '</textarea>' . "\r\n";
+					'<textarea name="' . $this->conPrefix . '_regtextshop" accept-charset="utf-8" id="textCon' . $this->textAreaCount . '_regtextshop" class="cc-editor-add textEditor smallEditor teaser">' . $this->params["regtextshop"] . '</textarea>' . "\r\n";
 
 
 		$output	.= '<br /><br />' . "\r\n";

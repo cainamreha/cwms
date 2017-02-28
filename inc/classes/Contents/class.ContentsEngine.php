@@ -2235,7 +2235,7 @@ class ContentsEngine
 	 * Validiert den Formulartoken und lädt bei fehlerhaftem Token die Seite neu
 	 *
 	 * @access	public
-     * @return  string
+     * @return  void
 	 */
 	public function validateToken()
 	{
@@ -2254,7 +2254,7 @@ class ContentsEngine
 	 * Session Token setzen
 	 * 
 	 * @access public
-	 * @return string
+	 * @return void
 	 */
 	public function setToken()
 	{
@@ -2262,6 +2262,21 @@ class ContentsEngine
 		// Token zur Session hinzufügen
 		$this->o_security->setToken(self::$token);
 		self::$sessionTokenSet	= true;
+
+	}
+
+	
+
+	/**
+	 * Token input
+	 * 
+	 * @access public
+	 * @return string
+	 */
+	public static function getTokenInput()
+	{
+
+		return '<input type="hidden" name="token" value="' . (isset($GLOBALS['_GET']['fetchcache']) ? "{#token}" : self::$token) . '" />' . PHP_EOL;
 
 	}
 	
@@ -2343,7 +2358,7 @@ class ContentsEngine
 			if($this->backendLog) {
 				
 				if($this->adminPage)
-					$this->loadViaAjax	= ' data-ajax="true"';
+					$this->loadViaAjax	= ' data-ajax="true" rel="nofollow"';
 				
 				
 				// Adminlink einbinden
@@ -2389,6 +2404,7 @@ class ContentsEngine
 										"text"		=> $accountType,
 										"class"		=> "account admin gotoUserPage {t_class:btndef}",
 										"title"		=> "{s_title:admin}",
+										"attr"		=> 'rel="nofollow"',
 										"icon"		=> "user"
 									);
 				
@@ -2403,6 +2419,7 @@ class ContentsEngine
 									"text"		=> '{s_link:logout}',
 									"class"		=> "account logout gotoLogoutPage {t_class:btndef}",
 									"title"		=> $logoutTit,
+									"attr"		=> 'rel="nofollow"',
 									"icon"		=> "logout"
 								);
 			
@@ -2544,8 +2561,7 @@ class ContentsEngine
 									"text"		=> "",
 									"title"		=> "#type#",
 									"icon"		=> "#type#",
-									"iconclass"	=> "{t_icons:icon}{t_icons:#icon#} contype-#key# conicon-#type# conicon-#icon#",
-									"iconattr"	=> 'style="background:url(\'#iconpath#/conicon_#type#.png\') no-repeat center center;"'
+									"iconclass"	=> "{t_icons:icon}{t_icons:#icon#} contype-#key# conicon-#type# conicon-#icon#"
 								);
 			
 			$listTag .=	self::getButton($btnDefs);
@@ -2747,10 +2763,10 @@ class ContentsEngine
 	 * @access public
 	 * @return string
 	 */
-	public function getNotificationStr($str, $type = "success", $addClass = "")
+	public function getNotificationStr($str, $type = "success", $addClass = "", $tag = "p")
 	{
 		
-		return '<p class="notice ' . $type . ($addClass != "" ? ' ' . $addClass : '') . ' {t_class:alert} {t_class:' . $type . '}" role="alert">' . $str . '</p>' . "\r\n";
+		return '<' . $tag . ' class="notice ' . $type . ($addClass != "" ? ' ' . $addClass : '') . ' {t_class:alert} {t_class:' . $type . '}" role="alert">' . $str . '</' . $tag . '>' . "\r\n";
 		
 	}
 	

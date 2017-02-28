@@ -687,7 +687,7 @@ $(document).ready(function(){
 						$.mceAddEditors($("textarea.cc-editor-add", mediaList));
 					}
 					$.setTrueFalseIcons(false);
-				}, 200);
+				}, 1000);
 				
 			},
 			close: function(){
@@ -1297,7 +1297,7 @@ $(document).ready(function(){
 				setTimeout(function(){
 					$.mceAddEditors($("textarea.cc-editor-add", mediaList));
 					$.setTrueFalseIcons(false);
-				}, 200);					
+				}, 1000);					
 				
 				mediaList.children(".closeDetailsBox").bindCboxCloseEvent(true);
 
@@ -2708,79 +2708,89 @@ $(document).ready(function(){
 			success: function(ajax){
 
 				// if replace dom
-				if(replaceDom){
+				if(!replaceDom){
+					return targetElem;
+				}
 				
-					var container	= $('div#container');
-					var conSplit	= ajax.split('<div id="container"');
-					
-					if(!conSplit[1]){
-						$.refreshPage();
-						return false;			
-					}
-					
-					var domSplit	= conSplit[1].split('<!-- Ende #container -->');
-					
-					if(!domSplit[0]){
-						$.refreshPage();
-						return false;			
-					}
-					
-					var newDom		= $('<div id="ccNewDomFE"><div id="container"' + domSplit[0] + '</div>');
-					
-					targetElem		= domSplit[1].split('<target>')[1];
-					if(typeof(targetElem) != "undefined" && targetElem != ""){
+				var container	= $('div#container');
+
+				if(!window.DOMParser){
+					$.refreshPage();
+					return false;
+				}
+				
+				// code for modern browsers
+				var parser		= new DOMParser();
+				var xmlDoc		= parser.parseFromString(ajax,"text/html");
+				var newConDiv	= $(xmlDoc).find("div#container");
+
+				if(!newConDiv.length){
+					$.refreshPage();
+					return false;
+				}
+			
+				if(ajax.indexOf('<cctarget>') > 0){
+					targetElem		= ajax.split('<cctarget>')[1];
+					if(typeof(targetElem) != "undefined"
+					&& targetElem != ""
+					){
 						targetElem	= targetElem.split('#')[1];
 					}
-		
-					var newConDiv	= newDom.children('div#container');
-					
-					newConDiv.fadeTo(0,0);
-					newConDiv.css('min-height', cc.containerHeight + 'px');
-					
-					container.fadeTo(200, 0.25, function(){
-		
-						container.replaceWith(newConDiv);
-						
-						newConDiv.fadeTo(0,0, function(){
-						
-							cc.skipEditDivsAdjust = false;
-							$.executeInitFunctions(function(){							
-
-								var directEditBtn	= $('*[id="' + targetElem + '"]').siblings('div.editButtons').children('.directedit');
-								
-								if(typeof(targetElem) != "undefined" && targetElem != ""){
-									
-									if(prevElem !== false){
-										var elemID		= prevElem.closest('div.innerEditDiv').children('div.editContent').attr('id').split("-");
-										var conID		= parseInt(parseInt(elemID.pop())+1);
-										var conElem		= $('body').find('*[id="' + elemID.join("-") + '-' + conID + '"]').closest('div.editDiv').children('div.innerEditDiv');
-										var editIcon	= conElem.setCurrent().children('div.editButtons').children('*[data-action="editcon"][data-actiontype="edit"]');
-										var edBtn		= $('<button class="' + editIcon.attr('class') + '">' + ln.newelement + '<span class="cc-admin-icons cc-icons cc-icon-edit">&nbsp;</span></button>');
-										var editNote	= $('<p class="newElementAdded adminArea col-md-12 col-12"></p>');
-										
-										conElem.setCurrent().children('div.editButtons').addClass('forceShow');
-										editNote.append(edBtn);
-										conElem.append(editNote);
-										
-										edBtn.bind("click", function(){
-											directEditBtn.click();
-										});
-									}
-								}
-						
-								// Show and scroll to new contents
-								setTimeout(function(){
-								
-									$(window).scrollTop(cc.windowScrollTop);
-									newConDiv.fadeTo(300,1, function(){
-										$.removeWaitBar();
-										return true;
-									});
-								}, 300);
-							});					
-						});
-					});
 				}
+				
+				var newDom		= $('<div id="ccNewDomFE"></div>').append(newConDiv);
+	
+				newConDiv		= newDom.children('div#container');
+				
+				newConDiv.fadeTo(0,0);
+				newConDiv.css('min-height', cc.containerHeight + 'px');
+				
+				container.fadeTo(200, 0.25, function(){
+					
+					// replace container
+					container.replaceWith(newConDiv);
+					
+					newConDiv.fadeTo(0,0, function(){
+					
+						cc.skipEditDivsAdjust = false;
+						$.executeInitFunctions(function(){							
+
+							var directEditBtn	= $('*[id="' + targetElem + '"]').siblings('div.editButtons').children('.directedit');
+							
+							if(typeof(targetElem) != "undefined"
+							&& targetElem != ""
+							){
+								
+								if(prevElem !== false){
+									var elemID		= prevElem.closest('div.innerEditDiv').children('div.editContent').attr('id').split("-");
+									var conID		= parseInt(parseInt(elemID.pop())+1);
+									var conElem		= $('body').find('*[id="' + elemID.join("-") + '-' + conID + '"]').closest('div.editDiv').children('div.innerEditDiv');
+									var editIcon	= conElem.setCurrent().children('div.editButtons').children('*[data-action="editcon"][data-actiontype="edit"]');
+									var edBtn		= $('<button class="' + editIcon.attr('class') + '">' + ln.newelement + '<span class="cc-admin-icons cc-icons cc-icon-edit">&nbsp;</span></button>');
+									var editNote	= $('<p class="newElementAdded adminArea col-md-12 col-12"></p>');
+									
+									conElem.setCurrent().children('div.editButtons').addClass('forceShow');
+									editNote.append(edBtn);
+									conElem.append(editNote);
+									
+									edBtn.bind("click", function(){
+										directEditBtn.click();
+									});
+								}
+							}
+					
+							// Show and scroll to new contents
+							setTimeout(function(){
+							
+								$(window).scrollTop(cc.windowScrollTop);
+								newConDiv.fadeTo(300,1, function(){
+									$.removeWaitBar();
+									return true;
+								});
+							}, 300);
+						});					
+					});
+				});				
 				return targetElem;
 			}
 		}).done(function(ajax){

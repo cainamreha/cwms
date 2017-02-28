@@ -26,8 +26,8 @@ class Admin_Bkp extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader		=	'{s_text:adminbkp}' . "\r\n" . 
-									'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader		=	'{s_text:adminbkp}' . PHP_EOL . 
+									$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent 	=	$this->openAdminContent();
@@ -58,24 +58,24 @@ class Admin_Bkp extends Admin implements AdminTask
 
 
 		// Backupseite ausgeben
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL;
 
 		if(!empty($this->error))
-			$this->adminContent .= '<p class="notice error">' . $this->error . '</p>' . "\r\n";
+			$this->adminContent .= '<p class="notice error">' . $this->error . '</p>' . PHP_EOL;
 			
 		if(!empty($this->notice))
-			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . "\r\n";
+			$this->adminContent .= '<p class="notice success">' . $this->notice . '</p>' . PHP_EOL;
 		
 
 		// Neues Backup
-		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_label:newbkp}</h2>' . "\r\n" . 
-								'<ul class="editList dbBackup cc-list cc-list-large">' . "\r\n" . 
-								'<li class="listItem">' . "\r\n" .
-								'<span class="listName">{s_label:newbkpfull}</span>' . "\r\n";
+		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_label:newbkp}</h2>' . PHP_EOL . 
+								'<ul class="editList dbBackup cc-list cc-list-large">' . PHP_EOL . 
+								'<li class="listItem">' . PHP_EOL .
+								'<span class="listName">{s_label:newbkpfull}</span>' . PHP_EOL;
 		
-		$this->adminContent .=	'<span class="editButtons-panel">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel">' . PHP_EOL;
 		
-		$this->adminContent .=	'<form action="' . $this->formAction . '" method="post" name="adminfm">' . "\r\n";
+		$this->adminContent .=	'<form action="' . $this->formAction . '" method="post" name="adminfm">' . PHP_EOL;
 		
 		// Button backup-global
 		$btnDefs	= array(	"type"		=> "submit",
@@ -89,18 +89,18 @@ class Admin_Bkp extends Admin implements AdminTask
 		
 		$this->adminContent .=	ContentsEngine::getButton($btnDefs);
 		
-		$this->adminContent .=	'<input type="hidden" name="new_bkp" value="new_bkp" />' . "\r\n" .
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-								'</form>' . "\r\n" .
-								'</span>' . "\r\n" .
-								'</li>' . "\r\n";
+		$this->adminContent .=	'<input type="hidden" name="new_bkp" value="new_bkp" />' . PHP_EOL .
+								parent::getTokenInput() .
+								'</form>' . PHP_EOL .
+								'</span>' . PHP_EOL .
+								'</li>' . PHP_EOL;
 								
-		$this->adminContent .=	'<li class="listItem">' . "\r\n" .
-								'<span class="listName">{s_label:newbkpcontents}</span>' . "\r\n";
+		$this->adminContent .=	'<li class="listItem">' . PHP_EOL .
+								'<span class="listName">{s_label:newbkpcontents}</span>' . PHP_EOL;
 								
-		$this->adminContent .=	'<span class="editButtons-panel">' . "\r\n";
+		$this->adminContent .=	'<span class="editButtons-panel">' . PHP_EOL;
 		
-		$this->adminContent .=	'<form action="' . $this->formAction . '&bkp=contents" method="post" name="adminfm2">' . "\r\n";
+		$this->adminContent .=	'<form action="' . $this->formAction . '&bkp=contents" method="post" name="adminfm2">' . PHP_EOL;
 		
 		// Button backup-contents
 		$btnDefs	= array(	"type"		=> "submit",
@@ -114,40 +114,40 @@ class Admin_Bkp extends Admin implements AdminTask
 		
 		$this->adminContent .=	ContentsEngine::getButton($btnDefs);
 		
-		$this->adminContent .=	'<input type="hidden" name="new_bkp" value="new_bkp" />' . "\r\n" .
-								'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-								'</form>' . "\r\n" .
-								'</span>' . "\r\n";
+		$this->adminContent .=	'<input type="hidden" name="new_bkp" value="new_bkp" />' . PHP_EOL .
+								parent::getTokenInput() .
+								'</form>' . PHP_EOL .
+								'</span>' . PHP_EOL;
 		
-		$this->adminContent .=	'</li>' . "\r\n" .
-								'</ul>' . "\r\n";
+		$this->adminContent .=	'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL;
 
 		// Liste vorhandener Backups
-		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_label:existbkp}</h2>' . "\r\n" .
+		$this->adminContent .=	'<h2 class="cc-section-heading cc-h2">{s_label:existbkp}</h2>' . PHP_EOL .
 								$this->getBkpActionBox() .
 								MySQL::getBackups(DB_NAME, parent::$token, $this->adminLog) . 
-								'<p>&nbsp;</p>' . "\r\n";
+								'<p>&nbsp;</p>' . PHP_EOL;
 		
 		
 		// Contextmenü-Script
 		$this->adminContent .=	$this->getContextMenuScript();
 
 		
-		$this->adminContent .=	'</div>' . "\r\n";
+		$this->adminContent .=	'</div>' . PHP_EOL;
 
 
 		// Backbutton
-		$this->adminContent .=	'<div class="adminArea">' . "\r\n" .
-								'<ul>' . "\r\n" .
-								'<li class="submit back">' . "\r\n";
+		$this->adminContent .=	'<div class="adminArea">' . PHP_EOL .
+								'<ul>' . PHP_EOL .
+								'<li class="submit back">' . PHP_EOL;
 
 		// Button back
 		$this->adminContent .=	$this->getButtonLinkBacktomain();
 		
-		$this->adminContent .=	'<br class="clearfloat" />' . "\r\n" .
-								'</li>' . "\r\n" .
-								'</ul>' . "\r\n" .
-								'</div>' . "\r\n";
+		$this->adminContent .=	'<br class="clearfloat" />' . PHP_EOL .
+								'</li>' . PHP_EOL .
+								'</ul>' . PHP_EOL .
+								'</div>' . PHP_EOL;
 	
 		// #adminContent close
 		$this->adminContent	.= $this->closeAdminContent();		
@@ -314,12 +314,12 @@ class Admin_Bkp extends Admin implements AdminTask
 	{
 
 		// Checkbox zur Mehrfachauswahl zum Löschen
-		$output =		'<div class="actionBox clearfix">' . "\r\n" .
-						'<form action="' . $this->formAction . '&bkpfiles=array&action=" method="post" data-history="false">' . "\r\n" .
-						'<label class="markAll markBox" data-mark="#dbBackupList">' . "\r\n" .
-						'<input type="checkbox" id="markAllLB-form" data-select="all" /></label>' . "\r\n" .
-						'<label for="markAllLB-form" class="markAllLB"> {s_label:mark}</label>' . "\r\n" .
-						'<span class="editButtons-panel">' . "\r\n";
+		$output =		'<div class="actionBox clearfix">' . PHP_EOL .
+						'<form action="' . $this->formAction . '&bkpfiles=array&action=" method="post" data-history="false">' . PHP_EOL .
+						'<label class="markAll markBox" data-mark="#dbBackupList">' . PHP_EOL .
+						'<input type="checkbox" id="markAllLB-form" data-select="all" /></label>' . PHP_EOL .
+						'<label for="markAllLB-form" class="markAllLB"> {s_label:mark}</label>' . PHP_EOL .
+						'<span class="editButtons-panel">' . PHP_EOL;
 		
 		// Button delete
 		$btnDefs	= array(	"type"		=> "submit",
@@ -332,9 +332,9 @@ class Admin_Bkp extends Admin implements AdminTask
 			
 		$output .=	parent::getButton($btnDefs);
 		
-		$output .=		'</span>' . "\r\n" .
-						'</form>' . "\r\n" .
-						'</div>' . "\r\n";
+		$output .=		'</span>' . PHP_EOL .
+						'</form>' . PHP_EOL .
+						'</div>' . PHP_EOL;
 		
 		return $output;
 	

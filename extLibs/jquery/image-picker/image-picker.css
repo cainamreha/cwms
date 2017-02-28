@@ -9,6 +9,11 @@ ul.thumbnails.image_picker_selector {
 	clear:both;
 	display:none;
 }
+.image-picker-small ul.thumbnails.image_picker_selector {
+	display:block;
+	-moz-column-count: 3;
+	column-count: 3;
+}
 ul.thumbnails.image_picker_selector ul {
 	overflow: auto;
 	list-style-image: none;
@@ -31,6 +36,12 @@ ul.thumbnails.image_picker_selector li {
 	border:none;
 	float:left;
 }
+.image-picker-small ul.thumbnails.image_picker_selector li {
+	max-width: 12%;
+	padding:0.125rem;
+	display:inline-block;
+	float:none;
+}
 ul.thumbnails.image_picker_selector li .thumbnail {
 	padding:0.5625rem;
 	background:#FAFCFF;
@@ -39,7 +50,12 @@ ul.thumbnails.image_picker_selector li .thumbnail {
 	-moz-user-select: none;
 	-ms-user-select: none;
 }
+.image-picker-small ul.thumbnails.image_picker_selector li .thumbnail {
+	margin:0px;
+	padding:0.125rem;
+}
 ul.thumbnails.image_picker_selector li .thumbnail img {
+	max-width: 100%;
 	-webkit-user-drag: none;
 }
 ul.thumbnails.image_picker_selector li .thumbnail p {

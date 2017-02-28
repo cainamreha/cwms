@@ -39,8 +39,8 @@ class Admin_New extends Admin implements AdminTask
 	{
 
 		// Enthält Headerbox
-		$this->adminHeader	=	'{s_text:adminnew}' . "\r\n" . 
-								'</div><!-- Ende headerBox -->' . "\r\n";
+		$this->adminHeader	=	'{s_text:adminnew}' . PHP_EOL . 
+								$this->closeTag("#headerBox");
 		
 		// #adminContent
 		$this->adminContent =	$this->openAdminContent();
@@ -148,39 +148,39 @@ class Admin_New extends Admin implements AdminTask
 	protected function getNewPageList()
 	{
 	
-		$output = 	'<div class="adminArea">' . "\r\n" .
-					'<h2 class="cc-section-heading cc-h2">{s_nav:adminnew}</h2>' . "\r\n";
+		$output = 	'<div class="adminArea">' . PHP_EOL .
+					'<h2 class="cc-section-heading cc-h2">{s_nav:adminnew}</h2>' . PHP_EOL;
 					
 				
 		// Bei mehreren Sprachen Sprachauswahl einbinden
 		$this->getLangSelection();
 
 		
-		$output .=	'<div class="adminSection">' . "\r\n" .
-					'<div class="adminBox">' . "\r\n" .
-					'<form id="addNewItem" action="' . $this->formAction . '" method="post">' . "\r\n" . 
-					'<label for="newItem">{s_label:newitem}</label>' . "\r\n";
+		$output .=	'<div class="adminSection">' . PHP_EOL .
+					'<div class="adminBox">' . PHP_EOL .
+					'<form id="addNewItem" action="' . $this->formAction . '" method="post">' . PHP_EOL . 
+					'<label for="newItem">{s_label:newitem}</label>' . PHP_EOL;
 							
 		if(isset($this->error) && $this->error != "")
-			$output .= '<p class="notice">' . $this->error . '</p>' . "\r\n";
+			$output .= '<p class="notice">' . $this->error . '</p>' . PHP_EOL;
 			
-		$output .=	'<input name="newItem" type="text" id="newItem" maxlength="100" value="' . $this->newItemName . '" />' . "\r\n" .
-					'<input type="hidden" id="new_item" />' . "\r\n" .
-					'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-					'</form>' . "\r\n" .
-					'</div>' . "\r\n" .
-					'</div>' . "\r\n";
+		$output .=	'<input name="newItem" type="text" id="newItem" maxlength="100" value="' . $this->newItemName . '" />' . PHP_EOL .
+					'<input type="hidden" id="new_item" />' . PHP_EOL .
+					parent::getTokenInput() .
+					'</form>' . PHP_EOL .
+					'</div>' . PHP_EOL .
+					'</div>' . PHP_EOL;
 							
-		$output .=	'<h3 class="cc-h3 toggle">{s_header:mainmenu}</h3>' . "\r\n";
+		$output .=	'<h3 class="cc-h3 toggle">{s_header:mainmenu}</h3>' . PHP_EOL;
 		$output .=	$this->listPages("new");
 		
-		$output .=	'<h3 class="cc-h3 toggle">{s_header:topmenu}</h3>' . "\r\n";
+		$output .=	'<h3 class="cc-h3 toggle">{s_header:topmenu}</h3>' . PHP_EOL;
 		$output .=	$this->listPages("new", 2);
 		
-		$output .=	'<h3 class="cc-h3 toggle">{s_header:footmenu}</h3>' . "\r\n";
+		$output .=	'<h3 class="cc-h3 toggle">{s_header:footmenu}</h3>' . PHP_EOL;
 		$output .=	$this->listPages("new", 3);
 		
-		$output .=	'<h3 class="cc-h3 toggle">{s_header:nonmenu}</h3>' . "\r\n";
+		$output .=	'<h3 class="cc-h3 toggle">{s_header:nonmenu}</h3>' . PHP_EOL;
 		$output .=	$this->listPages("new", 0);
 			
 		
@@ -188,14 +188,14 @@ class Admin_New extends Admin implements AdminTask
 		$output .=	$this->getContextMenuScript();
 
 	
-		$output .=	'</div>' . "\r\n";
+		$output .=	'</div>' . PHP_EOL;
 		
 		// Zurückbuttons
-		$output .=	'<div class="adminArea">' . "\r\n" . 
-					'<p>&nbsp;</p>' . "\r\n" . 
-					'<p>&nbsp;</p>' . "\r\n" . 
-					'<ul>' . "\r\n" . 
-					'<li class="submit back">' . "\r\n";
+		$output .=	'<div class="adminArea">' . PHP_EOL . 
+					'<p>&nbsp;</p>' . PHP_EOL . 
+					'<p>&nbsp;</p>' . PHP_EOL . 
+					'<ul>' . PHP_EOL . 
+					'<li class="submit back">' . PHP_EOL;
 		
 		// Button back (edit)
 		$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=edit',
@@ -215,18 +215,18 @@ class Admin_New extends Admin implements AdminTask
 		
 		$output	.=	parent::getButtonLink($btnDefs);
 		
-		$output	.=	'</li>' . "\r\n" . 
-					'<li class="submit back">' . "\r\n";
+		$output	.=	'</li>' . PHP_EOL . 
+					'<li class="submit back">' . PHP_EOL;
 		
 		// Button back
 		$output .=	$this->getButtonLinkBacktomain();
 				
-		$output .=	'<br class="clearfloat" />' . "\r\n" .
-					'</li>' . "\r\n" . 
-					'</ul>' . "\r\n" . 
-					'<p>&nbsp;</p>' . "\r\n" . 
-					'<p>&nbsp;</p>' . "\r\n" . 
-					'</div>' . "\r\n";
+		$output .=	'<br class="clearfloat" />' . PHP_EOL .
+					'</li>' . PHP_EOL . 
+					'</ul>' . PHP_EOL . 
+					'<p>&nbsp;</p>' . PHP_EOL . 
+					'<p>&nbsp;</p>' . PHP_EOL . 
+					'</div>' . PHP_EOL;
 		
 		
 		// Autofocus script
@@ -663,126 +663,126 @@ class Admin_New extends Admin implements AdminTask
 				
 				$i = 0;
 					
-				$options .= '<ul class="adminSection">' . "\r\n";
+				$options .= '<ul class="adminSection">' . PHP_EOL;
 			
 				foreach($this->installedLangs as $addLang) {
 					
 					if($addLang != $this->editLang) {
 						
-						$options .= '<li>' . "\r\n";
+						$options .= '<li>' . PHP_EOL;
 						
-						$options .= '<label>{s_label:title}_' . $addLang . '<span class="editLangFlag"><img src="' . PROJECT_HTTP_ROOT . '/langs/' . $addLang . '/' . $this->o_lng->existFlag[$i] . '" title="' . $this->o_lng->existNation[$i] . '" class="flag" /></span></label>' . "\r\n";
+						$options .= '<label>{s_label:title}_' . $addLang . '<span class="editLangFlag"><img src="' . PROJECT_HTTP_ROOT . '/langs/' . $addLang . '/' . $this->o_lng->existFlag[$i] . '" title="' . $this->o_lng->existNation[$i] . '" class="flag" /></span></label>' . PHP_EOL;
 						
 						if(in_array($addLang, $wrongTitle)) // Falls im Fehlerarray der Titel der jeweiligen Sprache ist Meldung ausgeben
-							$options .= '<p class="notice">' . $error1 . '</p>' . "\r\n";
+							$options .= '<p class="notice">' . $error1 . '</p>' . PHP_EOL;
 						#var_dump( $duplicateTitle);
 						
 						if(in_array($addLang, $duplicateTitle)) // Falls im Fehlerarray der Titel der jeweiligen Sprache ist Meldung ausgeben
-							$options .= '<p class="notice">' . $error2 . '</p>' . "\r\n";
+							$options .= '<p class="notice">' . $error2 . '</p>' . PHP_EOL;
 						
 						if(isset($GLOBALS['_POST']['otherLang_' . $addLang]))
 							$otherLangsTitle = $GLOBALS['_POST']['otherLang_' . $addLang];
 						
-						$options .= '<input type="text" name="otherLang_' . $addLang . '" value="' . htmlspecialchars($otherLangsTitle != "" ? $otherLangsTitle : $this->newItemName."-".$addLang) . '" />' . "\r\n"; 
+						$options .= '<input type="text" name="otherLang_' . $addLang . '" value="' . htmlspecialchars($otherLangsTitle != "" ? $otherLangsTitle : $this->newItemName."-".$addLang) . '" />' . PHP_EOL; 
 						
-						$options .= '</li>' . "\r\n";
+						$options .= '</li>' . PHP_EOL;
 						
 					}
 					
 					$i++;
 				}
 				
-				$options .= '</ul>' . "\r\n";
+				$options .= '</ul>' . PHP_EOL;
 				
 			} // Ende count Langs
 			
 			
-			$output .=	'<div class="adminArea">' . "\r\n" .
-						'<p class="notice success">{s_header:adminnew}<strong>' . htmlspecialchars($this->newItemName) . '</strong>. {s_notice:newsuccess}</p>' . "\r\n" .
-						(isset($i) && $i > 1 ? '<p class="notice error">{s_text:newotherlang}</p>' . "\r\n" : '') .
-						'<h2 class="cc-section-heading cc-h2">{s_nav:adminnew}</h2>' . "\r\n" .
-						'<form action="' . ADMIN_HTTP_ROOT . '?task=new" id="adminfm" method="post">' . "\r\n" .
-						'<div class="newPage">' . "\r\n" .
-						$options . "\r\n";
+			$output .=	'<div class="adminArea">' . PHP_EOL .
+						'<p class="notice success">{s_header:adminnew}<strong>' . htmlspecialchars($this->newItemName) . '</strong>. {s_notice:newsuccess}</p>' . PHP_EOL .
+						(isset($i) && $i > 1 ? '<p class="notice error">{s_text:newotherlang}</p>' . PHP_EOL : '') .
+						'<h2 class="cc-section-heading cc-h2">{s_nav:adminnew}</h2>' . PHP_EOL .
+						'<form action="' . ADMIN_HTTP_ROOT . '?task=new" id="adminfm" method="post">' . PHP_EOL .
+						'<div class="newPage">' . PHP_EOL .
+						$options . PHP_EOL;
 		
 			// Templates auflisten
 			// Existing Tempates
 			$this->existTemplates	= parent::readTemplateDir();
 			
-			$output .=	'<ul class="adminSection">' . "\r\n" .
-						'<li>' . "\r\n" .
-						'<label class="tplSelect-label">Template</label>' . "\r\n" . 
+			$output .=	'<ul class="adminSection">' . PHP_EOL .
+						'<li>' . PHP_EOL .
+						'<label class="tplSelect-label">Template</label>' . PHP_EOL . 
 						parent::listTemplates($this->pageTemplate, $this->defaultTemplates, $this->existTemplates, "select");
 									
 			if(!in_array($this->pageTemplate, $this->existTemplates))
 				$output .=	parent::getIcon("warning", "hint", 'title="{s_title:tplnotexits}"');
 			
 			// tplSelectionBox
-			$output .=	'<br class="clearfloat" />' . "\r\n" . 
-						'<div id="tplSelectionBox" class="choose imagePicker">' . "\r\n" .
-						'</div>' . "\r\n";							
+			$output .=	'<br class="clearfloat" />' . PHP_EOL . 
+						'<div id="tplSelectionBox" class="choose imagePicker">' . PHP_EOL .
+						'</div>' . PHP_EOL;							
 			
 			// Tpl image picker
 			$output .=	$this->getTplScriptTag();
 			
-			$output .=	'</li>' . "\r\n";
-			$output .=	'</ul>' . "\r\n";
+			$output .=	'</li>' . PHP_EOL;
+			$output .=	'</ul>' . PHP_EOL;
 						
 			// Page details
-			$output .=	'<ul class="adminSection">' . "\r\n" .
-						'<li>' . "\r\n" .
-						'<label class="markBox"><input type="checkbox" name="online" id="online"' . ($online ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-						'<label for="online" class="inline-label">{s_label:pagepub}</label>' . "\r\n" .
-						'</li>' . "\r\n" .
-						'<li>' . "\r\n" .
-						'<span class="inline-box">' . "\r\n" .
-						'<label class="markBox"><input type="checkbox" name="public" id="public" class="toggleDetails" data-toggle="pageDetailsBox"' . ($publicPage && empty($groupsWrite) ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-						'<label for="public" class="inline-label">{s_title:publicpage}' . (empty($groupsWrite) ? ' / {s_title:defaultrigths}' : '') . '</label>' . "\r\n";
+			$output .=	'<ul class="adminSection">' . PHP_EOL .
+						'<li>' . PHP_EOL .
+						'<label class="markBox"><input type="checkbox" name="online" id="online"' . ($online ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+						'<label for="online" class="inline-label">{s_label:pagepub}</label>' . PHP_EOL .
+						'</li>' . PHP_EOL .
+						'<li>' . PHP_EOL .
+						'<span class="inline-box">' . PHP_EOL .
+						'<label class="markBox"><input type="checkbox" name="public" id="public" class="toggleDetails" data-toggle="pageDetailsBox"' . ($publicPage && empty($groupsWrite) ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+						'<label for="public" class="inline-label">{s_title:publicpage}' . (empty($groupsWrite) ? ' / {s_title:defaultrigths}' : '') . '</label>' . PHP_EOL;
 
 			// Benutzergruppenauswahl
-			$output .=	'<div id="pageDetailsBox" class="detailsDiv"' . ($publicPage && empty($groupsWrite) ? ' style="display:none;" ' : '') . '>' . "\r\n";
+			$output .=	'<div id="pageDetailsBox" class="detailsDiv"' . ($publicPage && empty($groupsWrite) ? ' style="display:none;" ' : '') . '>' . PHP_EOL;
 			
 			// Benutzergruppen (read)
-			$output .=	'<div class="leftBox">' . "\r\n";
+			$output .=	'<div class="leftBox">' . PHP_EOL;
 			
-			$output .=	'<label>{s_common:rightsread}</label>' . "\r\n" .
-						'<select multiple="multiple" size="' . count($this->userGroups) . '" name="groups_read[]">' . "\r\n";
+			$output .=	'<label>{s_common:rightsread}</label>' . PHP_EOL .
+						'<select multiple="multiple" size="' . count($this->userGroups) . '" name="groups_read[]">' . PHP_EOL;
 			
 			// Benutzergruppen
 			foreach($this->userGroups as $group) {
-				$output .='<option value="' . $group . '"' . (isset($groupsRead) && in_array($group, $groupsRead) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n";
+				$output .='<option value="' . $group . '"' . (isset($groupsRead) && in_array($group, $groupsRead) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL;
 			}
 			
-			$output .=	'</select>' . "\r\n";
-			$output .=	'</div>' . "\r\n";
+			$output .=	'</select>' . PHP_EOL;
+			$output .=	'</div>' . PHP_EOL;
 			
 			// Benutzergruppen (write)
-			$output .=	'<div class="rightBox">' . "\r\n";
+			$output .=	'<div class="rightBox">' . PHP_EOL;
 			
-			$output .=	'<label>{s_common:rightswrite}</label>' . "\r\n" .
-						'<select multiple="multiple" size="' . count($this->loggedUserEditGroups) . '" name="groups_write[]">' . "\r\n";
+			$output .=	'<label>{s_common:rightswrite}</label>' . PHP_EOL .
+						'<select multiple="multiple" size="' . count($this->loggedUserEditGroups) . '" name="groups_write[]">' . PHP_EOL;
 			
 			// Benutzergruppen
 			foreach($this->loggedUserEditGroups as $group) {
-				$output .='<option value="' . $group . '"' . (isset($groupsWrite) && in_array($group, $groupsWrite) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . "\r\n";
+				$output .='<option value="' . $group . '"' . (isset($groupsWrite) && in_array($group, $groupsWrite) ? ' selected="selected"' : '') . '>' . (in_array($group, $this->systemUserGroups) ? '{s_option:group' . $group . '}' : $group) . '</option>' . PHP_EOL;
 			}
 			
-			$output .=	'</select>' . "\r\n";
-			$output .=	'</div>' . "\r\n";
+			$output .=	'</select>' . PHP_EOL;
+			$output .=	'</div>' . PHP_EOL;
 			
-			$output .=	'<br class="clearfloat" /><br /></div>' . "\r\n" .
-						'</span>' . "\r\n" .
-						'</li>' . "\r\n";
+			$output .=	'<br class="clearfloat" /><br /></div>' . PHP_EOL .
+						'</span>' . PHP_EOL .
+						'</li>' . PHP_EOL;
 			
 			// Neue Seite als Startseite
-			$output .=	'<li>' . "\r\n" .
-						'<label class="markBox"><input type="checkbox" name="index" id="index"' . ($setIndexPage ? ' checked="checked"' : '') . ' /></label>' . "\r\n" .
-						'<label for="index" class="inline-label">{s_label:indexpage}</label>' . "\r\n" .
-						'</li>' . "\r\n" .
-						'</ul>' . "\r\n" .
-						'</div>' . "\r\n" .
-						'<ul>' . "\r\n" .
-						'<li class="submit change">' . "\r\n";
+			$output .=	'<li>' . PHP_EOL .
+						'<label class="markBox"><input type="checkbox" name="index" id="index"' . ($setIndexPage ? ' checked="checked"' : '') . ' /></label>' . PHP_EOL .
+						'<label for="index" class="inline-label">{s_label:indexpage}</label>' . PHP_EOL .
+						'</li>' . PHP_EOL .
+						'</ul>' . PHP_EOL .
+						'</div>' . PHP_EOL .
+						'<ul>' . PHP_EOL .
+						'<li class="submit change">' . PHP_EOL;
 			
 			// Button submit (new)
 			$btnDefs	= array(	"type"		=> "submit",
@@ -795,13 +795,13 @@ class Admin_New extends Admin implements AdminTask
 			
 			$output	.=	parent::getButton($btnDefs);
 			
-			$output	.=	'<input name="newItem" type="hidden" value="' . $newPageId . '" />' . "\r\n" .
-						'<input name="newPageId" type="hidden" value="' . $newPageId . '" />' . "\r\n" .
-						'<input name="newItemName" type="hidden" value="' . $this->newItemName . '" />' . "\r\n" .
-						'<input name="newPageDetails" type="hidden" value="true" />' . "\r\n" .
-						'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n" .
-						'</li></ul>' . "\r\n" .
-						'</form>' . "\r\n";
+			$output	.=	'<input name="newItem" type="hidden" value="' . $newPageId . '" />' . PHP_EOL .
+						'<input name="newPageId" type="hidden" value="' . $newPageId . '" />' . PHP_EOL .
+						'<input name="newItemName" type="hidden" value="' . $this->newItemName . '" />' . PHP_EOL .
+						'<input name="newPageDetails" type="hidden" value="true" />' . PHP_EOL .
+						parent::getTokenInput() .
+						'</li></ul>' . PHP_EOL .
+						'</form>' . PHP_EOL;
 		
 								
 								
@@ -810,9 +810,9 @@ class Admin_New extends Admin implements AdminTask
 
 		elseif($success == false) { // Bei Misserfolg Fehlermeldung ausgeben
 										
-			$output .=	'<div class="adminArea">' . "\r\n" . 
-						'<p class="notice error">{s_error:newfail}</p>' . "\r\n" . 
-						'<p>&nbsp;</p>' . "\r\n"; 
+			$output .=	'<div class="adminArea">' . PHP_EOL . 
+						'<p class="notice error">{s_error:newfail}</p>' . PHP_EOL . 
+						'<p>&nbsp;</p>' . PHP_EOL; 
 		}
 		
 		else { // Bei Erfolgreicher Sprachtiteleingabe
@@ -820,20 +820,20 @@ class Admin_New extends Admin implements AdminTask
 			$this->setSessionVar('edit_id', $newPageId); // PageId in Sessionvar speichern
 			
 			
-			$output .=	'<div class="adminArea">' . "\r\n" . 
-						'<p class="notice success">{s_notice:newsuccess}</p>' . "\r\n" . 
-						'<div class="controlBar">' . "\r\n" .
+			$output .=	'<div class="adminArea">' . PHP_EOL . 
+						'<p class="notice success">{s_notice:newsuccess}</p>' . PHP_EOL . 
+						'<div class="controlBar">' . PHP_EOL .
 						'<div class="editHeader">' . "\n" .
 						parent::getIcon("page", "page") .
 						'<span class"tableCell">{s_header:page} &#9658; <strong title="page ID #' . htmlspecialchars($this->newItemName) . '">' . htmlspecialchars($this->newItemName) . '</strong></span></div>' .
-						'</div>' . "\r\n" . 
-						'<p class="notice">{s_notice:addcontent}</p>' . "\r\n" . 
-						'<p>&nbsp;</p>' . "\r\n"; 
+						'</div>' . PHP_EOL . 
+						'<p class="notice">{s_notice:addcontent}</p>' . PHP_EOL . 
+						'<p>&nbsp;</p>' . PHP_EOL; 
 		}
 
 		// Buttons zum zurückgehen
-		$output .=	'<ul>' . "\r\n" .
-					'<li class="submit back">' . "\r\n";
+		$output .=	'<ul>' . PHP_EOL .
+					'<li class="submit back">' . PHP_EOL;
 		
 		// Button back (editnew)
 		$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=edit',
@@ -852,8 +852,8 @@ class Admin_New extends Admin implements AdminTask
 		
 		$output	.=	parent::getButtonLink($btnDefs);
 					
-		$output	.=	'</li>' . "\r\n" .
-					'<li class="submit back">' . "\r\n";
+		$output	.=	'</li>' . PHP_EOL .
+					'<li class="submit back">' . PHP_EOL;
 		
 		// Button back (new)
 		$btnDefs	= array(	"href"		=> ADMIN_HTTP_ROOT . '?task=new',
@@ -866,11 +866,11 @@ class Admin_New extends Admin implements AdminTask
 		// Button back
 		$output .=	$this->getButtonLinkBacktomain();
 				
-		$output .=	'</li>' . "\r\n" . 
-					'</ul>' . "\r\n" . 
-					'</div>' . "\r\n";
+		$output .=	'</li>' . PHP_EOL . 
+					'</ul>' . PHP_EOL . 
+					'</div>' . PHP_EOL;
 		
-		$output .=	'</div>' . "\r\n";
+		$output .=	'</div>' . PHP_EOL;
 		
 		
 		return $output;
@@ -919,12 +919,12 @@ class Admin_New extends Admin implements AdminTask
 	public function getTplScriptTag($hide = false)
 	{
 
-		return	'<script>' . "\r\n" .
-				'head.ready("jquery", function(){' . "\r\n" .
-				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . "\r\n" .
-				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . "\r\n" .
-				'head.ready("imagepicker", function(){' . "\r\n" .
-					'$(document).ready(function(){' . "\r\n" .
+		return	'<script>' . PHP_EOL .
+				'head.ready("jquery", function(){' . PHP_EOL .
+				'head.load({imagepickercss: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.css"});' . PHP_EOL .
+				'head.load({imagepicker: "' . PROJECT_HTTP_ROOT . '/extLibs/jquery/image-picker/image-picker.min.js"});' . PHP_EOL .
+				'head.ready("imagepicker", function(){' . PHP_EOL .
+					'$(document).ready(function(){' . PHP_EOL .
 						'$("select.tplSelect").imagepicker({
 							target_box: $("#tplSelectionBox"),
 							hide_select: ' . ($hide ? 'true' : 'false') . ',
@@ -938,11 +938,11 @@ class Admin_New extends Admin implements AdminTask
 									$(this).append(\'<span class="label">\' + title + \'</span>\');
 								});
 							}
-						});' . "\r\n" .
-					'});' . "\r\n" .
-				'});' . "\r\n" .
-				'});' . "\r\n" .
-				'</script>' . "\r\n";
+						});' . PHP_EOL .
+					'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'});' . PHP_EOL .
+				'</script>' . PHP_EOL;
 	
 	}
 

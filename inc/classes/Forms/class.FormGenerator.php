@@ -384,14 +384,14 @@ class FormGenerator extends ContentsEngine
 				
 			// Falls eine Spreicherung der Daten in der DB erfolgt ist
 			if($GLOBALS['_GET']['form'] == "1") {
-				$output .=	'<p class="notice success {t_class:fmsuccess} {t_class:alert} {t_class:success}">'.(!empty($this->configArray["cf_usernotice"]["success"]) ? $this->configArray["cf_usernotice"]["success"] : '{s_notice:formsuccess}').'</p>' . "\r\n";
+				$output .=	'<div class="notice success {t_class:fmsuccess} {t_class:alert} {t_class:success}">'.(!empty($this->configArray["cf_usernotice"]["success"]) ? $this->configArray["cf_usernotice"]["success"] : '{s_notice:formsuccess}').'</div>' . "\r\n";
 			}
 				
 			// Falls ein Fehler aufgetreten ist
 			else {
 				$this->formSuccess	= false;
 				$this->formError	= true;
-				$output .=	'<p class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(!empty($this->configArray["cf_usernotice"]["error"]) ? $this->configArray["cf_usernotice"]["error"] : '{s_error:formerror}').'</p>' . "\r\n";
+				$output .=	'<div class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(!empty($this->configArray["cf_usernotice"]["error"]) ? $this->configArray["cf_usernotice"]["error"] : '{s_error:formerror}').'</div>' . "\r\n";
 			}
 	
 			// Falls der Mailversand mittels FormMailer erfolgreich war
@@ -399,14 +399,14 @@ class FormGenerator extends ContentsEngine
 				
 				// Falls eine Spreicherung der Daten in der DB erfolgt ist
 				if($GLOBALS['_GET']['mail'] == "1") {
-					$output .=	'<p class="notice success {t_class:fmsuccess} {t_class:alert} {t_class:success}">'.(isset($this->configArray["cf_usernotice"]["mailsuccess"]) ? $this->configArray["cf_usernotice"]["mailsuccess"] : '{s_notice:mailsuccess}').'</p>' . "\r\n";
+					$output .=	'<div class="notice success {t_class:fmsuccess} {t_class:alert} {t_class:success}">'.(isset($this->configArray["cf_usernotice"]["mailsuccess"]) ? $this->configArray["cf_usernotice"]["mailsuccess"] : '{s_notice:mailsuccess}').'</div>' . "\r\n";
 				}
 				
 				// Falls ein Fehler aufgetreten ist
 				else {
 					$this->formSuccess	= false;				
 					$this->mailError	= true;
-					$output .=	'<p class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(isset($this->configArray["cf_usernotice"]["mailerror"]) ? $this->configArray["cf_usernotice"]["mailerror"] : '{s_error:mailerror}').'</p>' . "\r\n";
+					$output .=	'<div class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(isset($this->configArray["cf_usernotice"]["mailerror"]) ? $this->configArray["cf_usernotice"]["mailerror"] : '{s_error:mailerror}').'</div>' . "\r\n";
 				}
 			}
 	
@@ -415,14 +415,14 @@ class FormGenerator extends ContentsEngine
 				
 				// Falls eine Spreicherung der Daten in der DB erfolgt ist
 				if($GLOBALS['_GET']['pdf'] == "1") {
-					$output .=	'<p class="notice success {t_class:alert} {t_class:success}">'.(isset($this->configArray["cf_usernotice"]["pdfsuccess"]) ? $this->configArray["cf_usernotice"]["pdfsuccess"] : '{s_notice:pdfsuccess}').'</p>' . "\r\n";
+					$output .=	'<div class="notice success {t_class:alert} {t_class:success}">'.(isset($this->configArray["cf_usernotice"]["pdfsuccess"]) ? $this->configArray["cf_usernotice"]["pdfsuccess"] : '{s_notice:pdfsuccess}').'</div>' . "\r\n";
 				}
 					
 				// Falls ein Fehler aufgetreten ist
 				else {
 					$this->formSuccess	= false;				
 					$this->pdfError		= true;
-					$output .=	'<p class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(isset($this->configArray["cf_usernotice"]["pdferror"]) ? $this->configArray["cf_usernotice"]["pdferror"] : '{s_error:pdferror}').'</p>' . "\r\n";
+					$output .=	'<div class="error {t_class:fmwarning} {t_class:alert} {t_class:error}">'.(isset($this->configArray["cf_usernotice"]["pdferror"]) ? $this->configArray["cf_usernotice"]["pdferror"] : '{s_error:pdferror}').'</div>' . "\r\n";
 				}
 			}
 			
@@ -549,13 +549,13 @@ class FormGenerator extends ContentsEngine
 			$this->hideField	= isset($this->configArray[$field['Field']]["hidden"]) && $this->configArray[$field['Field']]["hidden"] ? $this->configArray[$field['Field']]["hidden"] : false;
 			$this->fieldVal		= isset($this->configArray[$field['Field']]["value"]) && !isset($GLOBALS['_POST']['form_submission_'.$this->tablename]) ? $this->configArray[$field['Field']]["value"] : $this->getValue($field['Field']); //Wert des Attributs holen
 			$label				= isset($this->configArray[$field['Field']]["label"]) && $this->configArray[$field['Field']]["label"] != "" ? $this->configArray[$field['Field']]["label"] : $field['Field'];
-			$notice				= isset($this->configArray[$field['Field']]["notice"]) && $this->configArray[$field['Field']]["notice"] != "" ? '<span class="notice">' . $this->configArray[$field['Field']]["notice"] . '</span>' : (isset($this->configArray["cf_usernotice"]["errorfield"]) ? '<span class="notice">' . $this->configArray["cf_usernotice"]["errorfield"] . '</span>' : '');
+			$notice				= isset($this->configArray[$field['Field']]["notice"]) && $this->configArray[$field['Field']]["notice"] != "" ? '<span class="notice cc-field-notice">' . $this->configArray[$field['Field']]["notice"] . '</span>' : (isset($this->configArray["cf_usernotice"]["errorfield"]) ? '<span class="notice cc-field-notice">' . $this->configArray["cf_usernotice"]["errorfield"] . '</span>' : '');
 		
 		}
 		else { //Andernfalls default-Werte nehmen
 			$this->fieldVal		= $this->getValue($field['Field']); //Wert des Attributs holen
 			$label				= $field['Field'];
-			$notice				= isset($this->configArray["cf_usernotice"]["errorfield"]) ? '<span class="notice">' . $this->configArray["cf_usernotice"]["errorfield"] . '</span>' : '';
+			$notice				= isset($this->configArray["cf_usernotice"]["errorfield"]) ? '<span class="notice cc-field-notice">' . $this->configArray["cf_usernotice"]["errorfield"] . '</span>' : '';
 		}
 	
 		// Überprüfen ob Feld erforderlich
@@ -976,7 +976,7 @@ class FormGenerator extends ContentsEngine
 		$errClass	= "";
 					
 		if(!$this->checkCaptcha) {
-			$errTag		= '<span class="notice">{s_error:captcha}</span>' . "\r\n";
+			$errTag		= '<span class="notice cc-field-notice">{s_error:captcha}</span>' . "\r\n";
 			$errClass	= " {t_class:fielderror}";
 		}
 		
@@ -1088,8 +1088,9 @@ class FormGenerator extends ContentsEngine
 		if(isset($this->configArray['cf_poll']) && $this->configArray['cf_poll'] == true)
 			$output .=	'<input type="hidden" name="pollDate" class="pollDate" value="' . strtotime($this->configArray['cf_timestamp']) . '" />' . "\r\n"; // Polldatum
 		
+		// Token
 		if($finalSubmit)
-			$output .=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n"; // Token
+			$output .=	parent::getTokenInput();
 		
 		$output .=	'</li>' . "\r\n" .
 					'</ul>' . "\r\n";
@@ -1591,7 +1592,7 @@ class FormGenerator extends ContentsEngine
 			
 			// E-Mail-Attachment (pdf)
 			$this->pdfName			= $o_makePDFEvent->getPdfName();
-			$this->pdfMailAttach	= $o_makePDFEvent->getPdfOutput("E");
+			$this->pdfMailAttach	= $o_makePDFEvent->getPdfOutput("S");
 		}
 
 		

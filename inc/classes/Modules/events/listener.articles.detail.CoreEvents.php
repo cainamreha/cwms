@@ -62,7 +62,7 @@ class DetailCoreEventsListener
 									'<input type="hidden" name="cat_id" value="' . $event->dataCatID . '" />' . "\r\n" .
 									'<input type="hidden" name="data_id" value="' . $event->dataID . '" />' . "\r\n" .
 									'<input type="hidden" name="addToCart" value="true" />' . "\r\n" .
-									'<input type="hidden" name="token" value="' . $event->token . '" />' . "\r\n" .
+									$event->tokenInput .
 									$addToCartBtn .
 									'<input type="text" name="amount" value="1" class="inputAmount {t_class:input} {t_class:fieldinl}" />' . "\r\n" .
 									'<label class="{t_class:labelinl}"><span class="price">' . $price . ' EUR</span><span class="mwst"><br />{s_label:price} {s_text:ustr}</span> <span class="shipping">{s_common:plus} ' . $shippingLink . '</span></label>' .

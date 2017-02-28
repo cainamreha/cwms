@@ -707,7 +707,7 @@ class FormEvaluation extends Modules
 						
 				$formTag		=	'<form action="' . SYSTEM_HTTP_ROOT . '/access/editForms.php?page=admin&action=delformdata&formtable=' . $this->formTable . '&list_formdata='.$this->formID.'&sort_fieldname='.$sortField.'&sort_dir='.$sortDirection.'&limit='.$limit.'&red='.$redirect.'&entryid=array" method="post" data-history="false">';
 				$formTagClose	=	'</form>';
-				#$tokenField		=	'<input type="hidden" name="token" value="' . parent::$token . '" />' . "\r\n"; // Token
+				$tokenField		=	parent::getTokenInput(); // Token
 			}
 			
 			// Hidden page nav fields

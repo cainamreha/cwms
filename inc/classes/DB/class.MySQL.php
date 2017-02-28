@@ -664,7 +664,7 @@ class MySQL
 		require_once $updateScript; // Update-Script einbinden		
 
 		// ConciseCoreUpdater instance
-		$o_CoreUpdater = new ConciseCoreUpdater($this, $this->updateVersion);
+		$o_CoreUpdater = new ConciseCoreUpdater($this, $GLOBALS['o_lng'], $this->updateVersion);
 		$o_CoreUpdater->runCWMSUpdater($update);
 		
 		// Objektinstanz aus updateScript
