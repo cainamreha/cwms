@@ -84,10 +84,17 @@ class MySQL
 				$this->installStatus = false;
 				return false;
 			}
-			else {	
-				trigger_error("MySQL-Connection-Error", E_USER_ERROR);
-				echo "Keine Verbindung zum MySQL-Server möglich.";
-				die();
+			else {
+				// Falls noch keine DB eingerichtet ist, die Installationsseite aufrufen
+				if(DB_NAME === "dbname") {
+					header("location: " . PROJECT_HTTP_ROOT . "/install.html");
+					exit;
+				}
+				else {
+					trigger_error("MySQL-Connection-Error", E_USER_ERROR);
+					echo "Keine Verbindung zum MySQL-Server möglich.";
+					die();
+				}
 			}
 		}
 		

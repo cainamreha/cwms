@@ -3,7 +3,7 @@
 
 ##Overview
 
-Simple and concise website content management system
+Simple and concise website content management system based on PHP/MySQL.
 
 ##Installation
 

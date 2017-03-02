@@ -63,7 +63,7 @@ $adminLangs = array	("de" => "Deutsch",
 #---------------------------#
 
 define('ADMIN_THEME',"icomoon");					// Theme für Adminbereich
-define('ADMIN_SKIN',"default");						// Theme Skin für Adminbereich
+define('ADMIN_SKIN',"");							// Theme Skin für Adminbereich
 define('ADMIN_HTTPS_PROTOCOL',false);				// Https-Protokol für Systemseiten
 define('DEBUG',true);								// DEBUG-MODUS (wenn true, wird die Debug-Konsole angezeigt)
 define('CC_CRYPT_KEY',"cc-newmcrypt-key");			// Schlüssel für die Verschlüsselung mit Klasse "myCrypt"
@@ -113,7 +113,7 @@ define('SYSTEM_DOC_ROOT',PROJECT_DOC_ROOT . '/system'); // Systempfad
 // Projektname
 $project = str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace("\\", "/",$docPath));
 
-// Projekt-URL (für die Verwendung im Web)
+//Projekt-URL (für die Verwendung im Web)
 define('PROJECT_HTTP_ROOT',(HTTPS_PROTOCOL ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$project);
 
 // Admin- und System-Pfade
@@ -274,7 +274,7 @@ define('TEASER_IMG_TYPE',"link");					// Teaserbild bei Datenlisten als Bild- od
 define('IMG_WIDTH',1280);							// Bildbreite
 define('IMG_HEIGHT',768);							// Bildhöhe
 define('MIN_IMG_SIZE',10);							// min. Bildbreite/-höhe
-define('MAX_IMG_SIZE',2440);						// max. Bildbreite/-höhe
+define('MAX_IMG_SIZE',1920);						// max. Bildbreite/-höhe
 define('THUMB_SIZE',270);							// Höhe von Thumbnails
 define('SMALL_IMG_SIZE',768);						// Breite von small images
 define('MEDIUM_IMG_SIZE',1280);						// Breite von medium images
@@ -341,6 +341,7 @@ define('CC_DEFAULT_TEMPLATE',"standard.tpl");		// Standard-Template
 define('CC_SITE_LOGO',IMAGE_DIR."Ihr-Logo.png");	// Website-Logo
 define('CC_ADMIN_LOGO',SYSTEM_IMAGE_DIR."/company_logo.png");	// Logo Adminbereich
 define('APPLE_TOUCH_ICON',"apple-touch-icon-precomposed.png");	// Apple touch icon
+
 
 #-------------------#
 #--- DB-TABELLEN ---#
